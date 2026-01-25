@@ -1,5 +1,6 @@
 import { createRootRoute, createRoute, Navigate, Outlet } from '@tanstack/react-router';
 import { Button } from './components/ui/button';
+import LoginPage from './modules/Auth/view/Login';
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -33,10 +34,10 @@ export const homeRoute = createRoute({
   ),
 });
 
-export const authRoute = createRoute({
+export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/auth',
-  component: () => <h1>Auth</h1>,
+  path: '/login',
+  component: LoginPage,
 });
 
-export const routeTree = rootRoute.addChildren([homeRoute, authRoute]);
+export const routeTree = rootRoute.addChildren([homeRoute, loginRoute]);
