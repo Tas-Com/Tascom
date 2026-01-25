@@ -4,10 +4,10 @@ import type { AuthRequest } from '../dto/AuthDto';
 import { AuthKey } from './useRegister';
 import { queryClient } from '../../../main';
 
-export const useLogin = (request: AuthRequest) => {
+export const useLogin = () => {
   const auth = useAuth();
   return useMutation({
-    mutationFn: () => auth.login(request),
+    mutationFn: (request: AuthRequest) => auth.login(request),
     onSuccess: (data) => {
       queryClient.setQueryData([AuthKey], data);
       console.log(data);

@@ -5,17 +5,14 @@ import { queryClient } from '../../../main';
 
 export const AuthKey = 'Auth';
 
-export const useRegister = (request: AuthRequest) => {
+export const useRegister = () => {
   const auth = useAuth();
-  const registerMutation = useMutation({
-    mutationFn: () => auth.register(request),
+  return useMutation({
+    mutationFn: (request: AuthRequest) => auth.register(request),
     onSuccess: (data) => {
       queryClient.setQueryData([AuthKey], data);
       console.log(data);
     },
     onError: (error) => console.log(error),
   });
-  return {
-    registerMutation
-  };
 };

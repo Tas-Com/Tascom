@@ -6,15 +6,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Prepare request object
-  const request: AuthRequest = { email, password };
-
-  const loginMutation = useLogin(request);
+  const loginMutation = useLogin();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    loginMutation.mutate(undefined, {
+    const request: AuthRequest = { email, password };
+    loginMutation.mutate(request, {
       onSuccess: (user) => {
         alert(`Welcome ${user.name}!`);
       },
