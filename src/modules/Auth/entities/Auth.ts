@@ -1,12 +1,7 @@
-export type Register = {
-  message: string;
+export type UserInformation = {
   access_token: string;
-  user: User;
-};
-export type User = {
   id: number;
   name: string;
   email: string;
-  phoneNumber: string;
-  createdAt: Date;
+  phoneNumber?: string;
 };
