@@ -7,6 +7,7 @@ import { notificationsRoutes } from "./modules/notifications";
 import { chatRoutes } from "./modules/chat/routes";
 import { settingsRoutes } from "./modules/settings";
 import { searchRoutes } from "./modules/search/routes";
+import { authRoutes } from "./modules/Auth/routes";
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -22,8 +23,6 @@ export const rootRoute = createRootRoute({
   notFoundComponent: () => <Navigate to="/" />,
 });
 
-// Handle Auth routes!!
-
 export const routeTree = rootRoute.addChildren([
   ...homeRoutes,
   ...tasksRoutes,
@@ -33,4 +32,7 @@ export const routeTree = rootRoute.addChildren([
   ...notificationsRoutes,
   ...chatRoutes,
   ...settingsRoutes,
+  ...authRoutes,
 ]);
+
+// Edit auth routes...

@@ -1,14 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '..';
 import type { AuthRequest } from '../dto/AuthDto';
+import { AuthKey } from './useRegister';
 import { queryClient } from '../../../main';
 
-export const AuthKey = 'Auth';
-
-export const useRegister = () => {
+export const useLogin = () => {
   const auth = useAuth();
   return useMutation({
-    mutationFn: (request: AuthRequest) => auth.register(request),
+    mutationFn: (request: AuthRequest) => auth.login(request),
     onSuccess: (data) => {
       queryClient.setQueryData([AuthKey], data);
       console.log(data);
