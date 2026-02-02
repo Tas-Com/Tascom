@@ -1,48 +1,38 @@
-import { createRootRoute, createRoute, Navigate, Outlet } from '@tanstack/react-router';
-import { Button } from './components/ui/button';
-import LoginPage from './modules/Auth/view/Login';
-import RegisterPage from './modules/Auth/view/Resgister';
+import { createRootRoute, Navigate, Outlet } from "@tanstack/react-router";
+import { homeRoutes } from "./modules/home";
+import { tasksRoutes } from "./modules/tasks/routes";
+import { profileRoutes } from "./modules/profile";
+import { dashboardRoutes } from "./modules/dashboard";
+import { notificationsRoutes } from "./modules/notifications";
+import { chatRoutes } from "./modules/chat/routes";
+import { settingsRoutes } from "./modules/settings";
+import { searchRoutes } from "./modules/search/routes";
+import { authRoutes } from "./modules/Auth/routes";
 
-const rootRoute = createRootRoute({
+export const rootRoute = createRootRoute({
   component: () => (
-    <div>
+    <div className="min-h-screen bg-background font-sans antialiased">
       <h1>Header</h1>
-      <Outlet />
+      <div className="relative flex min-h-screen flex-col">
+        <main className="flex-1">
+          <Outlet />
+        </main>
+      </div>
     </div>
   ),
   notFoundComponent: () => <Navigate to="/" />,
 });
-export const homeRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => (
-    <>
-      <div className="flex flex-col items-center justify-center">
-        <Button className="border-2">Click me</Button>
-      </div>
 
-      <h1>Heading 1</h1>
-      <p className="text-body1">Body text</p>
-      <Button className="text-btn-primary border-2">Button</Button>
+export const routeTree = rootRoute.addChildren([
+  ...homeRoutes,
+  ...tasksRoutes,
+  ...searchRoutes,
+  ...profileRoutes,
+  ...dashboardRoutes,
+  ...notificationsRoutes,
+  ...chatRoutes,
+  ...settingsRoutes,
+  ...authRoutes,
+]);
 
-      <br />
-
-      <div className="bg-bg-primary text-text-primary border-border-default">
-        <span className="text-brand-purple">Brand text</span>
-        <div className="bg-priority-high-bg text-priority-high-text">High Priority</div>
-      </div>
-    </>
-  ),
-});
-
-export const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/login',
-  component: LoginPage,
-});
-export const registerRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/register',
-  component: RegisterPage,
-});
-export const routeTree = rootRoute.addChildren([homeRoute, loginRoute, registerRoute]);
+// Edit auth routes...
