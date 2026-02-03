@@ -4,7 +4,7 @@ import type { UserInformation } from '../entities/Auth';
 import type { AuthRepo } from './AuthRepo';
 import axios from 'axios';
 
-const BaseUrl = 'https://smart-community.vercel.app/';
+const BaseUrl = 'https://tascom.up.railway.app/';
 export const restAuth = (): AuthRepo => {
   return {
     login: async (request: AuthRequest): Promise<UserInformation> => {
