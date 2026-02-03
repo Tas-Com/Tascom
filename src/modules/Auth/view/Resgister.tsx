@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useRegister } from '../hook/useRegister';
 import { Button, Input } from '../../../shared/components/ui';
-import { User, Mail, Lock, Phone, UserPlus } from 'lucide-react';
+import { User, Mail, Lock, Phone } from 'lucide-react';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -57,11 +57,8 @@ export default function RegisterPage() {
     <div className="bg-bg-secondary rounded-2xl shadow-xl border border-border-default overflow-hidden transition-all hover:shadow-2xl">
       <div className="p-8">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-purple/10 rounded-2xl mb-4 transition-transform hover:scale-110">
-            <UserPlus className="w-8 h-8 text-brand-purple" />
-          </div>
-          <h1 className="text-h4 text-text-primary mb-2">Welcome to Tascom</h1>
-          <p className="text-body-s1 text-text-secondary">Connect, collaborate, and get things done</p>
+          <h1 className="font-semibold text-[48px] leading-[120%] text-center text-text-primary mb-2">Welcome to Tascom</h1>
+          <p className="font-normal text-[18px] leading-[140%] text-center text-text-secondary">Connect, collaborate, and get things done</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

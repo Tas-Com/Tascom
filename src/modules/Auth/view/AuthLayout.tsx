@@ -39,7 +39,7 @@ export default function AuthLayout() {
           </div>
 
           {/* Slogan */}
-          <p className="text-xl font-medium leading-relaxed opacity-90 italic">
+          <p className="font-normal text-base leading-[120%] text-center opacity-90">
             "Discover a community where tasks are shared, help is exchanged, and trust is built."
           </p>
         </div>
