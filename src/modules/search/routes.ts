@@ -1,16 +1,16 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "../../routes";
+import { mainLayoutRoute } from "../../layoutRoutes";
 import { MapPage } from "./views/map";
 import { SearchPage } from "./views/searchResults";
 
 export const mapRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainLayoutRoute,
   path: "/map",
   component: MapPage,
 });
 
 export const searchPageRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainLayoutRoute,
   path: "/search",
   component: SearchPage,
 });

@@ -15,4 +15,5 @@ export type AuthRequest = {
   phoneNumber?: string;
   email: string;
   password: string;
+  location?: string;
 };
