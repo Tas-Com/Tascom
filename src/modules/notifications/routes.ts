@@ -1,9 +1,9 @@
 import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from '../../routes';
+import { mainLayoutRoute } from '../../layoutRoutes';
 import { NotificationsPage } from './views';
 
 export const notificationsRoute = createRoute({
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => mainLayoutRoute,
     path: '/notifications',
     component: NotificationsPage,
 });

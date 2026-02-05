@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "../../routes";
+import { mainLayoutRoute } from "../../layoutRoutes";
 import Chat from "./views";
 
 export const chatRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainLayoutRoute,
   path: "/chat",
   component: Chat,
 });
