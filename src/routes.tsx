@@ -12,7 +12,7 @@ import { authRoutes } from "./modules/Auth/routes";
 export const rootRoute = createRootRoute({
   component: () => (
     <div className="min-h-screen bg-background font-sans antialiased">
-      <h1>Header</h1>
+      {/* <h1>Header</h1> */}
       <div className="relative flex min-h-screen flex-col">
         <main className="flex-1">
           <Outlet />
