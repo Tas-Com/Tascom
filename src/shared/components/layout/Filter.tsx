@@ -1,17 +1,17 @@
 import {
-  Assignment,
-  Build,
-  School,
-  Pets,
+  ClipboardList,
+  Wrench,
+  GraduationCap,
+  Heart,
   Home,
-  DirectionsCar,
-} from "@mui/icons-material";
+  Car,
+} from "lucide-react";
 
 type Props = {
   category: string | null;
   setCategory: (v: string) => void;
   priority: string | null;
-  setPriority: (v: any) => void;
+  setPriority: (v: string | null) => void;
   points: number;
   setPoints: (v: number) => void;
   distance: number;
@@ -19,7 +19,6 @@ type Props = {
 };
 
 export function Filter({
-  category,
   setCategory,
   priority,
   setPriority,
@@ -29,40 +28,57 @@ export function Filter({
   setDistance,
 }: Props) {
   return (
-    <aside className="space-y-6 w-72 bg-gray-100">
-      <button className="w-full bg-brand-purple text-white py-3 rounded-xl text-btn-primary">
-        Post a task
-      </button>
-      <div className="bg-bg-secondary rounded-xl p-4 space-y-6">
-        <h5 className="text-h5-2">Filters</h5>
-{/* تعديل اللينك */}
+    <aside className="w-[339px] h-[972px] mt-[32px] ml-13">
+      <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
+        <button className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]">
+          Post a task
+        </button>
+        <h5 className="text-h5-2 text-primary">Filters</h5>
         <div>
-          <p className="text-body-s2 mb-3">Categories</p>
-          <ul className="space-y-3 text-body-s1 text-text-secondary">
-            <li onClick={() => setCategory("errands")} className="flex gap-2 cursor-pointer">
-              <Assignment fontSize="small" /> Errands
+          <p className="text-h5-2 mb-8">Categories</p>
+          <ul className="space-y-6 text-body-s2 text-primary">
+            <li
+              onClick={() => setCategory("errands")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <ClipboardList size={24} /> Errands
             </li>
-            <li onClick={() => setCategory("repairs")} className="flex gap-2 cursor-pointer">
-              <Build fontSize="small" /> Repairs
+            <li
+              onClick={() => setCategory("repairs")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <Wrench size={24} /> Repairs
             </li>
-            <li onClick={() => setCategory("tutoring")} className="flex gap-2 cursor-pointer">
-              <School fontSize="small" /> Tutoring
+            <li
+              onClick={() => setCategory("tutoring")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <GraduationCap size={24} /> Tutoring
             </li>
-            <li onClick={() => setCategory("pets")} className="flex gap-2 cursor-pointer">
-              <Pets fontSize="small" /> Pet Care
+            <li
+              onClick={() => setCategory("pets")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <Heart size={24} /> Pet Care
             </li>
-            <li onClick={() => setCategory("home")} className="flex gap-2 cursor-pointer">
-              <Home fontSize="small" /> Home Services
+            <li
+              onClick={() => setCategory("home")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <Home size={24} /> Home Services
             </li>
-            <li onClick={() => setCategory("transport")} className="flex gap-2 cursor-pointer">
-              <DirectionsCar fontSize="small" /> Transportation
+            <li
+              onClick={() => setCategory("transport")}
+              className="flex gap-2 cursor-pointer"
+            >
+              <Car size={24} /> Transportation
             </li>
           </ul>
         </div>
-        <div>
-          <p className="text-body-s2 mb-2">Priority</p>
+        <div className="space-y-4">
+          <p className="text-h5-2 mb-8">Priority</p>
           {["high", "medium", "low"].map((p) => (
-            <label key={p} className="flex gap-2">
+            <label key={p} className="flex gap-2 text-primary">
               <input
                 type="radio"
                 checked={priority === p}
@@ -73,28 +89,36 @@ export function Filter({
           ))}
         </div>
 
-        <div>
-          <p className="text-body-s2 mb-2">Points: {points}</p>
-          <input
-            type="range"
-            min={5}
-            max={200}
-            value={points}
-            onChange={(e) => setPoints(Number(e.target.value))}
-            className="w-full"
-          />
+        <div className="space-y-4">
+          <p className="text-h5-2 mb-6 text-primary">Points</p>
+          <div className="flex justify-between text-body-s2">
+            <span className="text-body-s1">5</span>
+            <input
+              type="range"
+              min={5}
+              max={200}
+              value={points}
+              onChange={(e) => setPoints(Number(e.target.value))}
+              className="w-full"
+            />
+            <span className="text-body-s1">200</span>
+          </div>
         </div>
 
-        <div>
-          <p className="text-body-s2 mb-2">Distance: {distance}m</p>
-          <input
-            type="range"
-            min={300}
-            max={2000}
-            value={distance}
-            onChange={(e) => setDistance(Number(e.target.value))}
-            className="w-full"
-          />
+        <div className="space-y-4">
+          <p className="text-h5-2 mb-6 text-primary">Location</p>
+          <div className="flex justify-between text-body-s2">
+            <span className=" text-body-s1 text-primary">300m</span>
+            <input
+              type="range"
+              min={300}
+              max={2000}
+              value={distance}
+              onChange={(e) => setDistance(Number(e.target.value))}
+              className="w-full"
+            />
+            <span className="text-body-s1 text-primary">2000m</span>
+          </div>
         </div>
       </div>
     </aside>

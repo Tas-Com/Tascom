@@ -10,7 +10,6 @@ export const mainLayoutRoute = createRoute({
   id: 'main-layout',
   component: () => (
     <div className="min-h-screen bg-background font-sans antialiased">
-      <h1>Header</h1>
       <div className="relative flex min-h-screen flex-col">
         <main className="flex-1">
           <Outlet />
