@@ -1,7 +1,13 @@
-export type UserInformation = {
-  access_token: string;
-  id: number;
+export interface UserInformation {
+  id: string;
   name: string;
   email: string;
-  phoneNumber?: string;
-};
+  role: string;
+  phoneNumber: string;
+  pointsBalance: number;
+  ratingAvg: number;
+  about: string;
+  skills: string;
+  avatar: string | null;
+  location: string;
+}

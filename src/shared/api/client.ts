@@ -1,34 +1,50 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { config } from "../config";
-const TOKEN_KEY = "access-token";
 
-const setCookie = (name: string, value: string, days = 7) => {
-  const expires = new Date(
-    Date.now() + days * 24 * 60 * 60 * 1000
-  ).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(
-    value
-  )}; expires=${expires}; path=/; SameSite=Strict; Secure`;
-};
+const TOKEN_KEY = "access_token";
 
-const getCookie = (name: string): string | null => {
-  const value = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`))
-    ?.split("=")[1];
-  return value ? decodeURIComponent(value) : null;
-};
-
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Strict; Secure`;
+const storage = {
+  set: (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Fallback to sessionStorage
+      sessionStorage.setItem(key, value);
+    }
+  },
+  get: (key: string): string | null => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return sessionStorage.getItem(key);
+    }
+  },
+  remove: (key: string) => {
+    try {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+    } catch {
+      return;
+    }
+  },
 };
 
 export const tokenManager = {
-  getToken: () => getCookie(TOKEN_KEY),
-  setToken: (token: string, expiryDays = 7) =>
-    setCookie(TOKEN_KEY, token, expiryDays),
-  removeToken: () => deleteCookie(TOKEN_KEY),
-  isAuthenticated: () => !!getCookie(TOKEN_KEY),
+  getToken: (): string | null => {
+    return storage.get(TOKEN_KEY);
+  },
+
+  setToken: (token: string) => {
+    storage.set(TOKEN_KEY, token);
+  },
+
+  removeToken: () => {
+    storage.remove(TOKEN_KEY);
+  },
+
+  isAuthenticated: (): boolean => {
+    return !!tokenManager.getToken();
+  },
 };
 
 const api = axios.create({
@@ -39,20 +55,33 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+// Request interceptor - attach token
+api.interceptors.request.use((axiosConfig: InternalAxiosRequestConfig) => {
   const token = tokenManager.getToken();
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    axiosConfig.headers.Authorization = `Bearer ${token}`;
   }
-  return config;
+  return axiosConfig;
 });
 
+// Response interceptor - handle errors
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<{ message?: string }>) => {
     if (error.response?.status === 401) {
       tokenManager.removeToken();
-      window.location.href = "/login";
+      const authPaths = [
+        "/login",
+        "/register",
+        "/forgot-password",
+        "/reset-password",
+      ];
+      const isAuthPage = authPaths.some((path) =>
+        window.location.pathname.includes(path)
+      );
+      if (!isAuthPage) {
+        window.location.href = "/login";
+      }
     }
     const message = error.response?.data?.message || error.message;
     return Promise.reject(new Error(message));
@@ -62,7 +91,7 @@ api.interceptors.response.use(
 export const apiClient = {
   get: <T>(path: string) => api.get<T>(path).then((res) => res.data),
 
-  post: <T>(path: string, body: unknown) =>
+  post: <T>(path: string, body?: unknown) =>
     api.post<T>(path, body).then((res) => res.data),
 
   put: <T>(path: string, body: unknown) =>
