@@ -1,16 +1,17 @@
-import { RightSidebar } from "@/shared/components/layout/RightSidebar";
 import { TaskCard } from "@/shared/components/cards/TaskCard";
-import { mockTasks } from "@/shared/data/mockTasks";
+import { useSearchContext } from "@/shared/contexts/SearchContext";
 
-export const HomePage = () => {
+export function TopResultsPage() {
+  const { filteredTasks } = useSearchContext();
+
   return (
-    <div className="flex flex-1 gap-6 p-4">
-      <div className="flex-1 rounded-[16px] p-4 mt-9">
-        <div className="space-y-6">
-          {mockTasks.map((task) => (
+    <div className="p-11 mt-18">
+      <div className="max-w-6xl mx-auto">
+        {/* Results Grid */}
+        <div className="grid grid-cols-1 gap-6">
+          {filteredTasks.map((task) => (
             <div key={task.id} className="flex justify-center">
               <TaskCard
-                key={task.id}
                 taskerName={task.taskerName}
                 rating={task.rating}
                 taskTitle={task.taskTitle}
@@ -31,7 +32,6 @@ export const HomePage = () => {
           ))}
         </div>
       </div>
-      <RightSidebar />
     </div>
   );
-};
+}

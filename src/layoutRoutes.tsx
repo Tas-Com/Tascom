@@ -1,4 +1,10 @@
-import { createRoute, createRootRoute, Navigate, Outlet } from '@tanstack/react-router';
+import {
+  createRoute,
+  createRootRoute,
+  Navigate,
+  Outlet,
+} from "@tanstack/react-router";
+import { MainLayout } from "@/shared/components/layout/MainLayout";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -7,14 +13,6 @@ export const rootRoute = createRootRoute({
 
 export const mainLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  id: 'main-layout',
-  component: () => (
-    <div className="min-h-screen bg-background font-sans antialiased">
-      <div className="relative flex min-h-screen flex-col">
-        <main className="flex-1">
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  ),
+  id: "main-layout",
+  component: MainLayout,
 });
