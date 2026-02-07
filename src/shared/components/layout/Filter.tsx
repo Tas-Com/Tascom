@@ -16,6 +16,7 @@ type Props = {
   setPoints: (v: number) => void;
   distance: number;
   setDistance: (v: number) => void;
+  showPostButton?: boolean;
 };
 
 export function Filter({
@@ -26,52 +27,61 @@ export function Filter({
   setPoints,
   distance,
   setDistance,
+  showPostButton = true,
 }: Props) {
   return (
     <aside className="w-[339px] h-[972px] mt-[32px] ml-13">
       <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
-        <button className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]">
-          Post a task
-        </button>
+        {showPostButton && (
+          <button className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]">
+            Post a task
+          </button>
+        )}
         <h5 className="text-h5-2 text-primary">Filters</h5>
         <div>
           <p className="text-h5-2 mb-8">Categories</p>
           <ul className="space-y-6 text-body-s2 text-primary">
             <li
               onClick={() => setCategory("errands")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <ClipboardList size={24} /> Errands
+              <ClipboardList size={24} />
+              <span>Errands</span>
             </li>
             <li
               onClick={() => setCategory("repairs")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <Wrench size={24} /> Repairs
+              <Wrench size={24} />
+              <span>Repairs</span>
             </li>
             <li
               onClick={() => setCategory("tutoring")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <GraduationCap size={24} /> Tutoring
+              <GraduationCap size={24} />
+              <span>Tutoring</span>
             </li>
             <li
               onClick={() => setCategory("pets")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <Heart size={24} /> Pet Care
+              <Heart size={24} />
+              <span>Pet Care</span>
             </li>
             <li
               onClick={() => setCategory("home")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <Home size={24} /> Home Services
+              <Home size={24} />
+              <span>Home Services</span>
             </li>
             <li
               onClick={() => setCategory("transport")}
-              className="flex gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer"
             >
-              <Car size={24} /> Transportation
+              <Car size={24} />
+              <span>Transportation</span>
             </li>
           </ul>
         </div>
@@ -92,7 +102,7 @@ export function Filter({
         <div className="space-y-4">
           <p className="text-h5-2 mb-6 text-primary">Points</p>
           <div className="flex justify-between text-body-s2">
-            <span className="text-body-s1">5</span>
+            <span className="text-body-s1 mr-2">5</span>
             <input
               type="range"
               min={5}
@@ -101,14 +111,14 @@ export function Filter({
               onChange={(e) => setPoints(Number(e.target.value))}
               className="w-full"
             />
-            <span className="text-body-s1">200</span>
+            <span className="text-body-s1 ml-2">200</span>
           </div>
         </div>
 
         <div className="space-y-4">
           <p className="text-h5-2 mb-6 text-primary">Location</p>
           <div className="flex justify-between text-body-s2">
-            <span className=" text-body-s1 text-primary">300m</span>
+            <span className=" text-body-s1 text-primary mr-2">300</span>
             <input
               type="range"
               min={300}
@@ -117,7 +127,7 @@ export function Filter({
               onChange={(e) => setDistance(Number(e.target.value))}
               className="w-full"
             />
-            <span className="text-body-s1 text-primary">2000m</span>
+            <span className="text-body-s1 text-primary ml-2">2000</span>
           </div>
         </div>
       </div>
