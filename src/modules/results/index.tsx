@@ -1,1 +1,0 @@
-export { topResultsRoutes } from './routes';

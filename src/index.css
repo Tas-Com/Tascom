@@ -1,9 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 :root {
-  font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   /* Status Colors */
   --status-active: #0fa632;
@@ -51,7 +50,7 @@
 
 body {
   margin: 0;
-  min-width: 1438px;
+  min-width: 320px;
   min-height: 100vh;
 }
 
@@ -94,13 +93,8 @@ body {
 }
 
 @layer base {
-  * {
-    font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
-  }
-
   body {
     @apply bg-bg-primary text-text-primary;
-    font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
 
   /* Typography */
@@ -174,7 +168,7 @@ body {
 
   .text-body1 {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .text-body2 {
@@ -184,14 +178,12 @@ body {
 
   .text-body-s1 {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .text-body-s2 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 120%;
-    letter-spacing: 0%;
+    font-size: 16px;
+    font-weight: 500;
   }
 
   .text-btn-s {
@@ -206,16 +198,16 @@ body {
 
   .text-caption2 {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .text-label1 {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .text-label2 {
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
   }
 }

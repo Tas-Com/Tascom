@@ -9,5 +9,3 @@ export const homeRoute = createRoute({
 });
 
 export const homeRoutes = [homeRoute];
-
-
