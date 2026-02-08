@@ -3,6 +3,7 @@ import { rootRoute } from "../../layoutRoutes";
 import LoginPage from "./view/Login";
 import RegisterPage from "./view/Resgister";
 import ForgotPasswordPage from "./view/ForgotPassword";
+import CreateNewPasswordPage from "./view/CreateNewPassword";
 import TermsPrivacyPage from "./view/TermsPrivacy";
 import AuthLayout from "./view/AuthLayout";
 
@@ -30,6 +31,12 @@ export const forgotPasswordRoute = createRoute({
   component: ForgotPasswordPage,
 });
 
+export const createNewPasswordRoute = createRoute({
+  getParentRoute: () => authLayoutRoute,
+  path: "/create-new-password",
+  component: CreateNewPasswordPage,
+});
+
 export const termsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/terms",
@@ -37,6 +44,6 @@ export const termsRoute = createRoute({
 });
 
 export const authRoutes = [
-  authLayoutRoute.addChildren([loginRoute, registerRoute, forgotPasswordRoute]),
+  authLayoutRoute.addChildren([loginRoute, registerRoute, forgotPasswordRoute, createNewPasswordRoute]),
   termsRoute,
 ];
