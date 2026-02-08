@@ -3,12 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useRegister } from '../hook/useRegister';
 import { Button, Input } from '../../../shared/components/ui';
-import { User, Mail, Lock, Phone } from 'lucide-react';
+import { User, Mail, Lock, Phone, CheckCircle2, MapPin } from 'lucide-react';
+import { useState } from 'react';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
+  phoneNumber: z.string().min(9, 'Phone number must be at least 10 digits'),
   location: z.string().min(5, 'Please enter a valid location'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
@@ -22,10 +23,13 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const registerMutation = useRegister();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -46,11 +50,49 @@ export default function RegisterPage() {
     registerMutation.mutate(requestData, {
       onSuccess: (user) => {
         console.log(`Welcome ${user.name}!`);
+        setShowSuccess(true);
+        setTimeout(() => {
+          // Optionally redirect to login or home page after 3 seconds
+          window.location.href = '/login';
+        }, 3000);
       },
       onError: (err) => {
         console.log(err);
       },
     });
+
+  };
+
+  const handleGetLocation = () => {
+    setLoadingLocation(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            // Using reverse geocoding to get address (you can use a free API like Nominatim)
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            );
+            const data = await response.json();
+            const address = data.display_name || `${latitude}, ${longitude}`;
+            setValue('location', address);
+          } catch (error) {
+            // Fallback to coordinates if geocoding fails
+            setValue('location', `${latitude}, ${longitude}`);
+          }
+          setLoadingLocation(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to get location. Please enter manually.');
+          setLoadingLocation(false);
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
+      setLoadingLocation(false);
+    }
   };
 
   return (
@@ -60,6 +102,16 @@ export default function RegisterPage() {
           <h1 className="font-semibold text-[48px] leading-[120%] text-center text-text-primary mb-2">Welcome to Tascom</h1>
           <p className="font-normal text-[18px] leading-[140%] text-center text-text-secondary">Connect, collaborate, and get things done</p>
         </div>
+
+        {showSuccess && (
+          <div className="bg-state-success/10 border border-state-success/30 p-4 rounded-xl flex items-center gap-3 mb-6 animate-in slide-in-from-top-5">
+            <CheckCircle2 className="w-6 h-6 text-state-success flex-shrink-0" />
+            <div>
+              <p className="text-caption1 text-state-success font-semibold">Registration Successful!</p>
+              <p className="text-caption2 text-text-secondary">Redirecting to login page...</p>
+            </div>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
@@ -102,6 +154,32 @@ export default function RegisterPage() {
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-purple" />
             </div>
+            {errors.email && (
+              <p className="text-label2 text-state-error">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-caption2 text-text-primary">Location</label>
+            <div className="relative group">
+              <Input
+                {...register('location')}
+                placeholder="Enter your location"
+                className={`pl-10 pr-32 transition-all ${errors.location ? 'border-state-error' : 'focus:border-brand-purple'}`}
+              />
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-purple" />
+              <button
+                type="button"
+                onClick={handleGetLocation}
+                disabled={loadingLocation}
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-xs bg-brand-purple text-white rounded-lg hover:bg-brand-purple/90 disabled:opacity-50 transition-all whitespace-nowrap"
+              >
+                {loadingLocation ? 'Getting...' : 'Use My Location'}
+              </button>
+            </div>
+            {errors.location && (
+              <p className="text-label2 text-state-error">{errors.location.message}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
