@@ -2,9 +2,6 @@ import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "../../layoutRoutes";
 import LoginPage from "./view/Login";
 import RegisterPage from "./view/Resgister";
-import ForgotPasswordPage from "./view/ForgotPassword";
-import CreateNewPasswordPage from "./view/CreateNewPassword";
-import TermsPrivacyPage from "./view/TermsPrivacy";
 import AuthLayout from "./view/AuthLayout";
 
 export const authLayoutRoute = createRoute({
@@ -25,25 +22,6 @@ export const registerRoute = createRoute({
   component: RegisterPage,
 });
 
-export const forgotPasswordRoute = createRoute({
-  getParentRoute: () => authLayoutRoute,
-  path: "/forgot-password",
-  component: ForgotPasswordPage,
-});
-
-export const createNewPasswordRoute = createRoute({
-  getParentRoute: () => authLayoutRoute,
-  path: "/create-new-password",
-  component: CreateNewPasswordPage,
-});
-
-export const termsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/terms",
-  component: TermsPrivacyPage,
-});
-
 export const authRoutes = [
-  authLayoutRoute.addChildren([loginRoute, registerRoute, forgotPasswordRoute, createNewPasswordRoute]),
-  termsRoute,
+  authLayoutRoute.addChildren([loginRoute, registerRoute]),
 ];

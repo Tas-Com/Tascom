@@ -1,35 +1,15 @@
 export type AuthResponse = {
-  success: boolean;
+  message: string;
   access_token: string;
-  data: {user: User, access_token: string};
-
+  user: User;
 };
-
 export type User = {
   id: number;
   name: string;
   email: string;
   phoneNumber?: string;
-  role: string;
-  facebookId?: string;
-  googleId?: string;
-  pointsBalance: number;
-  isDeleted: boolean;
-  ratingAvg: number;
-  about: string;
-  skills: string;
-  createdAt: Date;
-  DOB?: Date;
-  gender?: string;
-  provider?: string;
-  avatar?: string;
-  tokenVersion: number;
-  resetPasswordExpires?: Date;
-  resetPasswordToken?: string;
-  latitude: number;
-  longitude: number;
-  location: string;
 };
+
 export type AuthRequest = {
   name?: string;
   phoneNumber?: string;
