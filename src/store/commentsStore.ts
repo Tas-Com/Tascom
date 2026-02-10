@@ -17,6 +17,7 @@ interface CommentsState {
     content: string,
     author: string,
     avatar: string,
+    replyTo?: string,
   ) => void;
   getComments: (taskId: string) => Comment[];
   getCommentsCount: (taskId: string) => number;
@@ -32,6 +33,7 @@ export const useCommentsStore = create<CommentsState>()(
         content: string,
         author: string,
         avatar: string,
+        replyTo?: string,
       ) => {
         set((state) => {
           const newComment: Comment = {
@@ -40,6 +42,7 @@ export const useCommentsStore = create<CommentsState>()(
             content,
             time: "Just now",
             avatar,
+            replyTo,
           };
 
           const taskComments = state.comments[taskId] || [];
