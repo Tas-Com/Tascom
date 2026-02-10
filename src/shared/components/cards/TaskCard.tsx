@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Bookmark,
@@ -17,6 +18,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { mockCommentsByTask } from "@/shared/data/mockComments";
+import { useLikesStore } from "@/store/likesStore";
+import { useCommentsStore } from "@/store/commentsStore";
 
 type TaskCardProps = {
   taskerName: string;
@@ -47,13 +50,26 @@ export function TaskCard({
   points,
   imageUrl,
   likes,
-  comments,
   postedTime,
   taskerImage,
   priority,
   taskId,
 }: TaskCardProps) {
+  const navigate = useNavigate();
   const [showComments, setShowComments] = useState(true);
+  const [newComment, setNewComment] = useState("");
+  const { toggleLike, isLiked, getLikes } = useLikesStore();
+  const { addComment, getComments } = useCommentsStore();
+
+  const isTaskLiked = isLiked(taskId);
+  const currentLikes = getLikes(taskId) || likes;
+  const allComments = [
+    ...(mockCommentsByTask[taskId] || []),
+    ...getComments(taskId),
+  ];
+  const totalComments = allComments.filter(
+    (comment) => !comment.replyTo,
+  ).length;
   return (
     <div className="bg-white rounded-[16px] p-6 space-y-4 w-full max-w-[700px] shadow-sm border border-gray-100">
       {/* Tasker Info */}
@@ -81,7 +97,12 @@ export function TaskCard({
 
       {/* Task Content */}
       <div className="space-y-3">
-        <h3 className="text-h5-2 text-primary mt-8">{taskTitle}</h3>
+        <h3
+          className="text-h5-2 text-primary mt-8 cursor-pointer hover:text-brand-purple transition-colors"
+          onClick={() => navigate({ to: "/tasks/$taskId", params: { taskId } })}
+        >
+          {taskTitle}
+        </h3>
         <p className="text-body-s2 text-text-secondary">{description}</p>
 
         {/* Categories and Priority */}
@@ -151,7 +172,14 @@ export function TaskCard({
         </div>
 
         {/* Task Image */}
-        <div className="w-[650px] h-[250px] bg-gray-200 rounded-[16px] overflow-hidden">
+        <div
+          className="w-[650px] h-[250px] bg-gray-200 rounded-[16px] overflow-hidden"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate({ to: "/tasks/$taskId", params: { taskId } });
+          }}
+          style={{ cursor: "pointer" }}
+        >
           <img
             src={imageUrl}
             alt={taskTitle}
@@ -162,19 +190,31 @@ export function TaskCard({
         {/* Interaction Section */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <button className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors">
-              <Heart size={20} className="text-icon-liked fill-current" />
-              <span>{likes}</span>
+            <button
+              className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLike(taskId, likes);
+              }}
+            >
+              <Heart
+                size={20}
+                className={`${isTaskLiked ? "text-icon-liked fill-current" : "text-icon-default"}`}
+              />
+              <span>{currentLikes}</span>
             </button>
             <button
               className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors"
-              onClick={() => setShowComments(!showComments)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowComments(!showComments);
+              }}
             >
               <MessageCircle
                 size={20}
                 className="text-icon-default cursor-pointer"
               />
-              <span>{comments}</span>
+              <span>{totalComments}</span>
             </button>
             <button className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors">
               <Forward size={25} className="text-icon-default" />
@@ -189,7 +229,7 @@ export function TaskCard({
       {showComments && (
         <div className="pt-4 space-y-3 ">
           <div className="flex items-center justify-between text-body-s1 mb-8">
-            <span>Comments ({comments})</span>
+            <span>Comments ({totalComments})</span>
             <select className="bg-primary rounded-[40px] outline-none text-primary font-medium">
               <option>All</option>
               <option>Recent</option>
@@ -199,7 +239,7 @@ export function TaskCard({
 
           {/* Comments List */}
           <div className="space-y-4">
-            {mockCommentsByTask[taskId]?.map((comment) => (
+            {allComments.map((comment) => (
               <div
                 key={comment.id}
                 className={`flex gap-3 ${comment.replyTo ? "ml-8" : ""}`}
@@ -245,9 +285,25 @@ export function TaskCard({
               <input
                 type="text"
                 placeholder="Add a comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && newComment.trim()) {
+                    addComment(taskId, newComment.trim(), "User", "/Ali.jpg");
+                    setNewComment("");
+                  }
+                }}
                 className="flex-1 bg-transparent outline-none text-sm"
               />
-              <button className="text-brand-purple hover:text-purple-600">
+              <button
+                className="text-brand-purple hover:text-purple-600"
+                onClick={() => {
+                  if (newComment.trim()) {
+                    addComment(taskId, newComment.trim(), "User", "/Ali.jpg");
+                    setNewComment("");
+                  }
+                }}
+              >
                 <MessageCircle size={16} />
               </button>
             </div>
