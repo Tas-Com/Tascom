@@ -57,7 +57,7 @@ export function TaskCard({
   ).length;
 
   return (
-    <div className="bg-white rounded-[16px] p-6 space-y-4 w-full max-w-[700px] shadow-sm border border-gray-100">
+    <div className="bg-white rounded-[16px] p-6 space-y-4 w-full max-w-2xl lg:max-w-[700px] shadow-sm border border-gray-100">
       <TaskCardHeader
         taskerName={taskerName}
         rating={rating}

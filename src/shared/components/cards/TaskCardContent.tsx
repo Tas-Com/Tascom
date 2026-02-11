@@ -113,7 +113,7 @@ export function TaskCardContent({
 
       {/* Task Image */}
       <div
-        className="w-[650px] h-[250px] bg-gray-200 rounded-[16px] overflow-hidden"
+        className="w-full h-[250px] bg-gray-200 rounded-[16px] overflow-hidden"
         onClick={(e) => {
           e.stopPropagation();
           navigate({ to: "/tasks/$taskId", params: { taskId } });
