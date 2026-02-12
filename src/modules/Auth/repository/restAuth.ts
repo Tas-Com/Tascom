@@ -13,6 +13,7 @@ export const restAuth = (): AuthRepo => {
     },
     register: async (request: AuthRequest) => {
       const response = await axios.post<AuthResponse>(`${BaseUrl}auth/register`, request);
+      console.log(response);
       return toUserInformation(response.data);
     },
   };

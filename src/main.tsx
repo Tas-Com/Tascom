@@ -17,7 +17,12 @@ export const queryClient = new QueryClient({
 });
 const { Provider: AuthProvider } = createAuthModule();
 
-createRoot(document.getElementById("root")!).render(
+// For HMR issue
+const container = document.getElementById("root")!;
+const root = (container as any)._reactRoot ?? createRoot(container);
+(container as any)._reactRoot = root;
+
+root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
