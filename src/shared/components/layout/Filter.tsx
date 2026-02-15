@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ClipboardList,
   Wrench,
@@ -6,6 +7,7 @@ import {
   Home,
   Car,
 } from "lucide-react";
+import { PostTaskModal } from "../layout/PostTaskModal"; 
 
 type Props = {
   category: string | null;
@@ -29,108 +31,125 @@ export function Filter({
   setDistance,
   showPostButton = true,
 }: Props) {
+  const [openPost, setOpenPost] = useState(false);
+
   return (
-    <aside className="w-80 h-[972px] mt-[32px] ml-8 lg:ml-13">
-      <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
-        {showPostButton && (
-          <button className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]">
-            Post a task
-          </button>
-        )}
-        <h5 className="text-h5-2 text-primary">Filters</h5>
-        <div>
-          <p className="text-h5-2 mb-8">Categories</p>
-          <ul className="space-y-6 text-body-s2 text-primary">
-            <li
-              onClick={() => setCategory("errands")}
-              className="flex items-center gap-2 cursor-pointer"
+    <>
+      <aside className="w-80 h-[972px] mt-[32px] ml-8 lg:ml-13">
+        <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
+          {/* زر Post a task */}
+          {showPostButton && (
+            <button
+              onClick={() => setOpenPost(true)}
+              className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]"
             >
-              <ClipboardList size={24} />
-              <span>Errands</span>
-            </li>
-            <li
-              onClick={() => setCategory("repairs")}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <Wrench size={24} />
-              <span>Repairs</span>
-            </li>
-            <li
-              onClick={() => setCategory("tutoring")}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <GraduationCap size={24} />
-              <span>Tutoring</span>
-            </li>
-            <li
-              onClick={() => setCategory("pets")}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <Heart size={24} />
-              <span>Pet Care</span>
-            </li>
-            <li
-              onClick={() => setCategory("home")}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <Home size={24} />
-              <span>Home Services</span>
-            </li>
-            <li
-              onClick={() => setCategory("transport")}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <Car size={24} />
-              <span>Transportation</span>
-            </li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <p className="text-h5-2 mb-8">Priority</p>
-          {["high", "medium", "low"].map((p) => (
-            <label key={p} className="flex gap-2 text-primary">
+              Post a task
+            </button>
+          )}
+
+          <h5 className="text-h5-2 text-primary">Filters</h5>
+
+          {/* Categories */}
+          <div>
+            <p className="text-h5-2 mb-8">Categories</p>
+            <ul className="space-y-6 text-body-s2 text-primary">
+              <li
+                onClick={() => setCategory("errands")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <ClipboardList size={24} />
+                <span>Errands</span>
+              </li>
+              <li
+                onClick={() => setCategory("repairs")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Wrench size={24} />
+                <span>Repairs</span>
+              </li>
+              <li
+                onClick={() => setCategory("tutoring")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <GraduationCap size={24} />
+                <span>Tutoring</span>
+              </li>
+              <li
+                onClick={() => setCategory("pets")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Heart size={24} />
+                <span>Pet Care</span>
+              </li>
+              <li
+                onClick={() => setCategory("home")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Home size={24} />
+                <span>Home Services</span>
+              </li>
+              <li
+                onClick={() => setCategory("transport")}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Car size={24} />
+                <span>Transportation</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Priority */}
+          <div className="space-y-4">
+            <p className="text-h5-2 mb-8">Priority</p>
+            {["high", "medium", "low"].map((p) => (
+              <label key={p} className="flex gap-2 text-primary">
+                <input
+                  type="radio"
+                  checked={priority === p}
+                  onChange={() => setPriority(p)}
+                />
+                {p}
+              </label>
+            ))}
+          </div>
+
+          {/* Points */}
+          <div className="space-y-4">
+            <p className="text-h5-2 mb-6 text-primary">Points</p>
+            <div className="flex justify-between text-body-s2">
+              <span className="text-body-s1 mr-2">5</span>
               <input
-                type="radio"
-                checked={priority === p}
-                onChange={() => setPriority(p)}
+                type="range"
+                min={5}
+                max={200}
+                value={points}
+                onChange={(e) => setPoints(Number(e.target.value))}
+                className="w-full"
               />
-              {p}
-            </label>
-          ))}
-        </div>
+              <span className="text-body-s1 ml-2">200</span>
+            </div>
+          </div>
 
-        <div className="space-y-4">
-          <p className="text-h5-2 mb-6 text-primary">Points</p>
-          <div className="flex justify-between text-body-s2">
-            <span className="text-body-s1 mr-2">5</span>
-            <input
-              type="range"
-              min={5}
-              max={200}
-              value={points}
-              onChange={(e) => setPoints(Number(e.target.value))}
-              className="w-full"
-            />
-            <span className="text-body-s1 ml-2">200</span>
+          {/* Distance */}
+          <div className="space-y-4">
+            <p className="text-h5-2 mb-6 text-primary">Location</p>
+            <div className="flex justify-between text-body-s2">
+              <span className="text-body-s1 text-primary mr-2">300</span>
+              <input
+                type="range"
+                min={300}
+                max={2000}
+                value={distance}
+                onChange={(e) => setDistance(Number(e.target.value))}
+                className="w-full"
+              />
+              <span className="text-body-s1 text-primary ml-2">2000</span>
+            </div>
           </div>
         </div>
+      </aside>
 
-        <div className="space-y-4">
-          <p className="text-h5-2 mb-6 text-primary">Location</p>
-          <div className="flex justify-between text-body-s2">
-            <span className=" text-body-s1 text-primary mr-2">300</span>
-            <input
-              type="range"
-              min={300}
-              max={2000}
-              value={distance}
-              onChange={(e) => setDistance(Number(e.target.value))}
-              className="w-full"
-            />
-            <span className="text-body-s1 text-primary ml-2">2000</span>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <PostTaskModal isOpen={openPost} onClose={() => setOpenPost(false)} />
+    </>
   );
 }
