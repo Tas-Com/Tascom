@@ -17,11 +17,11 @@ export const mainLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "main-layout",
   component: MainLayout,
-  beforeLoad: () => {
-    if (!tokenManager.isAuthenticated()) {
-      throw redirect({
-        to: "/login",
-      });
-    }
-  },
+  // beforeLoad: () => {
+  //   if (!tokenManager.isAuthenticated()) {
+  //     throw redirect({
+  //       to: "/login",
+  //     });
+  //   }
+  // },
 });

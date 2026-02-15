@@ -5,7 +5,7 @@ import { dashboardRoutes } from "./modules/dashboard";
 import { notificationsRoutes } from "./modules/notifications";
 import { chatRoutes } from "./modules/chat/routes";
 import { settingsRoutes } from "./modules/settings";
-import { authRoutes } from "./modules/Auth/routes";
+// import { authRoutes } from "./modules/Auth/routes";
 import { rootRoute, mainLayoutRoute } from "./layoutRoutes";
 import { topResultsRoutes } from "./modules/results";
 
@@ -20,7 +20,7 @@ export const routeTree = rootRoute.addChildren([
     ...chatRoutes,
     ...settingsRoutes,
   ]),
-  ...authRoutes,
+  // ...authRoutes,
 ]);
 
 export { rootRoute, mainLayoutRoute };
