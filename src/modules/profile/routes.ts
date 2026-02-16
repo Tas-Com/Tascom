@@ -1,10 +1,10 @@
-import { createRoute } from '@tanstack/react-router';
-import { mainLayoutRoute } from '../../layoutRoutes';
-import ProfilePage from './views';
+import { createRoute } from "@tanstack/react-router";
+import { mainLayoutRoute } from "../../layoutRoutes";
+import ProfilePage from "./views";
 
 export const profileRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
-  path: '/profile',
+  path: "/profile",
   component: ProfilePage,
 });
 
