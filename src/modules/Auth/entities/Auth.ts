@@ -4,4 +4,7 @@ export type UserInformation = {
   name: string;
   email: string;
   phoneNumber?: string;
+  latitude: number;
+  longitude: number;
+  location: string;
 };

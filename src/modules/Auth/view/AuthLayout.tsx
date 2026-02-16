@@ -1,7 +1,7 @@
-import { Outlet } from '@tanstack/react-router';
-import communityTags from '../../../assets/auth/community_tags.png';
-import heartLogo from '../../../assets/auth/tascom_heart_logo.png';
-import textLogo from '../../../assets/auth/tascom_text_logo.png';
+import { Outlet } from "@tanstack/react-router";
+import communityTags from "../../../assets/auth/community_tags.png";
+import heartLogo from "../../../assets/auth/tascom_heart_logo.png";
+import textLogo from "../../../assets/auth/tascom_text_logo.png";
 
 export default function AuthLayout() {
   return (
@@ -16,7 +16,7 @@ export default function AuthLayout() {
               <img
                 src={communityTags}
                 alt="Community Tags"
-                className="w-full max-w-[500px] h-auto mx-auto drop-shadow-2xl"
+                className="w-full max-w-125 h-auto mx-auto drop-shadow-2xl"
               />
             </div>
 
@@ -36,7 +36,8 @@ export default function AuthLayout() {
 
             {/* Slogan */}
             <p className="font-normal text-[16px] leading-[120%] text-center opacity-90 px-10">
-              Discover a community where tasks are shared, help is exchanged, and trust is built.
+              Discover a community where tasks are shared, help is exchanged,
+              and trust is built.
             </p>
           </div>
         </div>

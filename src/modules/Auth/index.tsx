@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, type PropsWithChildren } from 'react';
-import type { AuthRepo } from './repository/AuthRepo';
-import { restAuth } from './repository/restAuth';
+import { createContext, useContext, type PropsWithChildren } from "react";
+import type { AuthRepo } from "./repository/AuthRepo";
+import { restAuth } from "./repository/restAuth";
 
 const AuthContext = createContext<AuthRepo | null>(null);
 
@@ -17,7 +17,7 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (context === null) {
-    throw new Error('useAuth must be used within a AuthProvider');
+    throw new Error("useAuth must be used within a AuthProvider");
   }
 
   return context;
