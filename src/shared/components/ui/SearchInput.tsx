@@ -62,9 +62,9 @@ export function SearchInput() {
   };
 
   return (
-    <div className="relative w-full max-w-[600px]">
-      <div className="flex items-center bg-white px-4 py-2 rounded-2xl border border-[#DEDEDE]">
-        <Search className="text-primary mr-2" size={30} />
+    <div className="relative w-full max-w-150">
+      <div className="flex items-center bg-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-2xl border border-[#DEDEDE]">
+        <Search className="text-primary mr-1 sm:mr-2 shrink-0" size={20} />
         <input
           type="text"
           placeholder="Search"
@@ -72,16 +72,19 @@ export function SearchInput() {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleKeyDown}
-          className="bg-transparent outline-none w-full"
+          className="bg-transparent outline-none w-full text-sm sm:text-base min-w-0"
         />
-        <Sparkles className="text-primary ml-2" size={30} />
-        <div className="w-px h-7 bg-gray-300 mx-2"></div>
+        <Sparkles
+          className="text-primary ml-1 sm:ml-2 hidden sm:block shrink-0"
+          size={24}
+        />
+        <div className="w-px h-5 sm:h-7 bg-gray-300 mx-1 sm:mx-2 hidden sm:block"></div>
         <button
           onClick={handleSearch}
-          className="text-label1 text-text-primary ml-2 flex items-center gap-1 hover:text-brand-purple transition-colors"
+          className="text-label1 text-text-primary ml-1 sm:ml-2 flex items-center gap-1 hover:text-brand-purple transition-colors text-xs sm:text-sm whitespace-nowrap"
         >
-          Tasks
-          <ChevronRight size={20} />
+          <span className="hidden sm:inline uppercase">Tasks</span>
+          <ChevronRight size={16} className="sm:w-5 sm:h-5" />
         </button>
       </div>
 

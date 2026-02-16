@@ -30,10 +30,10 @@ export function Filter({
   showPostButton = true,
 }: Props) {
   return (
-    <aside className="w-80 h-[972px] mt-[32px] ml-8 lg:ml-13">
+    <aside className="w-80 h-243 mt-8 ml-8 lg:ml-13">
       <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
         {showPostButton && (
-          <button className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]">
+          <button className="w-full bg-brand-purple text-white p-4 rounded-[103px] text-btn-primary mb-8">
             Post a task
           </button>
         )}
