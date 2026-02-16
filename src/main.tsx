@@ -17,9 +17,11 @@ export const queryClient = new QueryClient({
 });
 const { Provider: AuthProvider } = createAuthModule();
 
-// For HMR issue
+// For HMR issue, remove when deploy
 const container = document.getElementById("root")!;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const root = (container as any)._reactRoot ?? createRoot(container);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (container as any)._reactRoot = root;
 
 root.render(

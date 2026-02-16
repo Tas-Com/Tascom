@@ -3,11 +3,19 @@ import { config } from "../config";
 import { router } from "../../App";
 const TOKEN_KEY = "access-token";
 
+const USER_ID_KEY = "user-id";
+
 export const tokenManager = {
   getToken: () => localStorage.getItem(TOKEN_KEY),
   setToken: (token: string) => localStorage.setItem(TOKEN_KEY, token),
-  removeToken: () => localStorage.removeItem(TOKEN_KEY),
+  removeToken: () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_ID_KEY);
+  },
   isAuthenticated: () => !!localStorage.getItem(TOKEN_KEY),
+  getUserId: () => localStorage.getItem(USER_ID_KEY),
+  setUserId: (id: string) => localStorage.setItem(USER_ID_KEY, id),
+  removeUserId: () => localStorage.removeItem(USER_ID_KEY),
 };
 
 const api = axios.create({

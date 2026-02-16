@@ -5,7 +5,7 @@ import { mockTasks } from "@/shared/data/mockTasks";
 export const HomePage = () => {
   return (
     <div className="flex flex-1 gap-6 p-4">
-      <div className="flex-1 rounded-[16px] p-4 mt-9">
+      <div className="flex-1 rounded-2xl p-4 mt-9">
         <div className="space-y-6">
           {mockTasks.map((task) => (
             <div key={task.id} className="flex justify-center">

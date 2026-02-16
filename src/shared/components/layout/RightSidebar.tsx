@@ -1,4 +1,5 @@
 import { Star, PartyPopper } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 
 type TopTasker = {
   id: number;
@@ -14,8 +15,10 @@ const mockTopTaskers: TopTasker[] = [
 ];
 
 export function RightSidebar() {
+  const navigate = useNavigate();
+
   return (
-    <aside className="w-[339px] h-[901px] mt-[32px] mr-13 bg-secondary">
+    <aside className="w-84.75 h-225.25 mt-8 mr-13 bg-secondary">
       <div className="bg-bg-secondary rounded-xl p-4">
         <h5 className="text-h5-1 mb-3 mt-2 text-primary">Tasks Around Me</h5>
         <div className="h-32 rounded-xl relative overflow-hidden">
@@ -25,8 +28,9 @@ export function RightSidebar() {
             className="w-full h-full object-cover rounded-xl"
           />
           <button
-            className="absolute bottom-[8px] right-[12px] h-[36px] w-[120px]
-           bg-brand-purple text-[#FFFFFF] p-[8px] rounded-[103px] text-btn-s flex items-center justify-center gap-[8px]"
+            onClick={() => navigate({ to: "/map" })}
+            className="absolute bottom-2 right-3 h-9 w-30
+           bg-brand-purple text-[#FFFFFF] p-2 rounded-[103px] text-btn-s flex items-center justify-center gap-2 cursor-pointer"
           >
             view map
           </button>
@@ -60,7 +64,7 @@ export function RightSidebar() {
               <img
                 src={user.image}
                 alt={user.name}
-                className="w-[40px] h-[40px] rounded-full object-cover"
+                className="w-10 h-10 rounded-full object-cover"
               />
               <div>
                 <p className="text-body1 text-primary">{user.name}</p>

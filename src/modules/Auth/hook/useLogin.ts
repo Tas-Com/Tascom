@@ -12,6 +12,7 @@ export const useLogin = () => {
     onSuccess: (data) => {
       queryClient.setQueryData([AuthKey], data);
       tokenManager.setToken(data.access_token);
+      tokenManager.setUserId(String(data.id));
     },
     onError: (error) => console.log(error),
   });
