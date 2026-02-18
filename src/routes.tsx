@@ -21,6 +21,7 @@ export const routeTree = rootRoute.addChildren([
     ...notificationsRoutes,
     ...chatRoutes,
     ...settingsRoutes,
+    
   ]),
   ...authRoutes,
 ]);

@@ -1,11 +1,46 @@
 import { createRoute } from '@tanstack/react-router';
-import { mainLayoutRoute } from '../../layoutRoutes';
-import { SettingsPage } from './views';
+import { profileRoute } from '../profile/routes';
+
+import languageSettings from './views/LanguageSettings';
+import  NotificationSettings  from './views/NotificationSettings';
+import  ChangePassword  from './views/ChangePassword';
+import DeleteAccount from "./views/DeleteAccount"; 
+
 
 export const settingsRoute = createRoute({
-  getParentRoute: () => mainLayoutRoute,
-  path: '/settings',
-  component: SettingsPage,
+  getParentRoute: () => profileRoute,
+  path: 'settings',
 });
 
-export const settingsRoutes = [settingsRoute];
+export const languageSettingsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'language',
+  component: languageSettings,
+});
+
+export const notificationSettingsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'notification',
+  component: NotificationSettings,
+});
+
+export const passwordSettingsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'password',
+  component: ChangePassword,
+});
+
+export const deleteAccountRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: "delete",
+  component: DeleteAccount,
+});
+
+export const settingsRoutes = [
+  settingsRoute,
+  languageSettingsRoute,
+  notificationSettingsRoute,
+  deleteAccountRoute,
+  passwordSettingsRoute,
+];
+

@@ -1,5 +1,7 @@
 import { Bell, MessageSquare, Home } from "lucide-react";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
+import { Link } from "@tanstack/react-router";
+
 
 type HeaderProps = {
   userName: string;
@@ -22,7 +24,14 @@ export function Header({ userName }: HeaderProps) {
         <MessageSquare size={30} className="text-primary" />
 
         {/* api imag */}
-        <img src="Grouph.png" alt={userName} className="w-9 h-9 mr-4" />
+<Link to="/profile">
+  <img
+    src="Grouph.png"
+    alt={userName}
+    className="w-9 h-9 mr-4 cursor-pointer"
+  />
+</Link>
+
       </div>
     </header>
   );
