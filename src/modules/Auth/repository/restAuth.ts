@@ -5,16 +5,27 @@ import type { AuthRepo } from './AuthRepo';
 import axios from 'axios';
 
 const BaseUrl = 'https://tascom.up.railway.app/';
+
 export const restAuth = (): AuthRepo => {
   return {
     login: async (request: AuthRequest): Promise<UserInformation> => {
       const response = await axios.post<AuthResponse>(`${BaseUrl}auth/login`, request);
-      return toUserInformation(response.data);
+      const user = toUserInformation(response.data);
+      localStorage.setItem("access_token", user.access_token);
+      localStorage.setItem("user_id", String(user.id));
+      return user;
     },
+
     register: async (request: AuthRequest) => {
       const response = await axios.post<AuthResponse>(`${BaseUrl}auth/register`, request);
       console.log(response);
       return toUserInformation(response.data);
+    },
+
+    
+    logout: () => {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user_id");
     },
   };
 };

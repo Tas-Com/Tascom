@@ -35,19 +35,21 @@ export function MainLayout() {
                 </div>
               )}
 
-              {!location.pathname.startsWith("/tasks/") && (
-                <Filter
-                  category={category}
-                  setCategory={setCategory}
-                  priority={priority}
-                  setPriority={setPriority}
-                  points={points}
-                  setPoints={setPoints}
-                  distance={distance}
-                  setDistance={setDistance}
-                  showPostButton={location.pathname === "/"}
-                />
-              )}
+              {!location.pathname.startsWith("/tasks/") &&
+                !location.pathname.startsWith("/map") &&
+                !location.pathname.startsWith("/profile") && (
+                  <Filter
+                    category={category}
+                    setCategory={setCategory}
+                    priority={priority}
+                    setPriority={setPriority}
+                    points={points}
+                    setPoints={setPoints}
+                    distance={distance}
+                    setDistance={setDistance}
+                    showPostButton={location.pathname === "/"}
+                  />
+                )}
             </div>
           )}
 
