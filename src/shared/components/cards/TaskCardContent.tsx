@@ -22,6 +22,7 @@ interface TaskCardContentProps {
   imageUrl: string;
   priority: string;
   taskId: string;
+  compact?: boolean;
 }
 
 export function TaskCardContent({
@@ -34,45 +35,57 @@ export function TaskCardContent({
   imageUrl,
   priority,
   taskId,
+  compact = false,
 }: TaskCardContentProps) {
   const navigate = useNavigate();
 
+  const iconSize = compact ? 12 : 14;
   const getIcon = (cat: string) => {
     switch (cat) {
       case "Errand":
-        return <ShoppingBag size={14} />;
+        return <ShoppingBag size={iconSize} />;
       case "Repairs":
-        return <Wrench size={14} />;
+        return <Wrench size={iconSize} />;
       case "Tutoring":
-        return <BookOpen size={14} />;
+        return <BookOpen size={iconSize} />;
       case "Pet Care":
-        return <Heart size={14} />;
+        return <Heart size={iconSize} />;
       case "Home Services":
-        return <Home size={14} />;
+        return <Home size={iconSize} />;
       case "Transportation":
-        return <Car size={14} />;
+        return <Car size={iconSize} />;
       default:
-        return <Heart size={14} />;
+        return <Heart size={iconSize} />;
     }
   };
 
   return (
-    <div className="space-y-3">
+    <div className={compact ? "space-y-2" : "space-y-3"}>
       <h3
-        className="text-h5-2 text-primary mt-8 cursor-pointer hover:text-brand-purple transition-colors"
+        className={`text-primary cursor-pointer hover:text-brand-purple transition-colors ${
+          compact ? "text-body-s2 font-semibold mt-4" : "text-h5-2 mt-8"
+        }`}
         onClick={() => navigate({ to: "/tasks/$taskId", params: { taskId } })}
       >
         {taskTitle}
       </h3>
-      <p className="text-body-s2 text-text-secondary">{description}</p>
+      <p
+        className={`text-text-secondary ${compact ? "text-label2 line-clamp-2" : "text-body-s2"}`}
+      >
+        {description}
+      </p>
 
       {/* Categories and Priority */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         {/* Categories */}
         {categories.map((category, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 px-3 py-1 text-brand-purple text-text-label2 rounded-full bg-card-hover"
+            className={`flex items-center gap-1.5 text-brand-purple rounded-full bg-card-hover ${
+              compact
+                ? "px-2 py-0.5 text-label2"
+                : "px-3 py-1 gap-2 text-text-label2"
+            }`}
           >
             {getIcon(category)}
             <span>{category}</span>
@@ -81,7 +94,11 @@ export function TaskCardContent({
 
         {/* Priority Badge */}
         <div
-          className={`flex items-center gap-2 px-3 py-1 text-caption1 rounded-full ${
+          className={`flex items-center gap-1.5 rounded-full ${
+            compact
+              ? "px-2 py-0.5 text-label2"
+              : "px-3 py-1 gap-2 text-caption1"
+          } ${
             priority === "High"
               ? "bg-priority-high-bg text-priority-high-text"
               : priority === "Medium"
@@ -89,31 +106,43 @@ export function TaskCardContent({
                 : "bg-priority-low-bg text-priority-low-text"
           }`}
         >
-          <Flame className="fill-current" size={20} />
-          <span className="text-text-label2">{priority} Priority</span>
+          <Flame className="fill-current" size={compact ? 14 : 20} />
+          <span className={compact ? "text-label2" : "text-text-label2"}>
+            {priority} Priority
+          </span>
         </div>
       </div>
 
       {/* Task Details */}
-      <div className="flex items-center gap-4 mt-6 mb-6 text-body-s1">
-        <div className="flex items-center gap-1 text-caption2">
-          <MapPin size={16} className="text-brand-purple" />
+      <div
+        className={`flex items-center gap-4 text-body-s1 ${compact ? "mt-3 mb-3" : "mt-6 mb-6"}`}
+      >
+        <div
+          className={`flex items-center gap-1 ${compact ? "text-label2" : "text-caption2"}`}
+        >
+          <MapPin size={compact ? 14 : 16} className="text-brand-purple" />
           <span>{location}</span>
         </div>
-        <div className="flex items-center gap-1 text-caption2">
-          <Clock size={16} className="text-brand-purple" />
+        <div
+          className={`flex items-center gap-1 ${compact ? "text-label2" : "text-caption2"}`}
+        >
+          <Clock size={compact ? 14 : 16} className="text-brand-purple" />
           <span>{duration}</span>
         </div>
         <div className="flex items-center gap-1">
-          <Zap className="text-brand-purple" size={16} />
-          <span className="text-caption2">{points}</span>
-          <span className="text-caption2">points</span>
+          <Zap className="text-brand-purple" size={compact ? 14 : 16} />
+          <span className={compact ? "text-label2" : "text-caption2"}>
+            {points}
+          </span>
+          <span className={compact ? "text-label2" : "text-caption2"}>
+            points
+          </span>
         </div>
       </div>
 
       {/* Task Image */}
       <div
-        className="w-full h-[250px] bg-gray-200 rounded-[16px] overflow-hidden"
+        className={`w-full bg-gray-200 rounded-2xl overflow-hidden ${compact ? "h-40" : "h-62.5"}`}
         onClick={(e) => {
           e.stopPropagation();
           navigate({ to: "/tasks/$taskId", params: { taskId } });

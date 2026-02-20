@@ -1,2 +1,2 @@
-export { profileRoutes } from "./routes.ts";
-export { createProfileModule, useProfile } from "./index.tsx";
+export { profileRoutes } from "./routes";
+// export { createProfileModule, useProfile } from "./index.tsx";

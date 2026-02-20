@@ -14,7 +14,8 @@ const languages = [
 ];
 
 const LanguageSettings = () => {
-  const { currentLanguage, isLoading, updateLanguage, isUpdating } = useLanguage();
+  const { currentLanguage, isLoading, updateLanguage, isUpdating } =
+    useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -22,7 +23,10 @@ const LanguageSettings = () => {
   // إغلاق الـ dropdown لما تكبس برا
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
         setSearch("");
       }
@@ -32,7 +36,7 @@ const LanguageSettings = () => {
   }, []);
 
   const filtered = languages.filter((lang) =>
-    lang.name.toLowerCase().includes(search.toLowerCase())
+    lang.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleSelect = (langName: string) => {
@@ -41,7 +45,8 @@ const LanguageSettings = () => {
     setSearch("");
   };
 
-  if (isLoading) return <div className="p-6 text-text-secondary text-sm">Loading...</div>;
+  if (isLoading)
+    return <div className="p-6 text-text-secondary text-sm">Loading...</div>;
 
   return (
     <div className="max-w-lg space-y-4">
@@ -52,32 +57,36 @@ const LanguageSettings = () => {
           Preferred languages
         </h2>
 
-        
         <div className="relative" ref={dropdownRef}>
-
-   
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="w-full flex items-center justify-between px-4 py-3 border border-border-default rounded-xl bg-bg-primary hover:border-brand-purple transition cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <ReactCountryFlag
-                countryCode={languages.find(l => l.name === currentLanguage)?.code ?? "GB"}
+                countryCode={
+                  languages.find((l) => l.name === currentLanguage)?.code ??
+                  "GB"
+                }
                 svg
-                style={{ width: "22px", height: "22px", borderRadius: "50%", objectFit: "cover" }}
+                style={{
+                  width: "22px",
+                  height: "22px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
               />
               <span className="text-sm font-medium text-text-primary">
                 {currentLanguage}
               </span>
             </div>
-            <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform ${isOpen ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`w-4 h-4 text-text-secondary transition-transform ${isOpen ? "rotate-180" : ""}`}
+            />
           </button>
 
-         
           {isOpen && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-bg-secondary border border-border-default rounded-2xl shadow-lg z-50 overflow-hidden">
-
-       
               <div className="p-3 border-b border-border-default">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
@@ -93,7 +102,7 @@ const LanguageSettings = () => {
               </div>
 
               {/* Options */}
-              <div className="max-h-[280px] overflow-y-auto py-2">
+              <div className="max-h-70 overflow-y-auto py-2">
                 {filtered.map((lang) => {
                   const selected = currentLanguage === lang.name;
                   return (
@@ -106,9 +115,16 @@ const LanguageSettings = () => {
                       <ReactCountryFlag
                         countryCode={lang.code}
                         svg
-                        style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }}
+                        style={{
+                          width: "24px",
+                          height: "24px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
                       />
-                      <span className={`flex-1 text-sm ${selected ? "font-medium text-brand-purple" : "text-text-primary"}`}>
+                      <span
+                        className={`flex-1 text-sm ${selected ? "font-medium text-brand-purple" : "text-text-primary"}`}
+                      >
                         {lang.name}
                       </span>
                       {selected && (
@@ -126,7 +142,6 @@ const LanguageSettings = () => {
                   </p>
                 )}
               </div>
-
             </div>
           )}
         </div>

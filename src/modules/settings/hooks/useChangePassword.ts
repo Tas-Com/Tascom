@@ -5,30 +5,28 @@ import { changePasswordApi } from "../apis/changepasswordApi";
 interface FieldErrors {
   oldPassword?: string;
   newPassword?: string;
-  confirmNewPassword?: string;
+  confirmPassword?: string;
 }
 
 export const useChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [confirmPassword, setConfirmNewPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const validate = (): boolean => {
     const errors: FieldErrors = {};
 
-    if (!oldPassword)
-      errors.oldPassword = "Old password is required";
+    if (!oldPassword) errors.oldPassword = "Old password is required";
 
-    if (!newPassword)
-      errors.newPassword = "New password is required";
+    if (!newPassword) errors.newPassword = "New password is required";
     else if (newPassword.length < 8)
       errors.newPassword = "Minimum 8 characters";
 
-    if (!confirmNewPassword)
-      errors.confirmNewPassword = "Please confirm your new password";
-    else if (newPassword !== confirmNewPassword)
-      errors.confirmNewPassword = "Passwords do not match";
+    if (!confirmPassword)
+      errors.confirmPassword = "Please confirm your new password";
+    else if (newPassword !== confirmPassword)
+      errors.confirmPassword = "Passwords do not match";
 
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -46,13 +44,16 @@ export const useChangePassword = () => {
 
   const handleSubmit = () => {
     if (!validate()) return;
-    mutation.mutate({ oldPassword, newPassword, confirmNewPassword });
+    mutation.mutate({ oldPassword, newPassword, confirmPassword });
   };
 
   return {
-    oldPassword, setOldPassword,
-    newPassword, setNewPassword,
-    confirmNewPassword, setConfirmNewPassword,
+    oldPassword,
+    setOldPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmNewPassword,
     fieldErrors,
     isLoading: mutation.isPending,
     isSuccess: mutation.isSuccess,

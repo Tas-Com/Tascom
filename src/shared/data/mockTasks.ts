@@ -14,6 +14,7 @@ export interface MockTask {
   postedTime: string;
   taskerImage: string;
   priority: string;
+  coordinates: [number, number];
 }
 
 export const mockTasks: MockTask[] = [
@@ -34,6 +35,7 @@ export const mockTasks: MockTask[] = [
     postedTime: "2 hours ago",
     taskerImage: "/Alii.jpg",
     priority: "High",
+    coordinates: [31.5, 34.4667],
   },
   {
     id: "2",
@@ -52,6 +54,7 @@ export const mockTasks: MockTask[] = [
     postedTime: "4 hours ago",
     taskerImage: "/Adaam.jpg",
     priority: "Medium",
+    coordinates: [31.51, 34.45],
   },
   {
     id: "3",
@@ -70,6 +73,7 @@ export const mockTasks: MockTask[] = [
     postedTime: "6 hours ago",
     taskerImage: "/Alii.jpg",
     priority: "Low",
+    coordinates: [31.52, 34.46],
   },
   {
     id: "4",
@@ -88,5 +92,6 @@ export const mockTasks: MockTask[] = [
     postedTime: "8 hours ago",
     taskerImage: "/Adaam.jpg",
     priority: "High",
+    coordinates: [31.49, 34.47],
   },
 ];

@@ -3,13 +3,13 @@ const BASE_URL = "https://tascom.up.railway.app";
 interface ChangePasswordPayload {
   oldPassword: string;
   newPassword: string;
-  confirmNewPassword: string;
+  confirmPassword: string;
 }
 
 export const changePasswordApi = async (
-  payload: ChangePasswordPayload
+  payload: ChangePasswordPayload,
 ): Promise<void> => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access-token");
 
   const res = await fetch(`${BASE_URL}/auth/change-password`, {
     method: "POST",

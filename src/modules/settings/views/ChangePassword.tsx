@@ -10,7 +10,13 @@ interface PasswordInputProps {
   error?: string;
 }
 
-const PasswordInput = ({ label, value, onChange, hint, error }: PasswordInputProps) => {
+const PasswordInput = ({
+  label,
+  value,
+  onChange,
+  hint,
+  error,
+}: PasswordInputProps) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -19,13 +25,15 @@ const PasswordInput = ({ label, value, onChange, hint, error }: PasswordInputPro
         {label}
       </label>
 
-      <div className={`flex items-center gap-3 border rounded-xl px-4 py-3 bg-bg-secondary transition-all
-        ${error
-          ? "border-state-error ring-1 ring-state-error"
-          : "border-border-default focus-within:border-brand-purple focus-within:ring-1 focus-within:ring-brand-purple"
+      <div
+        className={`flex items-center gap-3 border rounded-xl px-4 py-3 bg-bg-secondary transition-all
+        ${
+          error
+            ? "border-state-error ring-1 ring-state-error"
+            : "border-border-default focus-within:border-brand-purple focus-within:ring-1 focus-within:ring-brand-purple"
         }`}
       >
-        <Lock className="w-4 h-4 text-brand-purple flex-shrink-0" />
+        <Lock className="w-4 h-4 text-brand-purple shrink-0" />
 
         <input
           type={show ? "text" : "password"}
@@ -55,20 +63,27 @@ const PasswordInput = ({ label, value, onChange, hint, error }: PasswordInputPro
 
 export const ChangePasswordPage = () => {
   const {
-    oldPassword, setOldPassword,
-    newPassword, setNewPassword,
-    confirmNewPassword, setConfirmNewPassword,
+    oldPassword,
+    setOldPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmNewPassword,
     fieldErrors,
-    isLoading, isSuccess, isError, errorMessage,
+    isLoading,
+    isSuccess,
+    isError,
+    errorMessage,
     handleSubmit,
   } = useChangePassword();
 
   return (
     <div className="max-w-lg">
-      <h1 className="text-2xl font-semibold text-text-primary mb-6">Password</h1>
+      <h1 className="text-2xl font-semibold text-text-primary mb-6">
+        Password
+      </h1>
 
       <div className="bg-bg-secondary border border-border-default rounded-2xl p-8 space-y-6">
-
         {isSuccess && (
           <div className="bg-green-50 border border-state-success text-state-success rounded-xl px-4 py-3 text-sm font-medium">
             ✓ Password changed successfully!
@@ -98,32 +113,49 @@ export const ChangePasswordPage = () => {
 
         <PasswordInput
           label="Confirm New Password"
-          value={confirmNewPassword}
+          value={confirmPassword}
           onChange={setConfirmNewPassword}
           hint="Minimum 8 characters"
-          error={fieldErrors.confirmNewPassword}
+          error={fieldErrors.confirmPassword}
         />
 
         <button
           onClick={handleSubmit}
           disabled={isLoading}
           className={`w-full py-3 rounded-xl text-white font-semibold text-base transition-all
-            ${isLoading
-              ? "bg-brand-purple/60 cursor-not-allowed"
-              : "bg-brand-purple hover:bg-brand-purple/90 active:scale-[0.98] shadow-lg shadow-brand-purple/25"
+            ${
+              isLoading
+                ? "bg-brand-purple/60 cursor-not-allowed"
+                : "bg-brand-purple hover:bg-brand-purple/90 active:scale-[0.98] shadow-lg shadow-brand-purple/25"
             }`}
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
-              <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+              <svg
+                className="w-4 h-4 animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                />
               </svg>
               Changing...
             </span>
-          ) : "Change password"}
+          ) : (
+            "Change password"
+          )}
         </button>
-
       </div>
     </div>
   );
