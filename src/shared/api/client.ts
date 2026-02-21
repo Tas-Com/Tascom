@@ -47,16 +47,16 @@ api.interceptors.response.use(
 );
 
 export const apiClient = {
-  get: <T>(path: string) => api.get<T>(path).then((res) => res.data),
+  get: <T>(path: string, config?: import("axios").AxiosRequestConfig) => api.get<T>(path, config).then((res) => res.data),
 
-  post: <T>(path: string, body: unknown) =>
-    api.post<T>(path, body).then((res) => res.data),
+  post: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
+    api.post<T>(path, body, config).then((res) => res.data),
 
-  put: <T>(path: string, body: unknown) =>
-    api.put<T>(path, body).then((res) => res.data),
+  put: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
+    api.put<T>(path, body, config).then((res) => res.data),
 
-  patch: <T>(path: string, body: unknown) =>
-    api.patch<T>(path, body).then((res) => res.data),
+  patch: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
+    api.patch<T>(path, body, config).then((res) => res.data),
 
-  delete: <T>(path: string) => api.delete<T>(path).then((res) => res.data),
+  delete: <T>(path: string, config?: import("axios").AxiosRequestConfig) => api.delete<T>(path, config).then((res) => res.data),
 };

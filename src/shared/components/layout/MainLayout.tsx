@@ -13,12 +13,12 @@ export function MainLayout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-bg-primary font-sans antialiased">
+    <div className="min-h-screen bg-bg-primary font-sans antialiased z-10">
       <div className="relative flex min-h-screen flex-col">
         {/* Fixed Header */}
         <Header
           userName={user?.name || ""}
-          userAvatar={user?.avatar || ""}
+          userAvatar={user?.assets?.[0]?.url || user?.avatar || ""}
           logoSrc=""
         />
 

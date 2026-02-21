@@ -10,7 +10,14 @@ interface GetUserResponse {
 export const restUsers = (): UsersRepo => ({
   getById: async (id: string): Promise<User> => {
     const response = await apiClient.get<GetUserResponse>(`/users/${id}`);
-    // console.log(response.data);
+    return response.data;
+  },
+  updateUser: async (id: string, data: FormData): Promise<User> => {
+    const response = await apiClient.patch<GetUserResponse>(`/users/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   },
 });

@@ -27,6 +27,13 @@ export type User = {
   latitude: number;
   longitude: number;
   location: string;
+  assets?: {
+    id: string;
+    url: string;
+    fileType: string;
+    fileId: string;
+    ownerId: string;
+  }[];
 };
 
 export type AuthRequest = {
