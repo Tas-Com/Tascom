@@ -86,14 +86,15 @@ function NavContent({
                 <Link
                   to={item.to}
                   onClick={onNavigate}
-                  className={`flex items-center gap-2 p-2 h-[46px] rounded-2xl text-sm font-medium transition w-full xl:max-w-[332px] border
-                    ${isActive(item.to)
-                      ? item.danger
-                        ? "bg-red-50 text-state-error border-state-error/20"
-                        : "bg-purple-50 text-brand-purple border-brand-purple"
-                      : item.danger
-                        ? "text-state-error hover:bg-red-50 border-transparent"
-                        : "text-text-primary hover:bg-bg-primary border-transparent"
+                  className={`flex items-center gap-2 p-2 h-11.5 rounded-2xl text-sm font-medium transition w-full xl:max-w-83 border
+                    ${
+                      isActive(item.to)
+                        ? item.danger
+                          ? "bg-red-50 text-state-error border-state-error/20"
+                          : "bg-purple-50 text-brand-purple border-brand-purple"
+                        : item.danger
+                          ? "text-state-error hover:bg-red-50 border-transparent"
+                          : "text-text-primary hover:bg-bg-primary border-transparent"
                     }`}
                 >
                   <item.icon className="w-5 h-5 mx-1" /> {item.label}
@@ -145,12 +146,12 @@ export function ProfileLayout() {
         />
       )}
 
-      <aside className="hidden md:flex flex-col md:w-64 xl:w-[396px] shrink-0 h-100% bg-bg-secondary p-4 xl:px-8 xl:py-10 gap-6 xl:gap-4 z-0">
+      <aside className="hidden md:flex flex-col md:w-64 xl:w-99 shrink-0 h-100% bg-bg-secondary p-4 xl:px-8 xl:py-10 gap-6 xl:gap-4 z-0">
         <NavContent isActive={isActive} />
         <div className="pt-4 border-t border-border-default">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 p-2 h-[46px] rounded-2xl text-sm font-medium text-text-secondary hover:bg-bg-primary hover:text-text-primary transition w-full xl:max-w-[332px] border border-transparent cursor-pointer"
+            className="flex items-center gap-2 p-2 h-11.5 rounded-2xl text-sm font-medium text-text-secondary hover:bg-bg-primary hover:text-text-primary transition w-full xl:max-w-83 border border-transparent cursor-pointer"
           >
             <LogOut className="w-5 h-5 mx-1" /> Logout
           </button>
@@ -161,7 +162,9 @@ export function ProfileLayout() {
         className={`md:hidden fixed inset-y-0 left-0 w-72 bg-bg-secondary border-r border-border-default p-4 flex flex-col gap-6 overflow-y-auto z-50 transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-lg font-semibold text-text-primary px-2">Menu</span>
+          <span className="text-lg font-semibold text-text-primary px-2">
+            Menu
+          </span>
           <button
             onClick={() => setSidebarOpen(false)}
             className="p-2 text-text-primary hover:bg-bg-primary rounded-lg"
@@ -173,7 +176,7 @@ export function ProfileLayout() {
         <div className="mt-auto pt-4 border-t border-border-default">
           <button
             onClick={handleLogoutClick}
-            className="flex items-center gap-2 p-2 h-[46px] rounded-2xl text-sm font-medium text-text-secondary hover:bg-bg-primary hover:text-text-primary transition w-full border border-transparent cursor-pointer"
+            className="flex items-center gap-2 p-2 h-11.5 rounded-2xl text-sm font-medium text-text-secondary hover:bg-bg-primary hover:text-text-primary transition w-full border border-transparent cursor-pointer"
           >
             <LogOut className="w-5 h-5 mx-1 mt-3" /> Logout
           </button>
