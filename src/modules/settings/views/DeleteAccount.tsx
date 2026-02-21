@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useDeleteAccount } from "../hooks/DeleteAccount";
 import { useRouter } from '@tanstack/react-router';
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/modules/Auth/index";
+import { tokenManager } from "@/shared";
+
+
 
 export default function DeleteAccount() {
   const [confirmText, setConfirmText] = useState("");
@@ -10,12 +15,18 @@ export default function DeleteAccount() {
   const { mutate, isPending } = useDeleteAccount();
 
   const isValid = confirmText === "DELETE";
+  
+const queryClient = useQueryClient();
+  const auth = useAuth();
 
 const handleConfirm = () => {
   mutate(undefined, {
     onSuccess: () => {
-      setOpenModal(false);      // ← أغلق المودال أول
-      setTimeout(() => {        // ← انتظر React تنظف الـ DOM
+      setOpenModal(false);  
+      auth.logout();              
+      queryClient.clear();        
+      tokenManager.removeToken();
+      setTimeout(() => {        
         router.navigate({ to: "/login" });
       }, 100);
     },

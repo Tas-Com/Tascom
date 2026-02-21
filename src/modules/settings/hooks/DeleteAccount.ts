@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteUserApi } from "../apis/DeleteAccount";
 import { useRouter } from '@tanstack/react-router';
 import { useAuth } from "@/modules/Auth/index";
+import { tokenManager } from "@/shared";
 
 export const useDeleteAccount = () => {
   const router = useRouter();
@@ -10,8 +11,9 @@ export const useDeleteAccount = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const token = localStorage.getItem("access_token");
-      const userId = localStorage.getItem("user_id");
+      const token = tokenManager.getToken();
+const userId = tokenManager.getUserId();
+    
 
       if (!token || !userId) {
         throw new Error("User not found");
@@ -21,8 +23,8 @@ export const useDeleteAccount = () => {
     },
 
     onSuccess: () => {
-      auth.logout();          // ← امسح localStorage عبر الـ repository
-      queryClient.clear();    // ← امسح الـ cache
+      auth.logout();          
+      queryClient.clear();    
       router.navigate({ to: "/login" });
     },
   });

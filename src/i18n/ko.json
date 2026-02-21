@@ -1,0 +1,89 @@
+{
+  "common": {
+    "loading": "로딩 중...",
+    "saving": "저장 중...",
+    "search": "검색",
+    "cancel": "취소",
+    "delete": "삭제",
+    "deleting": "삭제 중..."
+  },
+  "password": {
+    "title": "비밀번호",
+    "oldPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "confirmPassword": "새 비밀번호 확인",
+    "minimum": "최소 8자 이상",
+    "changeButton": "비밀번호 변경",
+    "changing": "변경 중...",
+    "success": "✓ 비밀번호가 성공적으로 변경되었습니다!",
+    "error": "오류가 발생했습니다. 다시 시도해 주세요."
+  },
+  "deleteAccount": {
+    "title": "계정 삭제",
+    "subtitle": "Tascom에서 계정과 데이터를 영구적으로 삭제합니다.",
+    "warningTitle": "경고: 이 작업은 되돌릴 수 없습니다",
+    "warningBody": "계정을 삭제하면 모든 데이터가 영구적으로 손실됩니다.",
+    "point1": "공개 프로필이 즉시 비활성화됩니다.",
+    "point2": "획득한 모든 포인트가 소멸됩니다.",
+    "point3": "진행 중인 작업이 자동으로 취소됩니다.",
+    "point4": "계정 관련 알림을 더 이상 받지 못합니다.",
+    "confirmLabel": "확인을 위해 아래에 \"DELETE\"를 입력하세요",
+    "confirmPlaceholder": "DELETE",
+    "deleteButton": "계정 삭제",
+    "modalTitle": "계정 삭제",
+    "modalBody": "이 계정을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+  },
+  "notifications": {
+    "title": "알림 설정",
+    "inbox": "받은 편지함",
+    "inboxDesc": "모든 알림을 플랫폼 받은 편지함에서 직접 받습니다.",
+    "email": "이메일",
+    "emailDesc": "읽지 않은 알림의 이메일 요약을 받습니다.",
+    "tableTitle": "작업 및 커뮤니티 알림",
+    "type": "알림 유형",
+    "inApp": "앱 내",
+    "push": "푸시",
+    "sections": {
+      "taskUpdates": "작업 업데이트",
+      "messages": "메시지 및 언급",
+      "rewards": "포인트 및 보상"
+    },
+    "items": {
+      "newTaskNearYou": "근처에 새 작업이 게시됨",
+      "taskAssignedToYou": "새 작업이 할당됨",
+      "taskMatchesSkills": "내 기술과 일치하는 작업",
+      "taskClaimed": "작업 청구됨",
+      "taskCompleted": "작업 완료됨",
+      "taskCanceled": "작업 취소됨",
+      "taskStatusChanged": "작업 상태 변경됨",
+      "taskReminder": "작업 알림",
+      "newMessage": "새 메시지",
+      "newComment": "내 작업에 새 댓글",
+      "mentionedInTask": "작업에서 언급됨",
+      "pointsEarned": "포인트 획득",
+      "ratingAfterCompletion": "작업 완료 후 평가 요청",
+      "newBadge": "새 배지 또는 업적 획득"
+    }
+  },
+  "language": {
+    "title": "언어",
+    "preferred": "선호 언어",
+    "noResults": "결과 없음"
+  },
+  "sidebar": {
+    "profile": "프로필",
+    "myProfile": "내 프로필",
+    "savedTasks": "저장된 작업",
+    "dashboard": "대시보드",
+    "userDashboard": "사용자 대시보드",
+    "pointsBalance": "포인트 잔액",
+    "requests": "요청",
+    "settings": "설정",
+    "language": "언어",
+    "notifications": "알림",
+    "password": "비밀번호",
+    "reports": "신고",
+    "deleteAccount": "계정 삭제",
+    "logout": "로그아웃"
+  }
+}

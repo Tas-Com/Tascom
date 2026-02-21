@@ -1,0 +1,89 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "saving": "Enregistrement...",
+    "search": "Rechercher",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleting": "Suppression..."
+  },
+  "password": {
+    "title": "Mot de passe",
+    "oldPassword": "Ancien mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "minimum": "8 caractères minimum",
+    "changeButton": "Changer le mot de passe",
+    "changing": "Modification...",
+    "success": "✓ Mot de passe changé avec succès!",
+    "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "deleteAccount": {
+    "title": "Supprimer le compte",
+    "subtitle": "Supprimez définitivement votre compte et vos données de Tascom.",
+    "warningTitle": "Avertissement: Cette action est permanente",
+    "warningBody": "Une fois votre compte supprimé, toutes vos données seront définitivement perdues.",
+    "point1": "Votre profil public sera immédiatement désactivé.",
+    "point2": "Tous vos points gagnés seront perdus.",
+    "point3": "Vos tâches actives seront annulées automatiquement.",
+    "point4": "Vous ne recevrez plus aucune notification liée à votre compte.",
+    "confirmLabel": "Pour confirmer, tapez \"DELETE\" ci-dessous",
+    "confirmPlaceholder": "DELETE",
+    "deleteButton": "Supprimer le compte",
+    "modalTitle": "Supprimer le compte",
+    "modalBody": "Êtes-vous sûr de vouloir supprimer ce compte? Cette action est irréversible."
+  },
+  "notifications": {
+    "title": "Paramètres de notification",
+    "inbox": "Boîte de réception",
+    "inboxDesc": "Vous recevrez toutes vos notifications directement dans la boîte de réception.",
+    "email": "E-mail",
+    "emailDesc": "Recevez un résumé par e-mail des notifications non lues.",
+    "tableTitle": "Notifications de tâches et de la communauté",
+    "type": "Type de notification",
+    "inApp": "Dans l'application",
+    "push": "Push",
+    "sections": {
+      "taskUpdates": "Mises à jour des tâches",
+      "messages": "Messages et mentions",
+      "rewards": "Points et récompenses"
+    },
+    "items": {
+      "newTaskNearYou": "Nouvelle tâche près de vous",
+      "taskAssignedToYou": "Nouvelle tâche assignée",
+      "taskMatchesSkills": "Tâche correspondant à vos compétences",
+      "taskClaimed": "Tâche réclamée",
+      "taskCompleted": "Tâche terminée",
+      "taskCanceled": "Tâche annulée",
+      "taskStatusChanged": "Statut de la tâche modifié",
+      "taskReminder": "Rappel de tâche",
+      "newMessage": "Nouveau message",
+      "newComment": "Nouveau commentaire sur votre tâche",
+      "mentionedInTask": "Vous avez été mentionné dans une tâche",
+      "pointsEarned": "Points gagnés",
+      "ratingAfterCompletion": "Demande d'évaluation après la tâche",
+      "newBadge": "Nouveau badge ou succès obtenu"
+    }
+  },
+  "language": {
+    "title": "Langue",
+    "preferred": "Langues préférées",
+    "noResults": "Aucun résultat"
+  },
+  "sidebar": {
+    "profile": "Profil",
+    "myProfile": "Mon profil",
+    "savedTasks": "Tâches sauvegardées",
+    "dashboard": "Tableau de bord",
+    "userDashboard": "Tableau de bord utilisateur",
+    "pointsBalance": "Solde de points",
+    "requests": "Demandes",
+    "settings": "Paramètres",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "password": "Mot de passe",
+    "reports": "Rapports",
+    "deleteAccount": "Supprimer le compte",
+    "logout": "Déconnexion"
+  }
+}

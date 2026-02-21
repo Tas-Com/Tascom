@@ -1,3 +1,4 @@
+import { tokenManager } from "@/shared";
 const BASE_URL = "https://tascom.up.railway.app";
 
 interface ChangePasswordPayload {
@@ -9,7 +10,7 @@ interface ChangePasswordPayload {
 export const changePasswordApi = async (
   payload: ChangePasswordPayload,
 ): Promise<void> => {
-  const token = localStorage.getItem("access-token");
+      const token = tokenManager.getToken();
 
   const res = await fetch(`${BASE_URL}/auth/change-password`, {
     method: "POST",

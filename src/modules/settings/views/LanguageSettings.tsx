@@ -8,19 +8,17 @@ const languages = [
   { name: "English", code: "GB" },
   { name: "French", code: "FR" },
   { name: "Spanish", code: "ES" },
-  { name: "Vietnamese", code: "VN" },
   { name: "Korean", code: "KR" },
   { name: "German", code: "DE" },
 ];
 
 const LanguageSettings = () => {
-  const { currentLanguage, isLoading, updateLanguage, isUpdating } =
-    useLanguage();
+ const { currentLanguage, updateLanguage } = useLanguage()
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // إغلاق الـ dropdown لما تكبس برا
+ 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -45,8 +43,6 @@ const LanguageSettings = () => {
     setSearch("");
   };
 
-  if (isLoading)
-    return <div className="p-6 text-text-secondary text-sm">Loading...</div>;
 
   return (
     <div className="max-w-lg space-y-4">
@@ -101,7 +97,7 @@ const LanguageSettings = () => {
                 </div>
               </div>
 
-              {/* Options */}
+           
               <div className="max-h-70 overflow-y-auto py-2">
                 {filtered.map((lang) => {
                   const selected = currentLanguage === lang.name;
@@ -146,9 +142,6 @@ const LanguageSettings = () => {
           )}
         </div>
 
-        {isUpdating && (
-          <p className="text-xs text-text-secondary mt-2">Saving...</p>
-        )}
       </div>
     </div>
   );

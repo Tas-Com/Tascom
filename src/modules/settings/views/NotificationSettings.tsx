@@ -1,6 +1,6 @@
 import { useNotifications } from "../hooks/useNotification";
 
-// ========== Toggle Switch Component ==========
+
 const Toggle = ({
   checked,
   onChange,
@@ -20,7 +20,7 @@ const Toggle = ({
   </button>
 );
 
-// ========== Checkbox Component ==========
+
 const Checkbox = ({
   checked,
   onChange,
@@ -46,7 +46,7 @@ const Checkbox = ({
   </div>
 );
 
-// ========== Sections Data ==========
+
 const sections = [
   {
     title: "Task Updates",
@@ -84,7 +84,7 @@ const sections = [
   },
 ];
 
-// ========== Main Component ==========
+
 const NotificationSettings = () => {
   const { data, isLoading, toggleSetting } = useNotifications();
 
@@ -101,7 +101,7 @@ const NotificationSettings = () => {
         Notification Settings
       </h1>
 
-      {/* ===== الجزء العلوي: Inbox + Email ===== */}
+      
       <div className="bg-bg-secondary border border-border-default rounded-2xl overflow-hidden">
 
         {/* Inbox */}
@@ -123,7 +123,7 @@ const NotificationSettings = () => {
           />
         </div>
 
-        {/* Email */}
+        
         <div className="flex items-start gap-4 px-6 py-5">
           <div className="mt-1 text-text-secondary">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -143,7 +143,7 @@ const NotificationSettings = () => {
         </div>
       </div>
 
-      {/* ===== الجدول: Task & Community Notifications ===== */}
+      
       <div>
         <h2 className="text-lg font-semibold text-text-primary mb-3">
           Task & Community Notifications
@@ -151,7 +151,7 @@ const NotificationSettings = () => {
 
         <div className="bg-bg-secondary border border-border-default rounded-2xl overflow-hidden">
 
-          {/* Header */}
+         
           <div className="grid grid-cols-4 bg-brand-purple text-white text-sm font-medium">
             <div className="px-4 py-3">Notification Type</div>
             <div className="px-4 py-3 text-center border-r border-white/20">In-App</div>
@@ -159,16 +159,15 @@ const NotificationSettings = () => {
             <div className="px-4 py-3 text-center">Push</div>
           </div>
 
-          {/* Sections */}
           {sections.map((section, i) => (
             <div key={`${section.title}-${i}`}>
 
-              {/* Section Title */}
+            
               <div className="bg-purple-50 px-4 py-2 text-sm font-semibold text-brand-purple border-t border-border-default">
                 {section.title}
               </div>
 
-              {/* Items */}
+            
               {section.items.map((item, idx) => (
                 <div
                   key={item.key}
