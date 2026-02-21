@@ -1,6 +1,6 @@
 export type AuthResponse = {
   success: boolean;
-  data: { user: User, token: string };
+  data: { user: User; token: string };
 };
 
 export type User = {
@@ -27,6 +27,13 @@ export type User = {
   latitude: number;
   longitude: number;
   location: string;
+  assets?: {
+    id: string;
+    url: string;
+    fileType: string;
+    fileId: string;
+    ownerId: string;
+  }[];
 };
 
 export type AuthRequest = {

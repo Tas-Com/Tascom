@@ -23,6 +23,7 @@ type TaskCardProps = {
   taskerImage: string;
   priority: string;
   taskId: string;
+  compact?: boolean;
 };
 
 export function TaskCard({
@@ -40,6 +41,7 @@ export function TaskCard({
   taskerImage,
   priority,
   taskId,
+  compact = false,
 }: TaskCardProps) {
   const [showComments, setShowComments] = useState(false);
   const { isLiked, getLikes } = useLikesStore();
@@ -57,13 +59,18 @@ export function TaskCard({
   ).length;
 
   return (
-    <div className="bg-white rounded-[16px] p-6 space-y-4 w-full max-w-2xl lg:max-w-[700px] shadow-sm border border-gray-100">
+    <div
+      className={`bg-white rounded-2xl space-y-4 w-full shadow-sm border border-gray-100 ${
+        compact ? "p-4 max-w-md lg:max-w-105" : "p-6 max-w-2xl lg:max-w-175"
+      }`}
+    >
       <TaskCardHeader
        taskId={taskId}
         taskerName={taskerName}
         rating={rating}
         postedTime={postedTime}
         taskerImage={taskerImage}
+        compact={compact}
       />
 
       <TaskCardContent
@@ -76,6 +83,7 @@ export function TaskCard({
         imageUrl={imageUrl}
         priority={priority}
         taskId={taskId}
+        compact={compact}
       />
 
       <TaskCardActions

@@ -8,5 +8,8 @@ export const toUserInformation = (dto: AuthResponse): UserInformation => {
     name: dto.data.user.name,
     email: dto.data.user.email,
     phoneNumber: dto.data.user.phoneNumber,
+    latitude: dto.data.user.latitude,
+    longitude: dto.data.user.longitude,
+    location: dto.data.user.location,
   };
 };

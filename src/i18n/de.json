@@ -1,0 +1,89 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "saving": "Speichern...",
+    "search": "Suchen",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht..."
+  },
+  "password": {
+    "title": "Passwort",
+    "oldPassword": "Altes Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "minimum": "Mindestens 8 Zeichen",
+    "changeButton": "Passwort ändern",
+    "changing": "Wird geändert...",
+    "success": "✓ Passwort erfolgreich geändert!",
+    "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "deleteAccount": {
+    "title": "Konto löschen",
+    "subtitle": "Entferne dein Konto und deine Daten dauerhaft von Tascom.",
+    "warningTitle": "Warnung: Diese Aktion ist dauerhaft",
+    "warningBody": "Sobald du dein Konto löschst, gehen alle deine Daten dauerhaft verloren.",
+    "point1": "Dein öffentliches Profil wird sofort deaktiviert.",
+    "point2": "Alle deine verdienten Punkte gehen verloren.",
+    "point3": "Deine aktiven Aufgaben werden automatisch storniert.",
+    "point4": "Du erhältst keine weiteren Benachrichtigungen zu deinem Konto.",
+    "confirmLabel": "Gib zur Bestätigung unten \"DELETE\" ein",
+    "confirmPlaceholder": "DELETE",
+    "deleteButton": "Konto löschen",
+    "modalTitle": "Konto löschen",
+    "modalBody": "Bist du sicher, dass du dieses Konto löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "notifications": {
+    "title": "Benachrichtigungseinstellungen",
+    "inbox": "Posteingang",
+    "inboxDesc": "Du erhältst alle Benachrichtigungen direkt im Posteingang der Plattform.",
+    "email": "E-Mail",
+    "emailDesc": "Erhalte eine E-Mail-Zusammenfassung ungelesener Benachrichtigungen.",
+    "tableTitle": "Aufgaben- und Community-Benachrichtigungen",
+    "type": "Benachrichtigungstyp",
+    "inApp": "In der App",
+    "push": "Push",
+    "sections": {
+      "taskUpdates": "Aufgaben-Updates",
+      "messages": "Nachrichten & Erwähnungen",
+      "rewards": "Punkte & Belohnungen"
+    },
+    "items": {
+      "newTaskNearYou": "Neue Aufgabe in deiner Nähe",
+      "taskAssignedToYou": "Neue Aufgabe dir zugewiesen",
+      "taskMatchesSkills": "Aufgabe entspricht deinen Fähigkeiten",
+      "taskClaimed": "Aufgabe beansprucht",
+      "taskCompleted": "Aufgabe abgeschlossen",
+      "taskCanceled": "Aufgabe storniert",
+      "taskStatusChanged": "Aufgabenstatus geändert",
+      "taskReminder": "Aufgabenerinnerung",
+      "newMessage": "Neue Nachricht",
+      "newComment": "Neuer Kommentar zu deiner Aufgabe",
+      "mentionedInTask": "Du wurdest in einer Aufgabe erwähnt",
+      "pointsEarned": "Punkte verdient",
+      "ratingAfterCompletion": "Bewertungsanfrage nach Aufgabenabschluss",
+      "newBadge": "Neues Abzeichen oder Erfolg erhalten"
+    }
+  },
+  "language": {
+    "title": "Sprache",
+    "preferred": "Bevorzugte Sprachen",
+    "noResults": "Keine Ergebnisse"
+  },
+  "sidebar": {
+    "profile": "Profil",
+    "myProfile": "Mein Profil",
+    "savedTasks": "Gespeicherte Aufgaben",
+    "dashboard": "Dashboard",
+    "userDashboard": "Benutzer-Dashboard",
+    "pointsBalance": "Punktestand",
+    "requests": "Anfragen",
+    "settings": "Einstellungen",
+    "language": "Sprache",
+    "notifications": "Benachrichtigungen",
+    "password": "Passwort",
+    "reports": "Berichte",
+    "deleteAccount": "Konto löschen",
+    "logout": "Abmelden"
+  }
+}

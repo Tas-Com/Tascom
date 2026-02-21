@@ -13,6 +13,7 @@ export const useRegister = () => {
     onSuccess: (data) => {
       queryClient.setQueryData([AuthKey], data);
       tokenManager.setToken(data.access_token);
+      tokenManager.setUserId(String(data.id));
       console.log(data);
     },
     onError: (error) => console.log(error),

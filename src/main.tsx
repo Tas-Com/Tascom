@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAuthModule } from "./modules/Auth/index.tsx";
 import { SearchProvider } from "./shared/contexts/SearchContext";
+import "./i18n/i18n.ts"; 
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +18,7 @@ export const queryClient = new QueryClient({
 });
 const { Provider: AuthProvider } = createAuthModule();
 
-// For HMR issue
+// For HMR issue, remove when deploy
 const container = document.getElementById("root")!;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const root = (container as any)._reactRoot ?? createRoot(container);
