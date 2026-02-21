@@ -6,17 +6,17 @@ import { getLanguage, updateLanguage } from "../apis/languageApi";
 export const useLanguage = () => {
   const queryClient = useQueryClient();
 
-  // 🔹 جلب اللغة الحالية
+
   const { data: currentLanguage, isLoading } = useQuery({
     queryKey: ["language"],
     queryFn: getLanguage,
   });
 
-  // 🔹 تحديث اللغة
+  
   const mutation = useMutation({
     mutationFn: updateLanguage,
     onSuccess: (newLanguage) => {
-      // تحديث الكاش
+    
       queryClient.setQueryData(["language"], newLanguage);
     },
   });

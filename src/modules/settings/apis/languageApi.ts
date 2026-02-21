@@ -3,7 +3,7 @@
 export const getLanguage = async (): Promise<string> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve("English"); // اللغة الافتراضية
+      resolve("English"); 
     }, 500);
   });
 };
