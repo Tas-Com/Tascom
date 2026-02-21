@@ -1,0 +1,89 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "search": "Search",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting..."
+  },
+  "password": {
+    "title": "Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "minimum": "Minimum 8 characters",
+    "changeButton": "Change password",
+    "changing": "Changing...",
+    "success": "✓ Password changed successfully!",
+    "error": "Something went wrong. Please try again."
+  },
+  "deleteAccount": {
+    "title": "Delete Account",
+    "subtitle": "Permanently remove your account and data from Tascom.",
+    "warningTitle": "Warning: This action is permanent",
+    "warningBody": "Once you delete your account, all of your data will be permanently lost. Please be certain.",
+    "point1": "Your public profile will be immediately deactivated.",
+    "point2": "All your earned points will be lost.",
+    "point3": "Your active tasks will be canceled automatically.",
+    "point4": "You will not receive any further notifications related to your account.",
+    "confirmLabel": "To confirm, type \"DELETE\" below",
+    "confirmPlaceholder": "DELETE",
+    "deleteButton": "Delete Account",
+    "modalTitle": "Delete account",
+    "modalBody": "Are you sure you want to delete this account? This action cannot be undone."
+  },
+  "notifications": {
+    "title": "Notification Settings",
+    "inbox": "Inbox",
+    "inboxDesc": "You'll receive all your notifications directly inside the platform inbox.",
+    "email": "Email",
+    "emailDesc": "Get an email summary for unread notifications, grouped and sent based on priority.",
+    "tableTitle": "Task & Community Notifications",
+    "type": "Notification Type",
+    "inApp": "In-App",
+    "push": "Push",
+    "sections": {
+      "taskUpdates": "Task Updates",
+      "messages": "Messages & Mentions",
+      "rewards": "Points & Rewards"
+    },
+    "items": {
+      "newTaskNearYou": "New task posted near you",
+      "taskAssignedToYou": "New task assigned to you",
+      "taskMatchesSkills": "Task matches your skills or interests",
+      "taskClaimed": "Task claimed",
+      "taskCompleted": "Task completed",
+      "taskCanceled": "Task canceled",
+      "taskStatusChanged": "Task status changed",
+      "taskReminder": "Task reminder",
+      "newMessage": "New message",
+      "newComment": "New comment on your task",
+      "mentionedInTask": "You were mentioned in a task",
+      "pointsEarned": "Points earned",
+      "ratingAfterCompletion": "Rating request after task completion",
+      "newBadge": "New badge or achievement earned"
+    }
+  },
+  "language": {
+    "title": "Language",
+    "preferred": "Preferred languages",
+    "noResults": "No results found"
+  },
+  "sidebar": {
+    "profile": "Profile",
+    "myProfile": "My Profile",
+    "savedTasks": "Saved Tasks",
+    "dashboard": "Dashboard",
+    "userDashboard": "User Dashboard",
+    "pointsBalance": "Points Balance",
+    "requests": "Requests",
+    "settings": "Setting",
+    "language": "Language",
+    "notifications": "Notifications",
+    "password": "Password",
+    "reports": "Reports",
+    "deleteAccount": "Delete Account",
+    "logout": "Logout"
+  }
+}

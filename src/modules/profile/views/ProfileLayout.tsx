@@ -1,5 +1,6 @@
 import { Outlet, Link, useRouterState } from "@tanstack/react-router";
 import { useLogout } from "@/modules/Auth/hook/useLogout";
+import { useTranslation } from "react-i18next";
 import {
   User, Bookmark, LayoutDashboard, Coins, ClipboardList,
   Globe, Bell, Lock, Flag, Trash2, LogOut
@@ -7,6 +8,7 @@ import {
 
 export function ProfileLayout() {
   const { handleLogout } = useLogout();
+  const { t } = useTranslation();
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
 
@@ -17,9 +19,9 @@ export function ProfileLayout() {
 
       <aside className="w-60 bg-bg-secondary border-r border-border-default p-5 space-y-6 flex flex-col">
 
-        {/* Profile */}
+      
         <div>
-          <p className="text-xs text-text-secondary mb-2 px-2">Profile</p>
+          <p className="text-xs text-text-secondary mb-2 px-2">{t("sidebar.profile")}</p>
           <ul className="space-y-1">
             <li>
               <Link
@@ -30,7 +32,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <User className="w-4 h-4" /> My Profile
+                <User className="w-4 h-4" /> {t("sidebar.myProfile")}
               </Link>
             </li>
             <li>
@@ -42,15 +44,15 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Bookmark className="w-4 h-4" /> Saved Tasks
+                <Bookmark className="w-4 h-4" /> {t("sidebar.savedTasks")}
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Dashboard */}
+       
         <div>
-          <p className="text-xs text-text-secondary mb-2 px-2">Dashboard</p>
+          <p className="text-xs text-text-secondary mb-2 px-2">{t("sidebar.dashboard")}</p>
           <ul className="space-y-1">
             <li>
               <Link
@@ -61,7 +63,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <LayoutDashboard className="w-4 h-4" /> User Dashboard
+                <LayoutDashboard className="w-4 h-4" /> {t("sidebar.userDashboard")}
               </Link>
             </li>
             <li>
@@ -73,7 +75,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Coins className="w-4 h-4" /> Points Balance
+                <Coins className="w-4 h-4" /> {t("sidebar.pointsBalance")}
               </Link>
             </li>
             <li>
@@ -85,15 +87,15 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <ClipboardList className="w-4 h-4" /> Requests
+                <ClipboardList className="w-4 h-4" /> {t("sidebar.requests")}
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Setting */}
+    
         <div>
-          <p className="text-xs text-text-secondary mb-2 px-2">Setting</p>
+          <p className="text-xs text-text-secondary mb-2 px-2">{t("sidebar.settings")}</p>
           <ul className="space-y-1">
             <li>
               <Link
@@ -104,7 +106,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Globe className="w-4 h-4" /> Language
+                <Globe className="w-4 h-4" /> {t("sidebar.language")}
               </Link>
             </li>
             <li>
@@ -116,7 +118,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Bell className="w-4 h-4" /> Notifications
+                <Bell className="w-4 h-4" /> {t("sidebar.notifications")}
               </Link>
             </li>
             <li>
@@ -128,7 +130,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Lock className="w-4 h-4" /> Password
+                <Lock className="w-4 h-4" /> {t("sidebar.password")}
               </Link>
             </li>
             <li>
@@ -140,7 +142,7 @@ export function ProfileLayout() {
                     : "text-text-primary hover:bg-bg-primary"
                   }`}
               >
-                <Flag className="w-4 h-4" /> Reports
+                <Flag className="w-4 h-4" /> {t("sidebar.reports")}
               </Link>
             </li>
             <li>
@@ -152,19 +154,19 @@ export function ProfileLayout() {
                     : "text-state-error hover:bg-red-50"
                   }`}
               >
-                <Trash2 className="w-4 h-4" /> Delete Account
+                <Trash2 className="w-4 h-4" /> {t("sidebar.deleteAccount")}
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Logout */}
+     
         <div className="mt-auto pt-4 border-t border-border-default">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-text-secondary hover:bg-bg-primary hover:text-text-primary transition w-full cursor-pointer"
           >
-            <LogOut className="w-4 h-4" /> Logout
+            <LogOut className="w-4 h-4" /> {t("sidebar.logout")}
           </button>
         </div>
 

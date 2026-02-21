@@ -1,0 +1,89 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "saving": "Guardando...",
+    "search": "Buscar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleting": "Eliminando..."
+  },
+  "password": {
+    "title": "Contraseña",
+    "oldPassword": "Contraseña antigua",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar nueva contraseña",
+    "minimum": "Mínimo 8 caracteres",
+    "changeButton": "Cambiar contraseña",
+    "changing": "Cambiando...",
+    "success": "✓ ¡Contraseña cambiada con éxito!",
+    "error": "Algo salió mal. Por favor, inténtalo de nuevo."
+  },
+  "deleteAccount": {
+    "title": "Eliminar cuenta",
+    "subtitle": "Elimina permanentemente tu cuenta y datos de Tascom.",
+    "warningTitle": "Advertencia: Esta acción es permanente",
+    "warningBody": "Una vez que elimines tu cuenta, todos tus datos se perderán permanentemente.",
+    "point1": "Tu perfil público será desactivado inmediatamente.",
+    "point2": "Todos tus puntos ganados se perderán.",
+    "point3": "Tus tareas activas se cancelarán automáticamente.",
+    "point4": "No recibirás más notificaciones relacionadas con tu cuenta.",
+    "confirmLabel": "Para confirmar, escribe \"DELETE\" a continuación",
+    "confirmPlaceholder": "DELETE",
+    "deleteButton": "Eliminar cuenta",
+    "modalTitle": "Eliminar cuenta",
+    "modalBody": "¿Estás seguro de que quieres eliminar esta cuenta? Esta acción no se puede deshacer."
+  },
+  "notifications": {
+    "title": "Configuración de notificaciones",
+    "inbox": "Bandeja de entrada",
+    "inboxDesc": "Recibirás todas tus notificaciones directamente en la bandeja de entrada.",
+    "email": "Correo electrónico",
+    "emailDesc": "Recibe un resumen por correo de las notificaciones no leídas.",
+    "tableTitle": "Notificaciones de tareas y comunidad",
+    "type": "Tipo de notificación",
+    "inApp": "En la app",
+    "push": "Push",
+    "sections": {
+      "taskUpdates": "Actualizaciones de tareas",
+      "messages": "Mensajes y menciones",
+      "rewards": "Puntos y recompensas"
+    },
+    "items": {
+      "newTaskNearYou": "Nueva tarea cerca de ti",
+      "taskAssignedToYou": "Nueva tarea asignada a ti",
+      "taskMatchesSkills": "Tarea que coincide con tus habilidades",
+      "taskClaimed": "Tarea reclamada",
+      "taskCompleted": "Tarea completada",
+      "taskCanceled": "Tarea cancelada",
+      "taskStatusChanged": "Estado de tarea cambiado",
+      "taskReminder": "Recordatorio de tarea",
+      "newMessage": "Nuevo mensaje",
+      "newComment": "Nuevo comentario en tu tarea",
+      "mentionedInTask": "Te mencionaron en una tarea",
+      "pointsEarned": "Puntos ganados",
+      "ratingAfterCompletion": "Solicitud de valoración tras completar tarea",
+      "newBadge": "Nueva insignia o logro obtenido"
+    }
+  },
+  "language": {
+    "title": "Idioma",
+    "preferred": "Idiomas preferidos",
+    "noResults": "Sin resultados"
+  },
+  "sidebar": {
+    "profile": "Perfil",
+    "myProfile": "Mi perfil",
+    "savedTasks": "Tareas guardadas",
+    "dashboard": "Panel",
+    "userDashboard": "Panel de usuario",
+    "pointsBalance": "Saldo de puntos",
+    "requests": "Solicitudes",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "password": "Contraseña",
+    "reports": "Informes",
+    "deleteAccount": "Eliminar cuenta",
+    "logout": "Cerrar sesión"
+  }
+}
