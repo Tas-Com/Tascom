@@ -6,12 +6,9 @@ interface TaskCardHeaderProps {
   taskerName: string;
   rating: number;
   postedTime: string;
-  taskerImage: string;
-<<<<<<< HEAD
   taskId: string;
-=======
+  taskerImage: string;
   compact?: boolean;
->>>>>>> 8c62f03a53037178e5c74bda89ccbc0ba5496b6d
 }
 
 export function TaskCardHeader({
@@ -19,11 +16,8 @@ export function TaskCardHeader({
   rating,
   postedTime,
   taskerImage,
-<<<<<<< HEAD
-  taskId,
-=======
   compact = false,
->>>>>>> 8c62f03a53037178e5c74bda89ccbc0ba5496b6d
+  taskId,
 }: TaskCardHeaderProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -49,26 +43,9 @@ export function TaskCardHeader({
         />
         <div>
           <div className="flex items-center gap-1">
-<<<<<<< HEAD
             <p className="font-semibold text-primary">{taskerName}</p>
             <Star className="text-icon-star fill-current" size={18} />
             <span className="text-btn-s text-icon-star">{rating}</span>
-=======
-            <p
-              className={`font-semibold text-primary ${compact ? "text-sm" : ""}`}
-            >
-              {taskerName}
-            </p>
-            <Star
-              className="text-icon-star fill-current"
-              size={compact ? 14 : 18}
-            />
-            <span
-              className={`text-icon-star ${compact ? "text-xs" : "text-btn-s"}`}
-            >
-              {rating}
-            </span>
->>>>>>> 8c62f03a53037178e5c74bda89ccbc0ba5496b6d
           </div>
           <p
             className={`text-text-secondary ${compact ? "text-xs" : "text-sm"}`}
@@ -77,7 +54,6 @@ export function TaskCardHeader({
           </p>
         </div>
       </div>
-<<<<<<< HEAD
 
       {/* Right actions */}
       <div className="flex items-center gap-2 relative">
@@ -112,16 +88,6 @@ export function TaskCardHeader({
           taskId={taskId}
           isOpen={showReportModal}
           onClose={() => setShowReportModal(false)}
-=======
-      <div className="flex items-center gap-2">
-        <Bookmark
-          className="text-icon-default fill-current"
-          size={compact ? 20 : 25}
-        />
-        <MoreVertical
-          className="text-icon-default fill-current"
-          size={compact ? 20 : 25}
->>>>>>> 8c62f03a53037178e5c74bda89ccbc0ba5496b6d
         />
       </div>
     </div>

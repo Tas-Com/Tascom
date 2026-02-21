@@ -7,7 +7,7 @@ import {
   Home,
   Car,
 } from "lucide-react";
-import { PostTaskModal } from "../layout/PostTaskModal"; 
+import { PostTaskModal } from "../layout/PostTaskModal";
 
 type Props = {
   category: string | null;
@@ -34,31 +34,14 @@ export function Filter({
   const [openPost, setOpenPost] = useState(false);
 
   return (
-<<<<<<< HEAD
     <>
-      <aside className="w-80 h-[972px] mt-[32px] ml-8 lg:ml-13">
+      <aside className="w-80 h-[972px] mt-8 ml-8 lg:ml-13">
         <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
           {/* زر Post a task */}
           {showPostButton && (
             <button
               onClick={() => setOpenPost(true)}
-              className="w-full bg-brand-purple text-white p-[16px] rounded-[103px] text-btn-primary mb-[32px]"
-=======
-    <aside className="w-80 h-243 mt-8 ml-8 lg:ml-13">
-      <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
-        {showPostButton && (
-          <button className="w-full bg-brand-purple text-white p-4 rounded-[103px] text-btn-primary mb-8">
-            Post a task
-          </button>
-        )}
-        <h5 className="text-h5-2 text-primary">Filters</h5>
-        <div>
-          <p className="text-h5-2 mb-8">Categories</p>
-          <ul className="space-y-6 text-body-s2 text-primary">
-            <li
-              onClick={() => setCategory("errands")}
-              className="flex items-center gap-2 cursor-pointer"
->>>>>>> 8c62f03a53037178e5c74bda89ccbc0ba5496b6d
+              className="w-full bg-brand-purple text-white p-4 rounded-[103px] text-btn-primary mb-8"
             >
               Post a task
             </button>
