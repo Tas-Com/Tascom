@@ -65,6 +65,7 @@ export function TaskCard({
       }`}
     >
       <TaskCardHeader
+       taskId={taskId}
         taskerName={taskerName}
         rating={rating}
         postedTime={postedTime}
