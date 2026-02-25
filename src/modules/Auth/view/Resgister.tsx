@@ -227,7 +227,7 @@ export default function RegisterPage() {
           disabled={isSubmitting || isLocating || !userLocation || !isValid}
         >
           {isLocating
-            ? "" // getting location
+            ? "Sign Up" // getting location
             : isSubmitting
               ? "Sign Up..."
               : "Sign Up"}
