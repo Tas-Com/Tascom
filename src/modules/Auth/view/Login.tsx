@@ -19,9 +19,11 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { errors, isValid },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
@@ -35,27 +37,34 @@ export default function LoginPage() {
       onSuccess: () => {
         navigate({ to: "/" });
       },
-      onError: (err) => {
-        console.log(err);
+      onError: (err: any) => {
+        if (err?.errors && Array.isArray(err.errors)) {
+          err.errors.forEach((error: any) => {
+            setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            });
+          });
+        }
       },
     });
   };
 
   return (
-    <div className="w-full flex flex-col justify-center min-h-256 py-10">
-      <div className="text-center mb-10">
-        <h1 className="text-[40px] font-bold text-brand-purple mb-1">
+    <div className="w-full flex flex-col justify-center h-full">
+      <div className="text-center mb-4 lg:mb-3 2xl:mb-5">
+        <h1 className="text-[24px] md:text-[28px] xl:text-[34px] 2xl:text-[40px] font-bold text-brand-purple mb-1">
           Welcome Back!
         </h1>
-        <p className="text-[14px] text-text-secondary">
+        <p className="text-[12px] 2xl:text-[14px] text-text-secondary">
           Connect, collaborate, and get things done
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 lg:space-y-4 2xl:space-y-6">
         {/* Email */}
         <div className="space-y-1">
-          <label className="text-[16px] font-semibold text-text-primary px-1">
+          <label className="text-[12px] lg:text-[13px] 2xl:text-[16px] font-semibold text-text-primary px-1">
             Email
           </label>
           <div className="relative">
@@ -63,16 +72,15 @@ export default function LoginPage() {
               {...register("email")}
               type="email"
               placeholder="placeholder@gmail.com"
-              className={`pl-10 h-12 bg-white rounded-xl border border-border-default transition-all ${
-                errors.email
-                  ? "border-state-error"
-                  : "focus:border-brand-purple"
-              }`}
+              className={`pl-10 h-10 2xl:h-12 text-[13px] 2xl:text-[16px] bg-white rounded-xl border border-border-default transition-all ${errors.email
+                ? "border-state-error"
+                : "focus:border-brand-purple"
+                }`}
             />
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple/70" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 2xl:w-5 2xl:h-5 text-brand-purple/70" />
           </div>
           {errors.email && (
-            <p className="text-[12px] text-state-error mt-1 px-1">
+            <p className="text-[11px] 2xl:text-[12px] text-state-error mt-1 px-1">
               {errors.email.message}
             </p>
           )}
@@ -80,7 +88,7 @@ export default function LoginPage() {
 
         {/* Password */}
         <div className="space-y-1">
-          <label className="text-[16px] font-semibold text-text-primary px-1">
+          <label className="text-[12px] lg:text-[13px] 2xl:text-[16px] font-semibold text-text-primary px-1">
             Password
           </label>
           <div className="relative">
@@ -88,19 +96,18 @@ export default function LoginPage() {
               {...register("password")}
               type="password"
               placeholder="********"
-              className={`pl-10 h-12 bg-white rounded-xl border border-border-default transition-all ${
-                errors.password
-                  ? "border-state-error"
-                  : "focus:border-brand-purple"
-              }`}
+              className={`pl-10 h-10 2xl:h-12 text-[13px] 2xl:text-[16px] bg-white rounded-xl border border-border-default transition-all ${errors.password
+                ? "border-state-error"
+                : "focus:border-brand-purple"
+                }`}
             />
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-purple/70" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 2xl:w-5 2xl:h-5 text-brand-purple/70" />
             <button
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
             >
               <svg
-                className="w-5 h-5 opacity-50"
+                className="w-4 h-4 2xl:w-5 2xl:h-5 opacity-50"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -117,7 +124,7 @@ export default function LoginPage() {
           </div>
           <div className="flex justify-between items-start px-1 min-h-5">
             {errors.password ? (
-              <p className="text-[12px] text-state-error">
+              <p className="text-[11px] 2xl:text-[12px] text-state-error">
                 {errors.password.message}
               </p>
             ) : (
@@ -126,7 +133,7 @@ export default function LoginPage() {
             <Link
               to="/forgot-password"
               title="Forgot Password?"
-              className="text-[14px] text-brand-purple hover:underline font-medium"
+              className="text-[12px] 2xl:text-[14px] text-brand-purple hover:underline font-medium"
             >
               Forget Password ?
             </Link>
@@ -135,12 +142,12 @@ export default function LoginPage() {
 
         <Button
           type="submit"
-          className="w-full h-14 text-[18px] font-bold bg-brand-purple hover:bg-brand-purple/90 text-white rounded-[100px] shadow-lg shadow-brand-purple/20 transition-all active:scale-[0.98] mt-4"
-          disabled={loginMutation.isPending}
+          className="w-full h-10 2xl:h-14 text-[14px] 2xl:text-[18px] font-bold bg-brand-purple hover:bg-brand-purple/90 text-white rounded-[100px] shadow-lg shadow-brand-purple/20 transition-all active:scale-[0.98] mt-2 2xl:mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={loginMutation.isPending || !isValid}
         >
           {loginMutation.isPending ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              <Loader2 className="w-4 h-4 2xl:w-5 2xl:h-5 animate-spin mr-2" />
               Signing in...
             </>
           ) : (
@@ -149,22 +156,22 @@ export default function LoginPage() {
         </Button>
 
         {loginMutation.isError && (
-          <div className="bg-state-error/10 border border-state-error/20 p-3 rounded-lg flex items-center gap-3 animate-in shake">
-            <p className="text-[14px] text-state-error">
-              Invalid credentials. Please try again.
+          <div className="bg-state-error/10 border border-state-error/20 p-2 2xl:p-3 rounded-lg flex items-center gap-3 animate-in shake">
+            <p className="text-[12px] 2xl:text-[14px] text-state-error">
+              {(loginMutation.error as any)?.message || "Invalid credentials. Please try again."}
             </p>
           </div>
         )}
 
-        <div className="flex flex-col items-center space-y-4 pt-6">
-          <p className="text-[14px] text-text-secondary">Or continue with</p>
-          <div className="flex gap-6">
+        <div className="flex flex-col items-center space-y-2 lg:space-y-3 2xl:space-y-4 pt-2 lg:pt-4 2xl:pt-6">
+          <p className="text-[12px] 2xl:text-[14px] text-text-secondary">Or continue with</p>
+          <div className="flex gap-4 2xl:gap-6">
             <button
               type="button"
-              className="p-1 hover:opacity-80 transition-opacity"
+              className="p-0.5 lg:p-1 hover:opacity-80 transition-opacity"
             >
               <svg
-                className="w-10 h-10"
+                className="w-6 h-6 lg:w-8 lg:h-8 2xl:w-10 2xl:h-10"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -176,9 +183,9 @@ export default function LoginPage() {
             </button>
             <button
               type="button"
-              className="p-1 hover:opacity-80 transition-opacity"
+              className="p-0.5 lg:p-1 hover:opacity-80 transition-opacity"
             >
-              <svg className="w-10 h-10" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 lg:w-8 lg:h-8 2xl:w-10 2xl:h-10" viewBox="0 0 24 24">
                 <path
                   fill="#EA4335"
                   d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582L19.91 3C17.782 1.145 15.055 0 12 0 7.27 0 3.198 2.698 1.24 6.65l4.026 3.115z"
@@ -201,7 +208,7 @@ export default function LoginPage() {
         </div>
       </form>
 
-      <p className="mt-12 text-center text-[16px] text-text-secondary">
+      <p className="mt-4 lg:mt-6 2xl:mt-12 text-center text-[12px] md:text-[13px] 2xl:text-[16px] text-text-secondary">
         Don't Have An Account?{" "}
         <a
           href="/register"
