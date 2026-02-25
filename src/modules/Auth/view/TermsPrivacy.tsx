@@ -6,12 +6,12 @@ export default function TermsPrivacyPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4">
-      <div className="w-full max-w-359.5 min-h-203.5 bg-white rounded-[40px] shadow-sm overflow-hidden flex flex-col p-12">
+    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-359.5 bg-white rounded-[20px] 2xl:rounded-[40px] shadow-sm flex flex-col p-6 lg:p-10 2xl:p-12 my-auto">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-10">
-          <img src={heartLogo} alt="Tascom" className="w-10 h-auto" />
-          <span className="text-[24px] font-bold text-brand-purple">
+        <div className="flex items-center gap-2 mb-6 2xl:mb-10">
+          <img src={heartLogo} alt="Tascom" className="w-6 2xl:w-10 h-auto" />
+          <span className="text-[18px] 2xl:text-[24px] font-bold text-brand-purple">
             Tascom
           </span>
         </div>
@@ -19,23 +19,23 @@ export default function TermsPrivacyPage() {
         {/* Back Button */}
         <button
           onClick={() => navigate({ to: "/register" })}
-          className="flex items-center gap-1 text-text-primary hover:text-brand-purple transition-colors mb-8 font-semibold"
+          className="flex items-center gap-1 text-[13px] 2xl:text-[16px] text-text-primary hover:text-brand-purple transition-colors mb-4 2xl:mb-8 font-semibold"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-4 h-4 2xl:w-5 2xl:h-5" />
           Back
         </button>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto pr-4">
-          <h1 className="text-[24px] font-normal leading-6.25 tracking-[0.02em] text-text-primary px-1 mb-8">
+        <div className="flex-1">
+          <h1 className="text-[18px] 2xl:text-[24px] font-normal leading-6.25 tracking-[0.02em] text-text-primary px-1 mb-4 2xl:mb-8">
             Terms & Privacy Policy
           </h1>
 
-          <section className="mb-8">
-            <h2 className="text-[20px] font-semibold leading-[120%] text-brand-purple mb-2">
+          <section className="mb-4 2xl:mb-8">
+            <h2 className="text-[16px] 2xl:text-[20px] font-semibold leading-[120%] text-brand-purple mb-2">
               Terms of Use
             </h2>
-            <div className="text-[18px] font-normal leading-6.25 tracking-[0.02em] text-text-primary space-y-1">
+            <div className="text-[14px] 2xl:text-[18px] font-normal leading-6.25 tracking-[0.02em] text-text-primary space-y-1">
               <p>
                 By accessing and using this website, you agree to comply with
                 these terms and conditions.
@@ -71,10 +71,10 @@ export default function TermsPrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-[20px] font-semibold leading-[120%] text-brand-purple mb-2">
+            <h2 className="text-[16px] 2xl:text-[20px] font-semibold leading-[120%] text-brand-purple mb-2">
               Privacy Policy
             </h2>
-            <div className="text-[18px] font-normal leading-6.25 tracking-[0.02em] text-text-primary space-y-1">
+            <div className="text-[14px] 2xl:text-[18px] font-normal leading-6.25 tracking-[0.02em] text-text-primary space-y-1">
               <p>
                 We collect personal information such as your name, email
                 address, event details, and usage data necessary to operate and
@@ -99,15 +99,15 @@ export default function TermsPrivacyPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 flex items-center gap-3">
+        <div className="mt-6 2xl:mt-12 flex items-center gap-3">
           <input
             type="checkbox"
             id="footer-agree"
-            className="w-5 h-5 rounded border-border-default text-brand-purple focus:ring-brand-purple cursor-pointer"
+            className="w-4 h-4 2xl:w-5 2xl:h-5 rounded border-border-default text-brand-purple focus:ring-brand-purple cursor-pointer"
           />
           <label
             htmlFor="footer-agree"
-            className="text-[14px] font-semibold text-text-primary"
+            className="text-[12px] 2xl:text-[14px] font-semibold text-text-primary"
           >
             I agree to the Terms & Privacy Policy
           </label>

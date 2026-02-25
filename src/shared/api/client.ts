@@ -36,13 +36,17 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ message?: string }>) => {
+  (error: AxiosError<any>) => {
     if (error.response?.status === 401) {
       tokenManager.removeToken();
       router.navigate({ to: "/login" });
     }
-    const message = error.response?.data?.message || error.message;
-    return Promise.reject(new Error(message));
+
+    if (error.response?.data) {
+      return Promise.reject(error.response.data);
+    }
+
+    return Promise.reject(error);
   }
 );
 
