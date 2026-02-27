@@ -46,6 +46,7 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -79,10 +80,22 @@ export default function RegisterPage() {
           onSuccess: (user) => {
             console.log(`Welcome ${user.name}!`);
             setShowSuccess(true);
-            navigate({ to: "/" });
+            setTimeout(() => {
+              navigate({ to: "/" });
+            }, 2000);
           },
-          onError: (err) => {
-            console.log(err);
+          onError: (err: any) => {
+            const apiError = err.response?.data;
+            if (apiError && apiError.errors) {
+              apiError.errors.forEach((error: { field: string; message: string }) => {
+                setError(error.field as keyof RegisterFormValues, {
+                  type: "manual",
+                  message: error.message,
+                });
+              });
+            } else if (apiError && apiError.message) {
+              setLocationError(apiError.message);
+            }
           },
         },
       );
@@ -122,13 +135,17 @@ export default function RegisterPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Name */}
         <div className="space-y-1">
-          <label className="text-[16px] font-semibold text-text-primary px-1">
+          <label
+            className={`text-[16px] font-semibold px-1 ${
+              errors.name ? "text-state-error" : "text-text-primary"
+            }`}
+          >
             Name
           </label>
           <div className="relative">
             <Input
               {...register("name")}
-              placeholder="Placeholder"
+              placeholder="Full Name"
               className={`pl-10 h-12 bg-white rounded-xl border transition-all ${
                 errors.name
                   ? "border-state-error shadow-[0_0_0_1px_rgba(218,57,44,0.1)]"
@@ -147,7 +164,11 @@ export default function RegisterPage() {
 
         {/* Phone Number */}
         <div className="space-y-1">
-          <label className="text-[16px] font-semibold text-text-primary px-1">
+          <label
+            className={`text-[16px] font-semibold px-1 ${
+              errors.phoneNumber ? "text-state-error" : "text-text-primary"
+            }`}
+          >
             Phone Number
           </label>
           <div className="relative">
@@ -179,14 +200,18 @@ export default function RegisterPage() {
 
         {/* Email */}
         <div className="space-y-1">
-          <label className="text-[16px] font-semibold text-text-primary px-1">
+          <label
+            className={`text-[16px] font-semibold px-1 ${
+              errors.email ? "text-state-error" : "text-text-primary"
+            }`}
+          >
             Email
           </label>
           <div className="relative">
             <Input
               {...register("email")}
               type="email"
-              placeholder="placeholder@gmail.com"
+              placeholder="example@gmail.com"
               className={`pl-10 h-12 bg-white rounded-xl border transition-all ${
                 errors.email
                   ? "border-state-error shadow-[0_0_0_1px_rgba(218,57,44,0.1)]"
@@ -214,7 +239,11 @@ export default function RegisterPage() {
         {/* Passwords */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 space-y-1">
-            <label className="text-[16px] font-semibold text-text-primary px-1">
+            <label
+              className={`text-[16px] font-semibold px-1 ${
+                errors.password ? "text-state-error" : "text-text-primary"
+              }`}
+            >
               Password
             </label>
             <div className="relative">
@@ -239,7 +268,13 @@ export default function RegisterPage() {
           </div>
 
           <div className="flex-1 space-y-1">
-            <label className="text-[16px] font-semibold text-text-primary px-1">
+            <label
+              className={`text-[16px] font-semibold px-1 ${
+                errors.confirmPassword
+                  ? "text-state-error"
+                  : "text-text-primary"
+              }`}
+            >
               Confirm Password
             </label>
             <div className="relative">
@@ -298,7 +333,7 @@ export default function RegisterPage() {
           {isLocating
             ? "Getting location..."
             : registerMutation.isPending
-              ? "Sign Up..."
+              ? "Signing Up..."
               : "Sign Up"}
         </Button>
 
