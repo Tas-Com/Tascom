@@ -27,11 +27,10 @@ const PasswordInput = ({
 
       <div
         className={`flex items-center gap-3 border rounded-xl px-4 py-3 bg-bg-secondary transition-all
-        ${
-          error
+        ${error
             ? "border-state-error ring-1 ring-state-error"
             : "border-border-default focus-within:border-brand-purple focus-within:ring-1 focus-within:ring-brand-purple"
-        }`}
+          }`}
       >
         <Lock className="w-4 h-4 text-brand-purple shrink-0" />
 
@@ -67,7 +66,7 @@ export const ChangePasswordPage = () => {
     setOldPassword,
     newPassword,
     setNewPassword,
-    confirmPassword,
+    confirmNewPassword,
     setConfirmNewPassword,
     fieldErrors,
     isLoading,
@@ -113,20 +112,19 @@ export const ChangePasswordPage = () => {
 
         <PasswordInput
           label="Confirm New Password"
-          value={confirmPassword}
+          value={confirmNewPassword}
           onChange={setConfirmNewPassword}
           hint="Minimum 8 characters"
-          error={fieldErrors.confirmPassword}
+          error={fieldErrors.confirmNewPassword}
         />
 
         <button
           onClick={handleSubmit}
           disabled={isLoading}
           className={`w-full py-3 rounded-xl text-white font-semibold text-base transition-all
-            ${
-              isLoading
-                ? "bg-brand-purple/60 cursor-not-allowed"
-                : "bg-brand-purple hover:bg-brand-purple/90 active:scale-[0.98] shadow-lg shadow-brand-purple/25"
+            ${isLoading
+              ? "bg-brand-purple/60 cursor-not-allowed"
+              : "bg-brand-purple hover:bg-brand-purple/90 active:scale-[0.98] shadow-lg shadow-brand-purple/25"
             }`}
         >
           {isLoading ? (
