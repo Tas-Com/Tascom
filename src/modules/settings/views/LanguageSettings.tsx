@@ -4,12 +4,12 @@ import ReactCountryFlag from "react-country-flag";
 import { useLanguage } from "../hooks/useLanguage";
 
 const languages = [
-  { name: "Arabic", code: "PS" },
-  { name: "English", code: "GB" },
-  { name: "French", code: "FR" },
-  { name: "Spanish", code: "ES" },
-  { name: "Korean", code: "KR" },
-  { name: "German", code: "DE" },
+  { name: "Arabic", flagCode: "PS" },
+  { name: "English", flagCode: "GB" },
+  { name: "French", flagCode: "FR" },
+  { name: "Spanish", flagCode: "ES" },
+  { name: "Korean", flagCode: "KR" },
+  { name: "German", flagCode: "DE" },
 ];
 
 const LanguageSettings = () => {
@@ -36,12 +36,11 @@ const LanguageSettings = () => {
   const filtered = languages.filter((lang) =>
     lang.name.toLowerCase().includes(search.toLowerCase()),
   );
-
-  const handleSelect = (langName: string) => {
-    updateLanguage(langName);
-    setIsOpen(false);
-    setSearch("");
-  };
+const handleSelect = (langName: string) => {
+  updateLanguage(langName); 
+  setIsOpen(false);
+  setSearch("");
+};
 
 
   return (
@@ -60,10 +59,7 @@ const LanguageSettings = () => {
           >
             <div className="flex items-center gap-3">
               <ReactCountryFlag
-                countryCode={
-                  languages.find((l) => l.name === currentLanguage)?.code ??
-                  "GB"
-                }
+               countryCode={languages.find(l => l.name === currentLanguage)?.flagCode ?? "GB"}
                 svg
                 style={{
                   width: "22px",
@@ -109,7 +105,7 @@ const LanguageSettings = () => {
                         ${selected ? "bg-purple-50" : "hover:bg-bg-primary"}`}
                     >
                       <ReactCountryFlag
-                        countryCode={lang.code}
+                        countryCode={lang.flagCode}
                         svg
                         style={{
                           width: "24px",

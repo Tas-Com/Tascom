@@ -13,7 +13,7 @@ export const useLanguage = () => {
   const mutation = useMutation({
     mutationFn: updateLanguage,
     onSuccess: (newLanguage) => {
-      // حوّل اسم اللغة لكود
+  
       const langCode: Record<string, string> = {
         English: "en",
         Arabic: "ar",
@@ -21,12 +21,12 @@ export const useLanguage = () => {
         Spanish: "es",
         German: "de",
         Korean: "ko",
-        Vietnamese: "vi",
+       
       };
 
       const code = langCode[newLanguage] || "en";
       i18n.changeLanguage(code);             
-      localStorage.setItem("language", code); 
+      localStorage.setItem("language", newLanguage); 
 
       queryClient.setQueryData(["language"], newLanguage);
     },

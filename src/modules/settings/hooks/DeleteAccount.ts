@@ -10,18 +10,8 @@ export const useDeleteAccount = () => {
   const auth = useAuth();
 
   return useMutation({
-    mutationFn: async () => {
-      const token = tokenManager.getToken();
-const userId = tokenManager.getUserId();
-    
-
-      if (!token || !userId) {
-        throw new Error("User not found");
-      }
-
-      return deleteUserApi(Number(userId), token);
-    },
-
+  mutationFn: deleteUserApi,
+  
     onSuccess: () => {
       auth.logout();          
       queryClient.clear();    

@@ -2,15 +2,15 @@ import { toUserInformation } from '../adapters/toUserInformation';
 import type { AuthRequest, AuthResponse } from '../dto/AuthDto';
 import type { UserInformation } from '../entities/Auth';
 import type { AuthRepo } from './AuthRepo';
-import { apiClient } from '../../../shared/api/client';
+import { apiClient, tokenManager } from '../../../shared/api/client';
 
 export const restAuth = (): AuthRepo => {
   return {
     login: async (request: AuthRequest): Promise<UserInformation> => {
       const responseData = await apiClient.post<AuthResponse>('auth/login', request);
       const user = toUserInformation(responseData);
-      localStorage.setItem("access_token", user.access_token);
-      localStorage.setItem("user_id", String(user.id));
+    tokenManager.setToken(user.access_token);    
+  tokenManager.setUserId(String(user.id));
       return user;
     },
 
@@ -21,8 +21,7 @@ export const restAuth = (): AuthRepo => {
 
 
     logout: () => {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("user_id");
+      tokenManager.removeToken(); 
     },
   };
 };

@@ -1,13 +1,8 @@
-import axios from "axios";
+import { apiClient, tokenManager } from "@/shared/api/client";
 
-const BaseUrl = "https://tascom.up.railway.app/";
+export const deleteUserApi = async (): Promise<void> => {
+  const userId = tokenManager.getUserId();
+  if (!userId) throw new Error("User not found");
 
-export const deleteUserApi = async (userId: number, token: string) => {
-  const response = await axios.delete(`${BaseUrl}users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
+  return apiClient.delete(`users/${userId}`);
 };

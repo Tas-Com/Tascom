@@ -5,7 +5,7 @@ import languageSettings from './views/LanguageSettings';
 import  NotificationSettings  from './views/NotificationSettings';
 import  ChangePassword  from './views/ChangePassword';
 import DeleteAccount from "./views/DeleteAccount"; 
-
+import ReportsPage from "./views/Reports";
 
 export const settingsRoute = createRoute({
   getParentRoute: () => profileRoute,
@@ -36,11 +36,20 @@ export const deleteAccountRoute = createRoute({
   component: DeleteAccount,
 });
 
+export const reportsRoute = createRoute({  
+  getParentRoute: () => settingsRoute,
+  path: "reports",
+  component: ReportsPage,
+});
+
+
+
 export const settingsRoutes = [
   settingsRoute,
   languageSettingsRoute,
   notificationSettingsRoute,
   deleteAccountRoute,
   passwordSettingsRoute,
+    reportsRoute,
 ];
 

@@ -5,7 +5,6 @@ export const getLanguage = async (): Promise<string> => {
     : localStorage.getItem("language") === "es" ? "Spanish"
     : localStorage.getItem("language") === "de" ? "German"
     : localStorage.getItem("language") === "ko" ? "Korean"
-    : localStorage.getItem("language") === "vi" ? "Vietnamese"
     : "English";
 };
 
