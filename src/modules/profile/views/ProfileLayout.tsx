@@ -42,7 +42,7 @@ const navSections: NavSection[] = [
     titleKey: "sidebar.dashboard",
     items: [
       {
-        to: "/dashboard",
+        to: "/profile/dashboard",
         icon: LayoutDashboard,
         labelKey: "sidebar.userDashboard",
       },
@@ -170,7 +170,7 @@ export function ProfileLayout() {
         />
       )}
 
-      <aside className="hidden md:flex flex-col md:w-64 xl:w-99 shrink-0 h-100% bg-bg-secondary p-4 xl:px-8 xl:py-10 gap-6 xl:gap-4">
+      <aside className="hidden md:flex flex-col md:w-64 xl:w-80 2xl:w-99 shrink-0 h-100% bg-bg-secondary p-4 xl:px-6 2xl:px-8 xl:py-8 2xl:py-10 gap-6 xl:gap-4">
         <NavContent isActive={isActive} />
         <div className="pt-4 border-t border-border-default">
           <button
