@@ -11,6 +11,7 @@ import {
   Home,
   ShoppingBag,
 } from "lucide-react";
+import { formatCategoryName } from "@/shared/utils";
 
 interface TaskCardContentProps {
   taskTitle: string;
@@ -42,14 +43,16 @@ export function TaskCardContent({
   const iconSize = compact ? 12 : 14;
   const getIcon = (cat: string) => {
     switch (cat) {
-      case "Errand":
+      case "Errands":
         return <ShoppingBag size={iconSize} />;
       case "Repairs":
         return <Wrench size={iconSize} />;
       case "Tutoring":
         return <BookOpen size={iconSize} />;
+      case "PetCare":
       case "Pet Care":
         return <Heart size={iconSize} />;
+      case "HomeServices":
       case "Home Services":
         return <Home size={iconSize} />;
       case "Transportation":
@@ -57,6 +60,10 @@ export function TaskCardContent({
       default:
         return <Heart size={iconSize} />;
     }
+  };
+
+  const getDisplayCategory = (cat: string): string => {
+    return formatCategoryName(cat);
   };
 
   return (
@@ -88,7 +95,7 @@ export function TaskCardContent({
             }`}
           >
             {getIcon(category)}
-            <span>{category}</span>
+            <span>{getDisplayCategory(category)}</span>
           </div>
         ))}
 
@@ -99,9 +106,9 @@ export function TaskCardContent({
               ? "px-2 py-0.5 text-label2"
               : "px-3 py-1 gap-2 text-caption1"
           } ${
-            priority === "High"
+            priority === "High" || priority === "HIGH"
               ? "bg-priority-high-bg text-priority-high-text"
-              : priority === "Medium"
+              : priority === "Medium" || priority === "MEDIUM"
                 ? "bg-priority-medium-bg text-priority-medium-text"
                 : "bg-priority-low-bg text-priority-low-text"
           }`}
@@ -149,11 +156,20 @@ export function TaskCardContent({
         }}
         style={{ cursor: "pointer" }}
       >
-        <img
-          src={imageUrl}
-          alt={taskTitle}
-          className="w-full h-full object-cover"
-        />
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={taskTitle}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "/cat.jpg";
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+            <span className="text-text-secondary">No image</span>
+          </div>
+        )}
       </div>
     </div>
   );

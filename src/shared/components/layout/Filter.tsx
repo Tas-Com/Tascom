@@ -6,8 +6,11 @@ import {
   Heart,
   Home,
   Car,
+  Filter as FilterIcon,
+  X,
 } from "lucide-react";
 import { PostTaskModal } from "../layout/PostTaskModal";
+import { apiCategories } from "@/shared/utils";
 
 type Props = {
   category: string | null;
@@ -32,122 +35,123 @@ export function Filter({
   showPostButton = true,
 }: Props) {
   const [openPost, setOpenPost] = useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  const FilterContent = () => (
+    <div className="bg-bg-secondary rounded-xl p-4 md:p-6 space-y-6 md:space-y-8">
+      {showPostButton && (
+        <button
+          onClick={() => setOpenPost(true)}
+          className="w-full cursor-pointer bg-brand-purple text-white p-3 md:p-4 rounded-[103px] text-btn-primary mb-4 md:mb-8"
+        >
+          Post a task
+        </button>
+      )}
+
+      <h5 className="text-h5-2 text-primary hidden md:block">Filters</h5>
+
+      <div>
+        <p className="text-h5-2 mb-4 md:mb-8">Categories</p>
+        <ul className="space-y-4 md:space-y-6 text-body-s2 text-primary">
+          {apiCategories.map((cat) => (
+            <li
+              key={cat.value}
+              onClick={() => setCategory(cat.value)}
+              className="flex items-center gap-2 cursor-pointer hover:text-brand-purple"
+            >
+              {cat.value === 'Errands' && <ClipboardList size={20} />}
+              {cat.value === 'Repairs' && <Wrench size={20} />}
+              {cat.value === 'Tutoring' && <GraduationCap size={20} />}
+              {cat.value === 'PetCare' && <Heart size={20} />}
+              {cat.value === 'HomeServices' && <Home size={20} />}
+              {cat.value === 'Transportation' && <Car size={20} />}
+              <span>{cat.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="space-y-4">
+        <p className="text-h5-2 mb-4 md:mb-8">Priority</p>
+        {["high", "medium", "low"].map((p) => (
+          <label key={p} className="flex gap-2 text-primary cursor-pointer">
+            <input
+              type="radio"
+              checked={priority === p}
+              onChange={() => setPriority(p)}
+              className="accent-brand-purple"
+            />
+            <span className="capitalize">{p}</span>
+          </label>
+        ))}
+      </div>
+
+      <div className="space-y-4">
+        <p className="text-h5-2 mb-4 md:mb-6 text-primary">Points</p>
+        <div className="flex justify-between text-body-s2">
+          <span className="text-body-s1 mr-2">5</span>
+          <input
+            type="range"
+            min={5}
+            max={200}
+            value={points}
+            onChange={(e) => setPoints(Number(e.target.value))}
+            className="w-full accent-brand-purple"
+          />
+          <span className="text-body-s1 ml-2">200</span>
+        </div>
+        <p className="text-center text-sm text-text-secondary">{points} points</p>
+      </div>
+
+      <div className="space-y-4">
+        <p className="text-h5-2 mb-4 md:mb-6 text-primary">Location</p>
+        <div className="flex justify-between text-body-s2">
+          <span className="text-body-s1 text-primary mr-2">300</span>
+          <input
+            type="range"
+            min={300}
+            max={2000}
+            value={distance}
+            onChange={(e) => setDistance(Number(e.target.value))}
+            className="w-full accent-brand-purple"
+          />
+          <span className="text-body-s1 text-primary ml-2">2000</span>
+        </div>
+        <p className="text-center text-sm text-text-secondary">{distance}m</p>
+      </div>
+    </div>
+  );
 
   return (
     <>
-      <aside className="w-80 h-[972px] mt-8 ml-8 lg:ml-13">
-        <div className="bg-bg-secondary rounded-xl p-6 space-y-8">
-          {/* زر Post a task */}
-          {showPostButton && (
-            <button
-              onClick={() => setOpenPost(true)}
-              className="w-full bg-brand-purple text-white p-4 rounded-[103px] text-btn-primary mb-8"
-            >
-              Post a task
-            </button>
-          )}
+      <button
+        onClick={() => setMobileFilterOpen(true)}
+        className="lg:hidden fixed bottom-4 right-4 z-40 bg-brand-purple text-white p-4 rounded-full shadow-lg"
+      >
+        <FilterIcon size={24} />
+      </button>
 
-          <h5 className="text-h5-2 text-primary">Filters</h5>
-
-          {/* Categories */}
-          <div>
-            <p className="text-h5-2 mb-8">Categories</p>
-            <ul className="space-y-6 text-body-s2 text-primary">
-              <li
-                onClick={() => setCategory("errands")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <ClipboardList size={24} />
-                <span>Errands</span>
-              </li>
-              <li
-                onClick={() => setCategory("repairs")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Wrench size={24} />
-                <span>Repairs</span>
-              </li>
-              <li
-                onClick={() => setCategory("tutoring")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <GraduationCap size={24} />
-                <span>Tutoring</span>
-              </li>
-              <li
-                onClick={() => setCategory("pets")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Heart size={24} />
-                <span>Pet Care</span>
-              </li>
-              <li
-                onClick={() => setCategory("home")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Home size={24} />
-                <span>Home Services</span>
-              </li>
-              <li
-                onClick={() => setCategory("transport")}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Car size={24} />
-                <span>Transportation</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Priority */}
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-8">Priority</p>
-            {["high", "medium", "low"].map((p) => (
-              <label key={p} className="flex gap-2 text-primary">
-                <input
-                  type="radio"
-                  checked={priority === p}
-                  onChange={() => setPriority(p)}
-                />
-                {p}
-              </label>
-            ))}
-          </div>
-
-          {/* Points */}
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-6 text-primary">Points</p>
-            <div className="flex justify-between text-body-s2">
-              <span className="text-body-s1 mr-2">5</span>
-              <input
-                type="range"
-                min={5}
-                max={200}
-                value={points}
-                onChange={(e) => setPoints(Number(e.target.value))}
-                className="w-full"
-              />
-              <span className="text-body-s1 ml-2">200</span>
-            </div>
-          </div>
-
-          {/* Distance */}
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-6 text-primary">Location</p>
-            <div className="flex justify-between text-body-s2">
-              <span className="text-body-s1 text-primary mr-2">300</span>
-              <input
-                type="range"
-                min={300}
-                max={2000}
-                value={distance}
-                onChange={(e) => setDistance(Number(e.target.value))}
-                className="w-full"
-              />
-              <span className="text-body-s1 text-primary ml-2">2000</span>
-            </div>
-          </div>
-        </div>
+      <aside className="hidden lg:block w-80 h-[972px] mt-8 ml-8 lg:ml-13">
+        <FilterContent />
       </aside>
+
+      {mobileFilterOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50">
+          <div className="absolute right-0 top-0 h-full w-80 bg-bg-primary p-4 overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Filters</h3>
+              <button onClick={() => setMobileFilterOpen(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <FilterContent />
+          </div>
+          <div
+            className="absolute left-0 top-0 h-full w-[calc(100%-20rem)]"
+            onClick={() => setMobileFilterOpen(false)}
+          ></div>
+        </div>
+      )}
 
       <PostTaskModal isOpen={openPost} onClose={() => setOpenPost(false)} />
     </>

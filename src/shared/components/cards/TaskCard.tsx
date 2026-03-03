@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { mockCommentsByTask } from "@/shared/data/mockComments";
-import { useLikesStore } from "@/store/likesStore";
-import { useCommentsStore } from "@/store/commentsStore";
 import { TaskCardHeader } from "./TaskCardHeader";
 import { TaskCardContent } from "./TaskCardContent";
 import { TaskCardActions } from "./TaskCardActions";
 import { CommentSection } from "./CommentSection";
+import { useLikeTask } from "@/modules/tasks/hooks/useTasks";
+import { useCommentsByTask } from "@/modules/tasks/comments/hooks/useComments";
 
 type TaskCardProps = {
   taskerName: string;
@@ -24,6 +23,7 @@ type TaskCardProps = {
   priority: string;
   taskId: string;
   compact?: boolean;
+  isLiked?: boolean;
 };
 
 export function TaskCard({
@@ -37,35 +37,39 @@ export function TaskCard({
   points,
   imageUrl,
   likes,
+  comments,
   postedTime,
   taskerImage,
   priority,
   taskId,
   compact = false,
+  isLiked = false,
 }: TaskCardProps) {
   const [showComments, setShowComments] = useState(false);
-  const { isLiked, getLikes } = useLikesStore();
-  const { getComments } = useCommentsStore();
+  const [localLikes, setLocalLikes] = useState(likes);
+  const [localIsLiked, setLocalIsLiked] = useState(isLiked);
+  const likeTask = useLikeTask();
+  const { data: commentsData } = useCommentsByTask(Number(taskId));
+  const actualCommentCount = commentsData?.data?.length ?? comments;
 
-  const isTaskLiked = isLiked(taskId);
-  const currentLikes = getLikes(taskId) || likes;
-
-  const allComments = [
-    ...(mockCommentsByTask[taskId] || []),
-    ...getComments(taskId),
-  ];
-  const totalComments = allComments.filter(
-    (comment) => !comment.replyTo,
-  ).length;
+  const handleLike = async () => {
+    const taskIdNum = Number(taskId);
+    try {
+      await likeTask.mutateAsync(taskIdNum);
+      setLocalIsLiked(!localIsLiked);
+      setLocalLikes(localIsLiked ? localLikes - 1 : localLikes + 1);
+    } catch (error) {
+      console.error("Failed to like task:", error);
+    }
+  };
 
   return (
     <div
-      className={`bg-white rounded-2xl space-y-4 w-full shadow-sm border border-gray-100 ${
-        compact ? "p-4 max-w-md lg:max-w-105" : "p-6 max-w-2xl lg:max-w-175"
-      }`}
+      className={`bg-white rounded-2xl space-y-4 w-full shadow-sm border border-gray-100 ${compact ? "p-4 max-w-md lg:max-w-105" : "p-4 md:p-6 max-w-2xl lg:max-w-4xl mx-auto w-full"
+        }`}
     >
       <TaskCardHeader
-       taskId={taskId}
+        taskId={taskId}
         taskerName={taskerName}
         rating={rating}
         postedTime={postedTime}
@@ -88,11 +92,11 @@ export function TaskCard({
 
       <TaskCardActions
         taskId={taskId}
-        likes={likes}
-        totalComments={totalComments}
-        isTaskLiked={isTaskLiked}
-        currentLikes={currentLikes}
+        totalComments={actualCommentCount}
+        isTaskLiked={localIsLiked}
+        currentLikes={localLikes}
         onToggleComments={() => setShowComments(!showComments)}
+        onLike={handleLike}
       />
 
       {showComments && <CommentSection taskId={taskId} />}
