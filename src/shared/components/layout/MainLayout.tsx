@@ -12,13 +12,10 @@ export function MainLayout() {
   const [distance, setDistance] = useState<number>(300);
   const location = useLocation();
 
-  const showSidebar = !location.pathname.startsWith("/tasks/") &&
-    !location.pathname.startsWith("/map") &&
-    !location.pathname.startsWith("/profile");
-
   return (
     <div className="min-h-screen bg-bg-primary font-sans antialiased z-10">
       <div className="relative flex min-h-screen flex-col">
+        {/* Fixed Header */}
         <Header
           userName={user?.name || ""}
           userAvatar={user?.assets?.[0]?.url || user?.avatar || ""}
@@ -26,23 +23,40 @@ export function MainLayout() {
         />
 
         <div className="flex flex-1">
-          {showSidebar && location.pathname !== "/map" && (
-            <div className="hidden lg:block">
-              <Filter
-                category={category}
-                setCategory={setCategory}
-                priority={priority}
-                setPriority={setPriority}
-                points={points}
-                setPoints={setPoints}
-                distance={distance}
-                setDistance={setDistance}
-                showPostButton={location.pathname === "/"}
-              />
+          {/* Left Section with Title and Sidebar - hidden on map page */}
+          {location.pathname !== "/map" && (
+            <div className="flex flex-col">
+              {/* Top Results Title - Only show on results page */}
+              {location.pathname === "/results" && (
+                <div className="ml-13 mt-8">
+                  <h2 className="text-text-h2 text-text-primary">
+                    Top results
+                  </h2>
+                </div>
+              )}
+
+              {!location.pathname.startsWith("/tasks/") &&
+                !location.pathname.startsWith("/map") &&
+                !location.pathname.startsWith("/profile") &&
+                !location.pathname.startsWith("/notifications") &&
+                !location.pathname.startsWith("/chat") && (
+                  <Filter
+                    category={category}
+                    setCategory={setCategory}
+                    priority={priority}
+                    setPriority={setPriority}
+                    points={points}
+                    setPoints={setPoints}
+                    distance={distance}
+                    setDistance={setDistance}
+                    showPostButton={location.pathname === "/"}
+                  />
+                )}
             </div>
           )}
 
-          <main className="flex-1 w-full">
+          {/* Main Content Area */}
+          <main className="flex-1">
             <Outlet />
           </main>
         </div>
