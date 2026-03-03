@@ -1,9 +1,10 @@
 import { Bell, MessagesSquare, Home } from "lucide-react";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Link, useLocation } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { NotificationDropdown } from "@/modules/notifications/components/NotificationDropdown";
 import { mockNotifications } from "@/shared/data/mockNotifications";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
 type HeaderProps = {
   userName: string;
@@ -18,13 +19,8 @@ export function Header({ userName, userAvatar }: HeaderProps) {
   const isNotificationsPage = location.pathname === "/notifications";
   const isChatPage = location.pathname === "/chat";
 
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const unreadCount = mockNotifications.filter((n) => !n.isRead).length;
-
-  // Close dropdown on route change
-  useEffect(() => {
-    setIsNotificationOpen(false);
-  }, [location.pathname]);
 
   return (
     <header className="h-16 bg-white flex items-center justify-between px-9 z-[100] relative">
@@ -38,33 +34,33 @@ export function Header({ userName, userAvatar }: HeaderProps) {
         <Link to="/">
           <Home
             size={25}
-            className={`cursor-pointer transition-colors ${isHomePage && !isNotificationOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
+            className={`cursor-pointer transition-colors ${isHomePage && !isOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
               }`}
           />
         </Link>
 
-        <div className="relative">
-          <Bell
-            size={30}
-            className={`cursor-pointer transition-colors ${isNotificationOpen || (isNotificationsPage && !isNotificationOpen) ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
-              }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsNotificationOpen(!isNotificationOpen);
-            }}
-          />
-          {unreadCount > 0 && !isNotificationOpen && !isNotificationsPage && (
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-purple rounded-full border-2 border-white" />
-          )}
-          {isNotificationOpen && (
-            <NotificationDropdown onClose={() => setIsNotificationOpen(false)} />
-          )}
-        </div>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <div className="relative">
+              <Bell
+                size={30}
+                className={`cursor-pointer transition-colors ${isOpen || (isNotificationsPage && !isOpen) ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
+                  }`}
+              />
+              {unreadCount > 0 && !isOpen && !isNotificationsPage && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-purple rounded-full border-2 border-white" />
+              )}
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-[263px] p-0 border-none shadow-none bg-transparent" align="end" sideOffset={12}>
+            <NotificationDropdown onClose={() => setIsOpen(false)} />
+          </PopoverContent>
+        </Popover>
 
         <Link to="/chat">
           <MessagesSquare
             size={30}
-            className={`cursor-pointer transition-colors ${isChatPage && !isNotificationOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
+            className={`cursor-pointer transition-colors ${isChatPage && !isOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
               }`}
           />
         </Link>
@@ -74,7 +70,7 @@ export function Header({ userName, userAvatar }: HeaderProps) {
             src={userAvatar || "/Grouph.png"}
             alt={userName || "User"}
             className={`w-9 h-9 mr-4 cursor-pointer rounded-full object-cover
-          ${isProfilePage && !isNotificationOpen ? "border-2 border-brand-purple" : "border-2 border-transparent"}
+          ${isProfilePage && !isOpen ? "border-2 border-brand-purple" : "border-2 border-transparent"}
         `}
           />
         </Link>

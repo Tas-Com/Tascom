@@ -1,6 +1,7 @@
 import { MoreVertical, ChevronLeft, Mic, Send, Plus, Image as ImageIcon, FileText } from "lucide-react";
 import type { ChatMessage, ChatConversation } from "@/shared/data/mockChats";
 import { useState, useRef, useEffect } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
 
 interface MessageAreaProps {
   messages: ChatMessage[];
@@ -11,7 +12,6 @@ interface MessageAreaProps {
 export function MessageArea({ messages, activeConversation, onSendMessage }: MessageAreaProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputText, setInputText] = useState("");
-  const menuRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,16 +21,6 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleSend = () => {
     if (inputText.trim()) {
@@ -126,38 +116,34 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
 
       {/* Chat Input Area */}
       <div className="p-4 border-t border-gray-50 relative">
-        {/* Attachment Menu */}
-        {isMenuOpen && (
-          <div
-            ref={menuRef}
-            className="absolute bottom-[100%] left-6 mb-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in slide-in-from-bottom-2"
-          >
-            <button
-              className="w-full flex items-center gap-3 p-3 hover:bg-[#F3F0FF] rounded-lg transition-colors text-[#251455] text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <ImageIcon size={18} className="text-brand-purple" />
-              Upload Image
-            </button>
-            <button
-              className="w-full flex items-center gap-3 p-3 hover:bg-[#F3F0FF] rounded-lg transition-colors text-[#251455] text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <FileText size={18} className="text-brand-purple" />
-              Upload File
-            </button>
-          </div>
-        )}
-
         <div className="flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-2 border border-gray-100">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`transition-colors ${
-              isMenuOpen ? "text-brand-purple" : "text-gray-400 hover:text-brand-purple"
-            }`}
-          >
-            <Plus size={24} />
-          </button>
+          <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <PopoverTrigger asChild>
+              <button
+                className={`transition-colors ${
+                  isMenuOpen ? "text-brand-purple" : "text-gray-400 hover:text-brand-purple"
+                }`}
+              >
+                <Plus size={24} />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="start" className="w-48 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in slide-in-from-bottom-2">
+              <button
+                className="w-full flex items-center gap-3 p-3 hover:bg-[#F3F0FF] rounded-lg transition-colors text-[#251455] text-sm"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ImageIcon size={18} className="text-brand-purple" />
+                Upload Image
+              </button>
+              <button
+                className="w-full flex items-center gap-3 p-3 hover:bg-[#F3F0FF] rounded-lg transition-colors text-[#251455] text-sm"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <FileText size={18} className="text-brand-purple" />
+                Upload File
+              </button>
+            </PopoverContent>
+          </Popover>
           <input
             type="text"
             value={inputText}
