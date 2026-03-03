@@ -3,15 +3,54 @@ import Map, { NavigationControl, Marker } from "@vis.gl/react-maplibre";
 import maplibregl from "maplibre-gl";
 import type { FilterSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { mockTasks } from "@/shared/data/mockTasks";
 import { MapFilters } from "./components/MapFilters";
 import { TaskCard } from "@/shared/components/cards/TaskCard";
 import { useCurrentUser } from "@/modules/profile/hooks/useCurrentUser";
+import { useMapTasks } from "@/modules/tasks/hooks/useTasks";
+import { toTask, toTaskCardData } from "@/modules/tasks/adapters/toTask";
 import { reverseGeocode } from "@/shared/utils/reverseGeocode";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import type { TaskResponse } from "@/modules/tasks/repository/TasksDtos";
+
+interface MapTaskItem {
+  taskId: string;
+  taskTitle: string;
+  description: string;
+  categories: string[];
+  location: string;
+  duration: string;
+  points: number;
+  imageUrl: string;
+  likes: number;
+  comments: number;
+  postedTime: string;
+  priority: string;
+  taskerName: string;
+  rating: number;
+  taskerImage: string;
+  latitude: number;
+  longitude: number;
+  isLiked?: boolean;
+}
 
 export const MapPage = () => {
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
+  const { data: mapTasksResponse, isLoading: isTasksLoading } = useMapTasks();
+
+  // Transform API tasks to card-ready data with coordinates
+  const mapTasks = useMemo(() => {
+    const rawTasks = mapTasksResponse?.data?.data ?? [];
+    return rawTasks.map((taskResponse: TaskResponse) => {
+      const task = toTask(taskResponse);
+      const cardData = toTaskCardData(task);
+      return {
+        ...cardData,
+        latitude: task.latitude,
+        longitude: task.longitude,
+        isLiked: task.isLiked,
+      };
+    });
+  }, [mapTasksResponse]);
 
   // Default value if user location is not available
   const initialViewState = useMemo(
@@ -48,14 +87,14 @@ export const MapPage = () => {
   }, []);
 
   const filteredTasks = useMemo(() => {
-    return mockTasks.filter((task) => task.points >= pointsFilter);
-  }, [pointsFilter]);
+    return mapTasks.filter((task: MapTaskItem) => task.points >= pointsFilter);
+  }, [mapTasks, pointsFilter]);
 
   const selectedTask = useMemo(() => {
-    return filteredTasks.find((t) => t.id === selectedTaskId);
+    return filteredTasks.find((t: MapTaskItem) => t.taskId === selectedTaskId);
   }, [filteredTasks, selectedTaskId]);
 
-  if (isUserLoading || !user) {
+  if (isUserLoading || isTasksLoading || !user) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-64px)]">
         <p className="text-text-secondary">Loading map...</p>
@@ -129,15 +168,17 @@ export const MapPage = () => {
       >
         <NavigationControl position="bottom-right" />
 
-        {filteredTasks.map((task) => (
+        {filteredTasks.map((task: MapTaskItem) => (
           <Marker
-            key={task.id}
-            longitude={task.coordinates[1]}
-            latitude={task.coordinates[0]}
+            key={task.taskId}
+            longitude={task.longitude}
+            latitude={task.latitude}
             anchor="bottom"
             onClick={(e) => {
               e.originalEvent.stopPropagation();
-              setSelectedTaskId((prev) => (prev === task.id ? null : task.id));
+              setSelectedTaskId((prev) =>
+                prev === task.taskId ? null : task.taskId,
+              );
               setIsMobileCardExpanded(true);
             }}
           >
@@ -186,13 +227,14 @@ export const MapPage = () => {
               postedTime={selectedTask.postedTime}
               taskerImage={selectedTask.taskerImage}
               priority={selectedTask.priority}
-              taskId={selectedTask.id}
+              taskId={selectedTask.taskId}
+              isLiked={selectedTask.isLiked}
               compact
             />
           </div>
         </div>
       )}
-      // Mobile Screen
+      {/* Mobile Screen */}
       {selectedTask && (
         <div
           className={`md:hidden absolute bottom-0 left-0 right-0 z-20 bg-white rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.12)] transition-[max-height] duration-300 ease-in-out ${isMobileCardExpanded ? "max-h-[75vh]" : "max-h-16"
@@ -235,7 +277,8 @@ export const MapPage = () => {
                 postedTime={selectedTask.postedTime}
                 taskerImage={selectedTask.taskerImage}
                 priority={selectedTask.priority}
-                taskId={selectedTask.id}
+                taskId={selectedTask.taskId}
+                isLiked={selectedTask.isLiked}
               />
             </div>
           )}

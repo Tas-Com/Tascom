@@ -41,28 +41,30 @@ export const ReportTaskModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white w-full max-w-lg rounded-2xl px-8 py-6 relative">
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
-            <Flag className="text-red-500" size={28} />
+    <div className="fixed inset-0 z-200 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4">
+      <div className="bg-white w-full sm:max-w-[400px] md:max-w-[440px] lg:max-w-[480px] xl:max-w-[540px] 2xl:max-w-[600px] rounded-t-2xl sm:rounded-[16px] border border-[#DFDFDF] px-5 sm:px-6 py-5 sm:py-6 relative shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide">
+        <div className="flex justify-center mb-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-100 flex items-center justify-center">
+            <Flag className="text-red-500" size={20} />
           </div>
         </div>
 
-        <h2 className="text-center text-xl font-semibold text-primary text-purple-900">
+        <h2 className="text-center text-lg sm:text-xl font-bold text-text-primary">
           Report Task
         </h2>
-        <p className="text-center text-sm text-text-secondary mt-1 mb-6">
+        <p className="text-center text-xs sm:text-sm text-text-secondary mt-1 mb-4">
           Please select reason for report this task
         </p>
 
-        <div className="space-y-3">
-          <p className="font-medium text-primary">Reason for report</p>
+        <div className="space-y-2 mb-4">
+          <p className="font-semibold text-xs sm:text-sm text-text-primary">
+            Reason for report
+          </p>
 
           {reasons.map((item) => (
             <label
               key={item}
-              className="flex items-center gap-3 cursor-pointer"
+              className="flex items-center gap-3 cursor-pointer group"
             >
               <input
                 type="radio"
@@ -70,28 +72,31 @@ export const ReportTaskModal = ({
                 value={item}
                 checked={reason === item}
                 onChange={() => setReason(item)}
-                className="w-4 h-4 accent-purple-600"
+                className="w-4 h-4 accent-brand-purple shrink-0"
               />
-              <span className="text-sm text-text-primary">{item}</span>
+              <span className="text-sm text-text-primary group-hover:text-brand-purple transition-colors">
+                {item}
+              </span>
             </label>
           ))}
         </div>
-        <div className="mt-6">
-          <label className="block mb-2 text-sm font-medium text-primary">
+
+        <div className="mb-4">
+          <label className="block mb-1.5 text-xs sm:text-sm font-semibold text-text-primary">
             Additional details <span className="text-red-500">*</span>
           </label>
           <textarea
-            className="w-full h-28 border border-gray-200 rounded-xl px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full h-20 sm:h-24 border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all bg-white placeholder:text-text-secondary"
             placeholder="Please provide more information about the issue..."
             value={details}
             onChange={(e) => setDetails(e.target.value)}
           />
         </div>
 
-        <div className="flex gap-4 mt-8">
+        <div className="flex gap-3 sm:gap-4">
           <button
             onClick={onClose}
-            className="w-1/2 py-3 rounded-full border border-purple-500 text-purple-600 font-medium hover:bg-purple-50 transition"
+            className="flex-1 py-2 sm:py-2.5 rounded-full border border-brand-purple text-brand-purple font-semibold text-sm hover:bg-purple-50 transition-colors"
           >
             Cancel
           </button>
@@ -99,7 +104,7 @@ export const ReportTaskModal = ({
           <button
             onClick={handleSubmit}
             disabled={!reason || !details}
-            className="w-1/2 py-3 rounded-full bg-red-500 text-white font-medium hover:bg-red-600 transition disabled:opacity-50"
+            className="flex-1 py-2 sm:py-2.5 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Submit
           </button>
