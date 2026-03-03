@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { mockNotifications } from "@/shared/data/mockNotifications";
 import { NotificationItem } from "./NotificationItem";
 import { useEffect, useRef } from "react";
+import { EmptyState } from "@/shared/components/ui/EmptyState";
 
 interface NotificationDropdownProps {
   onClose: () => void;
@@ -50,14 +51,23 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
         </Link>
       </div>
 
-      <div className="flex flex-col">
-        {dropdownNotifications.map((notification) => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            variant="dropdown"
+      <div className="flex flex-col min-h-[100px] justify-center">
+        {dropdownNotifications.length > 0 ? (
+          dropdownNotifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              variant="dropdown"
+            />
+          ))
+        ) : (
+          <EmptyState 
+            imageSrc="/empty-notifications.png" 
+            message="No notifications"
+            imageClassName="w-[100px]"
+            className="py-4"
           />
-        ))}
+        )}
       </div>
     </div>
   );
