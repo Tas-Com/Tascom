@@ -1,19 +1,49 @@
 export interface Task {
-    id: number;
-    title: string;
-    description: string;
-    points: number;
-    status: string;
-    priority: string;
-    category: string;
-    createdAt: string;
-    location?: string;
-    creatorId: number;
-    latitude: number;
-    longitude: number;
-    assets?: {
-        id: string;
-        url: string;
-        fileType: string;
-    }[];
+  id: string;
+  title: string;
+  description: string;
+  points: number;
+  pointsOffered?: number;
+  status: string;
+  priority: string;
+  category: string;
+  createdAt: string;
+  creatorId: string;
+  latitude: number;
+  longitude: number;
+  deadline?: string;
+  assets?: Asset[];
+  creator?: User;
+  likesCount?: number;
+  commentsCount?: number;
+  isLiked?: boolean;
+  isSaved?: boolean;
+  isCompleted?: boolean;
+  claimerId?: string;
+  claimer?: User;
+  numOfLikes?: number;
+  claims?: Claim[];
+}
+
+export interface Asset {
+  id: string;
+  url: string;
+  fileType: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  avatar?: string;
+  assets?: Asset[];
+  rating?: number;
+  ratingAvg?: number;
+}
+
+export interface Claim {
+  id: string;
+  taskId: string;
+  claimantId: string;
+  status: string;
+  claimedAt: string;
 }
