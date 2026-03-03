@@ -37,7 +37,8 @@ export function MainLayout() {
 
               {!location.pathname.startsWith("/tasks/") &&
                 !location.pathname.startsWith("/map") &&
-                !location.pathname.startsWith("/profile") && (
+                !location.pathname.startsWith("/profile") &&
+                !location.pathname.startsWith("/notifications") && (
                   <Filter
                     category={category}
                     setCategory={setCategory}
