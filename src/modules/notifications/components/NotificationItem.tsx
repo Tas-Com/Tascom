@@ -1,5 +1,6 @@
 import { MoveUpRight } from "lucide-react";
 import type { Notification } from "@/shared/data/mockNotifications";
+import { Link } from "@tanstack/react-router";
 
 interface NotificationItemProps {
   notification: Notification;
@@ -7,24 +8,35 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification, variant = "dropdown" }: NotificationItemProps) {
+  // Using notification.id as userId for mock demo purposes since they don't have a separate userId field
+  const userId = notification.id.toString();
+
   return (
     <div
       className={`flex items-center gap-3 py-3 ${
         variant === "dropdown" ? "px-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0" : "border-b border-gray-100 pb-4 mb-4"
       }`}
     >
-      <div className="relative">
+      <Link 
+        to="/user-profile/$userId" 
+        params={{ userId: userId }}
+        className="relative hover:opacity-80 transition-opacity"
+      >
         <img
           src={notification.userAvatar}
           alt={notification.userName}
           className="w-10 h-10 rounded-full object-cover"
         />
-      </div>
+      </Link>
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-baseline mb-1">
-          <p className="text-[14px] font-semibold text-[#251455] truncate">
+          <Link
+            to="/user-profile/$userId"
+            params={{ userId: userId }}
+            className="text-[14px] font-semibold text-[#251455] truncate hover:text-brand-purple transition-colors"
+          >
             {notification.userName}
-          </p>
+          </Link>
           <div className="flex items-center gap-2">
             <span className="text-[10px] text-gray-500 whitespace-nowrap">
               {notification.time}

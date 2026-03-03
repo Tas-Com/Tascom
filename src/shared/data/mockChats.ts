@@ -22,9 +22,9 @@ export type ChatConversation = {
 export const mockConversations: ChatConversation[] = [
   {
     id: 1,
-    userName: "Belal",
-    userAvatar: "/Adam.jpg",
-    lastMessage: "Hello, I'm Belal! 👋\nI'm reaching out to discuss the upcoming project milestones.",
+    userName: "Mohammed Ahmad",
+    userAvatar: "/Adaam.jpg",
+    lastMessage: "Hello, I'm Mohammed! 👋\nI'm reaching out to discuss the upcoming project milestones.",
     time: "7:45 PM",
     unreadCount: 2,
     status: "new",
@@ -32,33 +32,33 @@ export const mockConversations: ChatConversation[] = [
   },
   {
     id: 2,
-    userName: "Mohammed",
-    userAvatar: "/Adaam.jpg",
+    userName: "Sami Khalil",
+    userAvatar: "/Alii.jpg",
     lastMessage: "Hey there! I've reviewed the documents you sent.\nEverything looks good for the launch.",
     time: "7:41 PM",
     status: "seen",
   },
   {
     id: 3,
-    userName: "Ali",
+    userName: "Layla Ali",
     userAvatar: "/Ali.jpg",
-    lastMessage: "Hello, I'm Ali.\nCould we possibly reschedule our meeting for tomorrow morning?",
+    lastMessage: "Hello, I'm Layla.\nCould we possibly reschedule our meeting for tomorrow morning?",
     time: "7:40 PM",
     status: "seen",
   },
   {
     id: 4,
-    userName: "Ahmad",
-    userAvatar: "/Alii.jpg",
+    userName: "Ahmad Zaid",
+    userAvatar: "/Adam.jpg",
     lastMessage: "Hi! I'm Ahmad from the design team.\nI've attached the latest UI mocks for your review.",
     time: "7:30 PM",
     status: "seen",
   },
   {
     id: 5,
-    userName: "Abood",
-    userAvatar: "/Ali.jpg",
-    lastMessage: "Hi, I'm Abood.\nJust checking in to see if you have any updates on the task.",
+    userName: "Omar Farooq",
+    userAvatar: "/Adaam.jpg",
+    lastMessage: "Hi, I'm Omar.\nJust checking in to see if you have any updates on the task.",
     time: "7:40 PM",
     status: "seen",
   },
@@ -69,7 +69,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 1,
       senderId: 1,
-      text: "Hello, I'm Belal! 👋\nI'm reaching out to discuss the upcoming project milestones and see if we're on track.",
+      text: "Hello, I'm Mohammed Ahmed! 👋\nI'm reaching out to discuss the upcoming project milestones and see if we're on track.",
       time: "10:24 PM",
       isSentByMe: false,
       status: "seen",
@@ -78,7 +78,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 2,
       senderId: 0,
-      text: "Hey Belal! That sounds like a great plan.\nI'll prepare the status report for our call.",
+      text: "Hey Mohammed! That sounds like a great plan.\nI'll prepare the status report for our call.",
       time: "10:25 PM",
       isSentByMe: true,
       status: "seen",
@@ -88,7 +88,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 1,
       senderId: 2,
-      text: "Hey there! I'm Mohammed.\nI've reviewed the latest documents you sent over, and I have a few suggestions.",
+      text: "Hey there! I'm Sami Khalil.\nI've reviewed the latest documents you sent over, and I have a few suggestions.",
       time: "9:15 PM",
       isSentByMe: false,
       status: "seen",
@@ -97,7 +97,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 2,
       senderId: 0,
-      text: "Thanks Mohammed! I'm looking forward to your feedback.\nLet's discuss them in the morning.",
+      text: "Thanks Sami! I'm looking forward to your feedback.\nLet's discuss them in the morning.",
       time: "9:20 PM",
       isSentByMe: true,
       status: "seen",
@@ -107,7 +107,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 1,
       senderId: 3,
-      text: "Hello, I'm Ali.\nCould we possibly reschedule our meeting for tomorrow morning? Something urgent came up.",
+      text: "Hello, I'm Layla Ali.\nCould we possibly reschedule our meeting for tomorrow morning? Something urgent came up.",
       time: "8:00 PM",
       isSentByMe: false,
       status: "seen",
@@ -116,7 +116,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 2,
       senderId: 0,
-      text: "No problem at all, Ali.\nTomorrow morning at 10 AM works for me. Hope everything is okay!",
+      text: "No problem at all, Layla.\nTomorrow morning at 10 AM works for me. Hope everything is okay!",
       time: "8:05 PM",
       isSentByMe: true,
       status: "seen",
@@ -126,7 +126,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 1,
       senderId: 4,
-      text: "Hi! I'm Ahmad from the design team.\nI've attached the latest UI mocks for your review. Let me know what you think!",
+      text: "Hi! I'm Ahmad Zaid from the design team.\nI've attached the latest UI mocks for your review. Let me know what you think!",
       time: "7:30 PM",
       isSentByMe: false,
       status: "seen",
@@ -144,8 +144,8 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
   5: [
     {
       id: 1,
-      senderId: 3,
-      text: "Hi, I'm Abood.\nJust checking in to see if you have any updates on the task we discussed earlier.",
+      senderId: 5,
+      text: "Hi, I'm Omar Farooq.\nJust checking in to see if you have any updates on the task we discussed earlier.",
       time: "6:20 PM",
       isSentByMe: false,
       status: "seen",
@@ -154,7 +154,7 @@ export const mockMessagesByConversation: Record<number, ChatMessage[]> = {
     {
       id: 2,
       senderId: 0,
-      text: "Working on it right now, Abood!\nI should have something concrete for you by the end of the day.",
+      text: "Working on it right now, Omar!\nI should have something concrete for you by the end of the day.",
       time: "6:30 PM",
       isSentByMe: true,
       status: "seen",

@@ -8,6 +8,7 @@ import { authRoutes } from "./modules/Auth/routes";
 import { rootRoute, mainLayoutRoute } from "./layoutRoutes";
 import { topResultsRoutes } from "./modules/results";
 import { mapRoutes } from "./modules/map";
+import { userProfileRoutes } from "./modules/userProfile";
 
 export const routeTree = rootRoute.addChildren([
   mainLayoutRoute.addChildren([
@@ -19,6 +20,7 @@ export const routeTree = rootRoute.addChildren([
     ...chatRoutes,
     ...settingsRoutes,
     ...mapRoutes,
+    ...userProfileRoutes,
   ]),
   ...authRoutes,
 ]);
