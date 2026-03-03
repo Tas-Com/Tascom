@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { MessageCircle, MoreVertical } from "lucide-react";
-import { mockCommentsByTask, type Comment } from "@/shared/data/mockComments";
-import { useCommentsStore } from "@/store/commentsStore";
+import { MessageCircle, MoreVertical, Send } from "lucide-react";
+import { useCommentsByTask, useCreateComment } from "@/modules/tasks/comments/hooks/useComments";
+import { useCurrentUser } from "@/modules/profile/hooks/useCurrentUser";
+import type { Comment } from "@/modules/tasks/comments/entities/Comment";
 
 interface CommentSectionProps {
   taskId: string;
@@ -12,27 +13,58 @@ export function CommentSection({ taskId }: CommentSectionProps) {
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
-  const { addComment, getComments } = useCommentsStore();
 
-  const allComments = [
-    ...(mockCommentsByTask[taskId] || []),
-    ...getComments(taskId),
-  ];
+  const taskIdNum = Number(taskId);
+  const { data: commentsData, isLoading } = useCommentsByTask(taskIdNum);
+  const createComment = useCreateComment();
+  const { data: currentUser } = useCurrentUser();
 
-  const totalComments = allComments.filter(
-    (comment) => !comment.replyTo,
-  ).length;
+  const comments = commentsData?.data || [];
 
-  const displayComments = showAllComments
-    ? allComments.filter((comment) => !comment.replyTo)
-    : allComments.filter((comment) => !comment.replyTo).slice(0, 3);
-
-  // Helper function to get all replies recursively
   const getReplies = (commentId: string) => {
-    return allComments.filter((c) => c.replyTo === commentId);
+    return (comments as Comment[]).filter((c: Comment) => c.replyId === commentId);
   };
 
-  // Helper function to render comment with all nested replies
+  const formatTimeAgo = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return "Just now";
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      await createComment.mutateAsync({
+        taskId: taskIdNum,
+        content: newComment.trim(),
+      });
+      setNewComment("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
+  };
+
+  const handleReply = async (_commentId: string) => {
+    if (!replyText.trim()) return;
+
+    try {
+      await createComment.mutateAsync({
+        taskId: taskIdNum,
+        content: replyText.trim(),
+      });
+      setReplyText("");
+      setReplyingTo(null);
+    } catch (error) {
+      console.error("Failed to add reply:", error);
+    }
+  };
+
   const renderCommentWithReplies = (comment: Comment, level: number = 0) => {
     const replies = getReplies(comment.id);
     const marginLeft = level > 0 ? "ml-8" : "";
@@ -43,20 +75,22 @@ export function CommentSection({ taskId }: CommentSectionProps) {
         : "pt-[8px] pr-[12px] pb-[8px] pl-[12px]";
     const iconSize = level > 0 ? 14 : 16;
 
+    const userAvatar = comment.user?.avatar || comment.user?.assets?.[0]?.url || "";
+
     return (
       <div key={comment.id} className={marginLeft}>
         <div className="flex gap-3">
           <img
-            src={comment.avatar}
-            alt={comment.author}
+            src={userAvatar || "/default-avatar.png"}
+            alt={comment.user?.name || "User"}
             className={`${avatarSize} rounded-full object-cover`}
           />
           <div className="flex-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-sm">{comment.author}</span>
+                <span className="font-semibold text-sm">{comment.user?.name || "User"}</span>
                 <span className="text-text-secondary text-label2 mt-0.5">
-                  {comment.time}
+                  {formatTimeAgo(comment.createdAt)}
                 </span>
               </div>
               <button className="text-text-caption2 hover:text-brand-purple">
@@ -87,38 +121,19 @@ export function CommentSection({ taskId }: CommentSectionProps) {
                     placeholder="Write a reply..."
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter" && replyText.trim()) {
-                        addComment(
-                          taskId,
-                          replyText.trim(),
-                          "User",
-                          "/Ali.jpg",
-                          comment.id,
-                        );
-                        setReplyText("");
-                        setReplyingTo(null);
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleReply(comment.id);
                       }
                     }}
                     className="flex-1 bg-transparent outline-none text-sm"
                   />
                   <button
                     className="text-brand-purple hover:text-purple-600"
-                    onClick={() => {
-                      if (replyText.trim()) {
-                        addComment(
-                          taskId,
-                          replyText.trim(),
-                          "User",
-                          "/Ali.jpg",
-                          comment.id,
-                        );
-                        setReplyText("");
-                        setReplyingTo(null);
-                      }
-                    }}
+                    onClick={() => handleReply(comment.id)}
+                    disabled={createComment.isPending}
                   >
-                    <MessageCircle size={iconSize} />
+                    <Send size={iconSize} />
                   </button>
                 </div>
               </div>
@@ -126,69 +141,82 @@ export function CommentSection({ taskId }: CommentSectionProps) {
           </div>
         </div>
 
-        {/* Render nested replies */}
         {replies.length > 0 && (
           <div className="mt-3 space-y-3">
-            {replies.map((reply) => renderCommentWithReplies(reply, level + 1))}
+            {replies.map((reply: Comment) => renderCommentWithReplies(reply, level + 1))}
           </div>
         )}
       </div>
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="pt-4 space-y-3">
+        <div className="flex items-center justify-center py-4">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-purple"></div>
+        </div>
+      </div>
+    );
+  }
+
+  const displayComments = showAllComments
+    ? comments
+    : comments.slice(0, 3);
+
   return (
     <div className="pt-4 space-y-3">
       <div className="flex items-center justify-between text-body-s1 mb-8">
-        <span>Comments ({totalComments})</span>
-        <select className="bg-primary rounded-[40px] outline-none text-primary font-medium">
+        <span>Comments ({comments.length})</span>
+        <select className="bg-primary rounded-[40px] outline-none text-primary font-medium text-sm px-3 py-1">
           <option>All</option>
           <option>Recent</option>
           <option>Popular</option>
         </select>
       </div>
 
-      {/* Comments List */}
       <div className="space-y-4">
-        {displayComments.map((comment) => renderCommentWithReplies(comment))}
+        {comments.length === 0 ? (
+          <p className="text-text-secondary text-sm text-center py-4">No comments yet. Be the first to comment!</p>
+        ) : (
+          (displayComments as Comment[]).map((comment: Comment) => renderCommentWithReplies(comment))
+        )}
       </div>
 
-      {/* Show More Button */}
-      {!showAllComments && totalComments > 5 && (
+      {!showAllComments && comments.length > 3 && (
         <button
           className="text-brand-purple hover:text-purple-600 text-sm font-medium py-2 cursor-pointer"
           onClick={() => setShowAllComments(true)}
         >
-          Show more comments ({totalComments - 5} more)
+          Show more comments ({comments.length - 3} more)
         </button>
       )}
 
-      {/* Comment Input */}
       <div className="flex gap-3">
-        <div className="w-8 h-8 rounded-full bg-gray-200 shrink-0"></div>
+        <img
+          src={currentUser?.avatar || currentUser?.assets?.[0]?.url || "/default-avatar.png"}
+          alt="Your avatar"
+          className="w-8 h-8 rounded-full object-cover"
+        />
         <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-2">
           <input
             type="text"
             placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter" && newComment.trim()) {
-                addComment(taskId, newComment.trim(), "User", "/Ali.jpg");
-                setNewComment("");
+                handleAddComment();
               }
             }}
             className="flex-1 bg-transparent outline-none text-sm"
           />
           <button
-            className="text-brand-purple hover:text-purple-600"
-            onClick={() => {
-              if (newComment.trim()) {
-                addComment(taskId, newComment.trim(), "User", "/Ali.jpg");
-                setNewComment("");
-              }
-            }}
+            className="text-brand-purple hover:text-purple-600 disabled:opacity-50"
+            onClick={handleAddComment}
+            disabled={createComment.isPending || !newComment.trim()}
           >
-            <MessageCircle size={16} />
+            <Send size={16} />
           </button>
         </div>
       </div>
