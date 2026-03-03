@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import type { ChatConversation } from '@/shared/data/mockChats';
 
 interface ChatSidebarProps {
@@ -20,7 +21,12 @@ export function ChatSidebar({ onSelectConversation, activeId, conversations }: C
                 : 'hover:bg-gray-50 border border-transparent'
             }`}
           >
-            <div className="relative">
+            <Link 
+              to="/user-profile/$userId" 
+              params={{ userId: chat.id.toString() }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative shrink-0"
+            >
               <img
                 src={chat.userAvatar}
                 alt={chat.userName}
@@ -29,10 +35,17 @@ export function ChatSidebar({ onSelectConversation, activeId, conversations }: C
               {chat.status === 'new' && (
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-brand-purple rounded-full border-2 border-white" />
               )}
-            </div>
+            </Link>
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-baseline mb-0.5">
-                <p className="text-[14px] font-semibold text-[#251455] truncate">{chat.userName}</p>
+                <Link 
+                  to="/user-profile/$userId" 
+                  params={{ userId: chat.id.toString() }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[14px] font-semibold text-[#251455] truncate hover:text-brand-purple transition-colors"
+                >
+                  {chat.userName}
+                </Link>
                 <span className="text-[10px] text-gray-400 whitespace-nowrap">{chat.time}</span>
               </div>
               <div className="flex justify-between items-center gap-1">

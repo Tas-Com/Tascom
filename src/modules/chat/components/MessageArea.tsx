@@ -2,6 +2,7 @@ import { MoreVertical, ChevronLeft, Mic, Send, Plus, Image as ImageIcon, FileTex
 import type { ChatMessage, ChatConversation } from "@/shared/data/mockChats";
 import { useState, useRef, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import { Link } from "@tanstack/react-router";
 
 interface MessageAreaProps {
   messages: ChatMessage[];
@@ -46,18 +47,26 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
           <button className="p-1 hover:bg-gray-100 rounded-full transition-colors mr-1">
             <ChevronLeft size={24} className="text-[#251455]" />
           </button>
-          <div className="relative">
+          <Link
+            to="/user-profile/$userId"
+            params={{ userId: activeConversation.id.toString() }}
+            className="relative hover:opacity-80 transition-opacity"
+          >
             <img
               src={activeConversation.userAvatar}
               alt={activeConversation.userName}
               className="w-10 h-10 rounded-full object-cover"
             />
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
-          </div>
+          </Link>
           <div>
-            <h3 className="text-[16px] font-semibold text-[#251455]">
+            <Link
+              to="/user-profile/$userId"
+              params={{ userId: activeConversation.id.toString() }}
+              className="text-[16px] font-semibold text-[#251455] hover:text-brand-purple transition-colors"
+            >
               {activeConversation.userName}
-            </h3>
+            </Link>
             <p className="text-[12px] text-green-500 font-medium">Active Now</p>
           </div>
         </div>
@@ -84,11 +93,17 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
             >
               <div className="flex items-end gap-2 max-w-[70%]">
                 {!msg.isSentByMe && (
-                  <img
-                    src={activeConversation.userAvatar}
-                    className="w-8 h-8 rounded-full object-cover mb-1"
-                    alt=""
-                  />
+                  <Link
+                    to="/user-profile/$userId"
+                    params={{ userId: activeConversation.id.toString() }}
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <img
+                      src={activeConversation.userAvatar}
+                      className="w-8 h-8 rounded-full object-cover mb-1"
+                      alt=""
+                    />
+                  </Link>
                 )}
                 <div
                   className={`p-3 rounded-2xl text-[14px] whitespace-pre-wrap ${
