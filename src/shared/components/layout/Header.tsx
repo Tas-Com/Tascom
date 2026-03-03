@@ -1,4 +1,4 @@
-import { Bell, MessageSquare, Home } from "lucide-react";
+import { Bell, MessagesSquare, Home } from "lucide-react";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
@@ -62,7 +62,7 @@ export function Header({ userName, userAvatar }: HeaderProps) {
         </div>
 
         <Link to="/chat">
-          <MessageSquare
+          <MessagesSquare
             size={30}
             className={`cursor-pointer transition-colors ${isChatPage && !isNotificationOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
               }`}
