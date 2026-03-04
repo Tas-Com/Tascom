@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { restTasks } from "../repository/restTasks";
 import type { TaskFilters, CreateTaskDto } from "../repository/TasksDtos";
 
 const tasksRepo = restTasks();
 
-export const useTasks = (filters: TaskFilters) => {
+export const useTasks = (filters?: TaskFilters) => {
   return useQuery({
     queryKey: ["tasks", filters],
     queryFn: () => tasksRepo.getTasks(filters),
@@ -127,5 +127,21 @@ export const useTrendingCategories = () => {
   return useQuery({
     queryKey: ["trending-categories"],
     queryFn: () => tasksRepo.getTrendingCategories(),
+  });
+};
+
+export const useInfiniteTasksQuery = (
+  filters?: Omit<TaskFilters, "page">,
+  limit = 20,
+) => {
+  return useInfiniteQuery({
+    queryKey: ["tasks-infinite", { ...filters, limit }],
+    queryFn: ({ pageParam = 1 }) =>
+      tasksRepo.getTasks({ ...filters, page: pageParam as number, limit }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.meta;
+      return page < totalPages ? page + 1 : undefined;
+    },
   });
 };

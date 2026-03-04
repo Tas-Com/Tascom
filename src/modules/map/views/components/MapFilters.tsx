@@ -20,7 +20,10 @@ interface MapFiltersProps {
 
 export const MapFilters: React.FC<MapFiltersProps> = ({
   locationName,
-  date = "11 Aug",
+  date = new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+  }).format(new Date()),
   points = 15,
   onDateChange,
   onPointsChange,

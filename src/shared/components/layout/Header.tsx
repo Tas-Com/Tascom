@@ -5,6 +5,7 @@ import { useState } from "react";
 import { NotificationDropdown } from "@/modules/notifications/components/NotificationDropdown";
 import { mockNotifications } from "@/shared/data/mockNotifications";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import userDefaultImg from "@/assets/user.jpg";
 
 type HeaderProps = {
   userName: string;
@@ -23,7 +24,7 @@ export function Header({ userName, userAvatar }: HeaderProps) {
   const unreadCount = mockNotifications.filter((n) => !n.isRead).length;
 
   return (
-    <header className="h-16 bg-white flex items-center justify-between px-9 z-[100] relative">
+    <header className="h-16 bg-white flex items-center justify-between px-9 z-100 relative">
       <div className="flex items-center gap-2 ml-7">
         <img src="/Grouph 2.png" alt="logo" className="w-64.78px h-44px" />
         <img src="/Tascom.png" alt="Tascom" className="h-44px w-144px" />
@@ -67,7 +68,7 @@ export function Header({ userName, userAvatar }: HeaderProps) {
 
         <Link to="/profile">
           <img
-            src={userAvatar || "/Grouph.png"}
+            src={userAvatar || userDefaultImg}
             alt={userName || "User"}
             className={`w-9 h-9 mr-4 cursor-pointer rounded-full object-cover
           ${isProfilePage && !isOpen ? "border-2 border-brand-purple" : "border-2 border-transparent"}

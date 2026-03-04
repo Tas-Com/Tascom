@@ -8,7 +8,10 @@ declare module '@tanstack/react-router' {
     router: typeof router;
   }
 }
+import { useLocation } from "./shared/hooks/useLocation";
+
 function App() {
+  useLocation();
   return <RouterProvider router={router} />;
 }
 

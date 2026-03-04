@@ -19,9 +19,9 @@ export const toTask = (response: TaskResponse): Task => {
     assets: response.assets,
     creator: response.creator
       ? {
-          ...response.creator,
-          id: String(response.creator.id),
-        }
+        ...response.creator,
+        id: String(response.creator.id),
+      }
       : undefined,
     likesCount: response.likesCount || response.numOfLikes,
     commentsCount: response.commentsCount,
@@ -31,9 +31,9 @@ export const toTask = (response: TaskResponse): Task => {
     claimerId: response.claimantId,
     claimer: response.claimer
       ? {
-          ...response.claimer,
-          id: String(response.claimer.id),
-        }
+        ...response.claimer,
+        id: String(response.claimer.id),
+      }
       : undefined,
     numOfLikes: response.numOfLikes,
     claims: response.claims,

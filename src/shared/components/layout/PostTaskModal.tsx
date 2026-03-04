@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useCreateTask } from "@/modules/tasks/hooks/useTasks";
 import { useCurrentUser } from "@/modules/profile/hooks/useCurrentUser";
+import userDefaultImg from "@/assets/user.jpg";
 import {
   apiCategories,
   getCategoryValue,
@@ -145,7 +146,8 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
   };
 
   const userName = currentUser?.name || "User";
-  const userAvatar = currentUser?.assets?.[0]?.url || currentUser?.avatar || "";
+  const rawAvatar = currentUser?.assets?.[0]?.url || currentUser?.avatar || "";
+  const userAvatar = rawAvatar === "null" ? "" : rawAvatar;
 
   return (
     <div className="fixed inset-0 z-200 bg-black/40 flex justify-center items-end sm:items-center p-0 sm:py-2 sm:px-4">
@@ -155,9 +157,12 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img
-                src={userAvatar}
+                src={userAvatar || userDefaultImg}
                 className="w-8 h-8 rounded-full object-cover"
                 alt={userName}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = userDefaultImg;
+                }}
               />
               <div>
                 <p className="font-semibold text-sm text-text-primary leading-tight">
