@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRegister } from "./useRegister";
 import { useNavigate } from "@tanstack/react-router";
+import { useLocation } from "../../../shared/hooks/useLocation";
 import { getLocation } from "../../../shared/utils/getLocation";
 
 export const registerSchema = z
@@ -34,16 +35,22 @@ export type RegisterFormValues = z.infer<typeof registerSchema>;
 export const useRegisterForm = () => {
     const registerMutation = useRegister();
     const [showSuccess, setShowSuccess] = useState(false);
+    const { location: cachedLocation, refreshLocation } = useLocation();
     const [userLocation, setUserLocation] = useState<{
         latitude: number;
         longitude: number;
-    } | null>(null);
-    const [isLocating, setIsLocating] = useState(true);
+    } | null>(cachedLocation);
+    const [isLocating, setIsLocating] = useState(false);
     const [locationError, setLocationError] = useState<string | null>(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (cachedLocation) {
+            setUserLocation(cachedLocation);
+        }
+    }, [cachedLocation]);
+
     const requestLocation = async () => {
-        setIsLocating(true);
         setLocationError(null);
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -52,7 +59,6 @@ export const useRegisterForm = () => {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     });
-                    setIsLocating(false);
                     setLocationError(null);
                 },
                 async () => {
@@ -60,9 +66,7 @@ export const useRegisterForm = () => {
                     try {
                         const fallbackLocation = await getLocation();
                         setUserLocation(fallbackLocation);
-                        setIsLocating(false);
                     } catch {
-                        setIsLocating(false);
                         setUserLocation(null);
                         setLocationError(
                             "Please enable location access to register. We need your location to connect you with nearby tasks.",
@@ -75,9 +79,7 @@ export const useRegisterForm = () => {
             try {
                 const fallbackLocation = await getLocation();
                 setUserLocation(fallbackLocation);
-                setIsLocating(false);
             } catch {
-                setIsLocating(false);
                 setLocationError("Geolocation is not supported by your browser.");
             }
         }
@@ -109,7 +111,8 @@ export const useRegisterForm = () => {
         if (!finalLocation) {
             setIsLocating(true);
             try {
-                finalLocation = await getLocation();
+                finalLocation = await refreshLocation(true);
+                if (!finalLocation) throw new Error("Could not get location");
                 setUserLocation(finalLocation);
             } catch {
                 setIsLocating(false);

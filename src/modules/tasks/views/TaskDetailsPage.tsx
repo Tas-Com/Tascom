@@ -56,6 +56,7 @@ export const TaskDetailsPage = () => {
           rating={taskCardData.rating}
           taskerImage={taskCardData.taskerImage}
           priority={taskCardData.priority}
+          defaultShowComments={true}
         />
       </div>
       <div className="hidden lg:block">

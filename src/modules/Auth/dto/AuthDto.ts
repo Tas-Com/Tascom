@@ -33,6 +33,7 @@ export type User = {
     fileType: string;
     fileId: string;
     ownerId: string;
+    taskId: string | null;
   }[];
 };
 

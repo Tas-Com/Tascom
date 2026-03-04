@@ -24,6 +24,7 @@ type TaskCardProps = {
   taskId: string;
   compact?: boolean;
   isLiked?: boolean;
+  defaultShowComments?: boolean;
 };
 
 export function TaskCard({
@@ -44,8 +45,9 @@ export function TaskCard({
   taskId,
   compact = false,
   isLiked = false,
+  defaultShowComments = false,
 }: TaskCardProps) {
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(defaultShowComments);
   const [localLikes, setLocalLikes] = useState(likes);
   const [localIsLiked, setLocalIsLiked] = useState(isLiked);
   const likeTask = useLikeTask();

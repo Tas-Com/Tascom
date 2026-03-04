@@ -40,9 +40,9 @@ export function TaskCardActions({
   return (
     <>
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 md:gap-8">
+        <div className="flex items-center gap-2 md:gap-3">
           <button
-            className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors cursor-pointer"
+            className="flex items-center gap-1 h-[34px] px-3 py-2 bg-bg-primary rounded-[40px] text-caption2 hover:text-brand-purple transition-colors cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               if (onLike) {
@@ -51,28 +51,28 @@ export function TaskCardActions({
             }}
           >
             <Heart
-              size={20}
+              size={18}
               className={`${isTaskLiked
                 ? "text-icon-liked fill-current"
                 : "text-icon-default"
                 }`}
             />
-            <span>{currentLikes}</span>
+            <span className="text-text-primary">{currentLikes}</span>
           </button>
 
           <button
-            className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors"
+            className="flex items-center gap-1 h-[34px] px-3 py-2 bg-bg-primary rounded-[40px] text-caption2 hover:text-brand-purple transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               onToggleComments();
             }}
           >
-            <MessageCircle size={20} className="text-icon-default" />
-            <span>{totalComments}</span>
+            <MessageCircle size={18} className="text-icon-default" />
+            <span className="text-text-primary">{totalComments}</span>
           </button>
 
-          <button className="flex items-center gap-2 text-caption2 hover:text-brand-purple transition-colors">
-            <Forward size={25} className="text-icon-default" />
+          <button className="flex items-center justify-center w-[42px] h-[34px] px-3 py-2 bg-bg-primary rounded-[40px] text-caption2 hover:text-brand-purple transition-colors">
+            <Forward size={20} className="text-icon-default" />
           </button>
         </div>
 

@@ -36,10 +36,21 @@ interface MapTaskItem {
 export const MapPage = () => {
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
   const { data: mapTasksResponse, isLoading: isTasksLoading } = useMapTasks();
+  console.log(mapTasksResponse)
 
   // Transform API tasks to card-ready data with coordinates
   const mapTasks = useMemo(() => {
-    const rawTasks = mapTasksResponse?.data?.data ?? [];
+    let rawTasks: TaskResponse[] = [];
+    if (mapTasksResponse?.data) {
+      if (Array.isArray(mapTasksResponse.data)) {
+        rawTasks = mapTasksResponse.data;
+      } else if (Array.isArray((mapTasksResponse.data as any).data)) {
+        rawTasks = (mapTasksResponse.data as any).data;
+      }
+    }
+
+    console.log(rawTasks, "Raw")
+
     return rawTasks.map((taskResponse: TaskResponse) => {
       const task = toTask(taskResponse);
       const cardData = toTaskCardData(task);
@@ -199,7 +210,7 @@ export const MapPage = () => {
 
               <div className="absolute top-2 left-0 right-0 flex justify-center">
                 <span className="text-[14px] font-bold text-white leading-none">
-                  1
+                  {task.points}
                 </span>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { Star, Bookmark, MoreVertical } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { ReportTaskModal } from "../common/ReportTaskModal";
+import userDefaultImg from "@/assets/user.jpg";
 
 interface TaskCardHeaderProps {
   taskerName: string;
@@ -36,20 +37,14 @@ export function TaskCardHeader({
   return (
     <div className="flex items-center justify-between relative">
       <div className="flex items-center gap-3">
-        {taskerImage ? (
-          <img
-            src={taskerImage}
-            alt={taskerName}
-            className={`rounded-full object-cover ${compact ? "w-8 h-8" : "w-10 h-10"}`}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "https://i.pravatar.cc/40";
-            }}
-          />
-        ) : (
-          <div className={`rounded-full bg-gray-200 flex items-center justify-center ${compact ? "w-8 h-8" : "w-10 h-10"}`}>
-            <span className="text-xs text-gray-500">{taskerName.charAt(0).toUpperCase()}</span>
-          </div>
-        )}
+        <img
+          src={taskerImage || userDefaultImg}
+          alt={taskerName}
+          className={`rounded-full object-cover ${compact ? "w-8 h-8" : "w-10 h-10"}`}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = userDefaultImg;
+          }}
+        />
         <div>
           <div className="flex items-center gap-1">
             <p className="font-semibold text-primary">{taskerName}</p>

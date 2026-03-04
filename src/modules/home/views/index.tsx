@@ -1,14 +1,49 @@
+import { useEffect, useRef, useCallback } from "react";
 import { RightSidebar } from "@/shared/components/layout/RightSidebar";
-import { TaskCard } from "@/shared/components/cards/TaskCard";
-import { useTasks } from "@/modules/tasks/hooks/useTasks";
-import { toTaskCardData } from "@/modules/tasks/adapters/toTask";
+import { TaskCardWithCreator } from "@/shared/components/cards/TaskCardWithCreator";
+import { useInfiniteTasksQuery } from "@/modules/tasks/hooks/useTasks";
+import { toTask, toTaskCardData } from "@/modules/tasks/adapters/toTask";
 import type { TaskResponse } from "@/modules/tasks/repository/TasksDtos";
 
 export const HomePage = () => {
-  const { data: tasksResponse, isLoading } = useTasks({ limit: 20, page: 1 });
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteTasksQuery(undefined, 20);
 
-  const tasks: TaskResponse[] = tasksResponse?.data || [];
-  const taskCardData = tasks.map((task) => toTaskCardData(task as any));
+  const allTasks: TaskResponse[] =
+    data?.pages.flatMap((page) => page.data) ?? [];
+
+  const taskCardData = allTasks.map((task) => ({
+    ...toTaskCardData(toTask(task)),
+    creatorId: task.creatorId,
+    latitude: task.latitude,
+    longitude: task.longitude,
+    fallbackName: task.creator?.name,
+    fallbackRating: task.creator?.ratingAvg ?? task.creator?.rating,
+  }));
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const onIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [onIntersect]);
 
   if (isLoading) {
     return (
@@ -34,25 +69,40 @@ export const HomePage = () => {
           ) : (
             taskCardData.map((task) => (
               <div key={task.taskId} className="flex justify-center">
-                <TaskCard
-                  taskerName={task.taskerName}
-                  rating={task.rating}
+                <TaskCardWithCreator
+                  taskId={task.taskId}
+                  creatorId={task.creatorId}
+                  fallbackName={task.fallbackName}
+                  fallbackRating={task.fallbackRating}
+                  latitude={task.latitude}
+                  longitude={task.longitude}
                   taskTitle={task.taskTitle}
                   description={task.description}
                   categories={task.categories}
-                  location={task.location}
                   duration={task.duration}
                   points={task.points}
                   imageUrl={task.imageUrl}
                   likes={task.likes}
                   comments={task.comments}
                   postedTime={task.postedTime}
-                  taskerImage={task.taskerImage}
                   priority={task.priority}
-                  taskId={task.taskId}
                 />
               </div>
             ))
+          )}
+
+          <div ref={sentinelRef} className="h-4" />
+
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-6">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple" />
+            </div>
+          )}
+
+          {!hasNextPage && taskCardData.length > 0 && (
+            <p className="text-center text-sm text-text-secondary py-4">
+              You&apos;ve seen all tasks
+            </p>
           )}
         </div>
       </div>

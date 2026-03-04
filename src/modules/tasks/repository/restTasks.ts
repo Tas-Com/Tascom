@@ -14,17 +14,7 @@ import type {
   ApiResponse,
 } from "./TasksDtos";
 
-const buildQueryString = (filters: TaskFilters): string => {
-  const params = new URLSearchParams();
 
-  Object.entries(filters).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      params.append(key, String(value));
-    }
-  });
-
-  return params.toString();
-};
 
 export const restTasks = (): TasksRepo => ({
   createTask: async (data: CreateTaskDto) => {
@@ -34,9 +24,14 @@ export const restTasks = (): TasksRepo => ({
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("priority", data.priority);
-    formData.append("deadline", data.deadline);
-    formData.append("latitude", String(data.latitude));
-    formData.append("longitude", String(data.longitude));
+
+    if (data.deadline) formData.append("deadline", data.deadline);
+    if (data.latitude !== undefined && data.latitude !== null) {
+      formData.append("latitude", String(data.latitude));
+    }
+    if (data.longitude !== undefined && data.longitude !== null) {
+      formData.append("longitude", String(data.longitude));
+    }
 
     if (data.images) {
       data.images.forEach((image) => {
@@ -48,11 +43,10 @@ export const restTasks = (): TasksRepo => ({
     return apiClient.post<CreateTaskResponse>("/tasks/Create-Task", formData);
   },
 
-  getTasks: async (filters: TaskFilters) => {
-    const queryString = buildQueryString(filters);
-    return apiClient.get<PaginatedResponse<TaskResponse>>(
-      `/tasks?${queryString}`,
-    );
+  getTasks: async (filters?: TaskFilters) => {
+    return apiClient.get<PaginatedResponse<TaskResponse>>("/tasks", {
+      params: filters,
+    });
   },
 
   getTaskById: async (id: number) => {
@@ -67,8 +61,13 @@ export const restTasks = (): TasksRepo => ({
     if (data.category) formData.append("category", data.category);
     if (data.priority) formData.append("priority", data.priority);
     if (data.deadline) formData.append("deadline", data.deadline);
-    if (data.latitude) formData.append("latitude", String(data.latitude));
-    if (data.longitude) formData.append("longitude", String(data.longitude));
+
+    if (data.latitude !== undefined && data.latitude !== null) {
+      formData.append("latitude", String(data.latitude));
+    }
+    if (data.longitude !== undefined && data.longitude !== null) {
+      formData.append("longitude", String(data.longitude));
+    }
 
     if (data.images) {
       data.images.forEach((image) => {
