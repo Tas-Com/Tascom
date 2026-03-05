@@ -1,27 +1,62 @@
+import { useState, useEffect } from "react";
 import { useSearch, useParams, useNavigate } from "@tanstack/react-router";
 import { ProfileHero } from "../components/ProfileHero";
 import { ProfileStats } from "../components/ProfileStats";
 import { AboutSkillsSection } from "../components/AboutSkillsSection";
 import { ActivitySection } from "../components/ActivitySection";
-import { mockUserProfiles, mockPostedTasks, mockRecentWork } from "../data/mockUserProfile";
+import { mockPostedTasks, mockRecentWork } from "../data/mockUserProfile";
 import { EmptyState } from "@/shared/components/ui/EmptyState";
+import { restUsers } from "@/modules/profile/repository/restUsers";
+import type { User } from "@/modules/Auth/dto/AuthDto";
+import { Loader2 } from "lucide-react";
 
 const UserProfilePage = () => {
   const navigate = useNavigate();
   const search = useSearch({ strict: false });
   const params = useParams({ strict: false });
-  const userId = params.userId ? parseInt(params.userId as string) : null;
+  const userId = params.userId as string;
   
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const showAcceptButton = (search as { showAcceptButton?: boolean }).showAcceptButton;
   
-  const user = userId ? mockUserProfiles[userId] : null;
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!userId) return;
+      
+      setLoading(true);
+      setError(false);
+      try {
+        const userData = await restUsers().getById(userId);
+        setUser(userData);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!user) {
+    fetchUser();
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
+        <Loader2 className="w-12 h-12 text-[#6B39F4] animate-spin" />
+        <p className="mt-4 text-[#251455] font-medium">Loading profile...</p>
+      </div>
+    );
+  }
+
+  if (error || !user) {
     return (
       <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)] gap-6 animate-in fade-in zoom-in duration-300">
         <EmptyState 
           imageSrc="/empty-messages.png" 
-          message="Oops! This user profile doesn't exist."
+          message={error ? "Something went wrong while loading the profile." : "Oops! This user profile doesn't exist."}
         />
         <button 
           onClick={() => navigate({ to: "/" })}
