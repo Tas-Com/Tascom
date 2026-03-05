@@ -104,8 +104,8 @@ export const restTasks = (): TasksRepo => ({
     return apiClient.get<MapTasksResponse>("/tasks/map");
   },
 
-  getTopTaskers: async () => {
-    return apiClient.get<TopTaskersResponse>("/tasks/top-taskers?limit=10");
+  getTopTaskers: async (limit: number = 10) => {
+    return apiClient.get<TopTaskersResponse>(`/tasks/top-taskers?limit=${limit}`);
   },
 
   getTrendingCategories: async () => {

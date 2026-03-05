@@ -3,6 +3,7 @@ import type { SavedTask } from "../components/SavedTaskCard";
 export const mockSavedTasks: SavedTask[] = [
     {
         id: "1",
+        creatorId: "1",
         taskerName: "Adam Ahmad",
         taskerImage: "/Adaam.jpg",
         rating: 4.5,
@@ -14,6 +15,7 @@ export const mockSavedTasks: SavedTask[] = [
     },
     {
         id: "2",
+        creatorId: "2",
         taskerName: "Ali Alya",
         taskerImage: "/Alii.jpg",
         rating: 4.0,
@@ -25,6 +27,7 @@ export const mockSavedTasks: SavedTask[] = [
     },
     {
         id: "3",
+        creatorId: "3",
         taskerName: "Sarah Johnson",
         taskerImage: "/Alii.jpg",
         rating: 4.8,

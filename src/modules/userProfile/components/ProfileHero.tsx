@@ -12,7 +12,7 @@ export function ProfileHero({ user, showAcceptButton }: ProfileHeroProps) {
       <div className="flex items-center gap-6">
         <div className="relative">
           <img
-            src={user.avatar || "/Ali.jpg"}
+            src={user.avatar || `https://i.pravatar.cc/150?u=${user.id}`}
             alt={user.name}
             className="w-[100px] h-[100px] rounded-full object-cover border-4 border-white shadow-sm"
           />

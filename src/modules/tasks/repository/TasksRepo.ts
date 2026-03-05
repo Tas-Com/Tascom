@@ -26,6 +26,6 @@ export interface TasksRepo {
   likeTask: (id: number) => Promise<TaskOperationResponse>;
   completeTask: (id: number) => Promise<TaskOperationResponse>;
   getMapTasks: () => Promise<MapTasksResponse>;
-  getTopTaskers: () => Promise<TopTaskersResponse>;
+  getTopTaskers: (limit?: number) => Promise<TopTaskersResponse>;
   getTrendingCategories: () => Promise<TrendingCategoriesResponse>;
 }

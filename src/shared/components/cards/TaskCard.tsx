@@ -23,6 +23,7 @@ type TaskCardProps = {
   taskerImage: string;
   priority: string;
   taskId: string;
+  creatorId?: string;
   compact?: boolean;
   isLiked?: boolean;
   isSaved?: boolean;
@@ -45,6 +46,7 @@ export function TaskCard({
   taskerImage,
   priority,
   taskId,
+  creatorId,
   compact = false,
   isLiked = false,
   isSaved = false,
@@ -102,6 +104,7 @@ export function TaskCard({
     >
       <TaskCardHeader
         taskId={taskId}
+        creatorId={creatorId}
         taskerName={taskerName}
         rating={rating}
         postedTime={postedTime}
