@@ -36,7 +36,6 @@ interface MapTaskItem {
 export const MapPage = () => {
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
   const { data: mapTasksResponse, isLoading: isTasksLoading } = useMapTasks();
-  console.log(mapTasksResponse);
 
   // Transform API tasks to card-ready data with coordinates
   const mapTasks = useMemo(() => {
@@ -44,12 +43,12 @@ export const MapPage = () => {
     if (mapTasksResponse?.data) {
       if (Array.isArray(mapTasksResponse.data)) {
         rawTasks = mapTasksResponse.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } else if (Array.isArray((mapTasksResponse.data as any).data)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rawTasks = (mapTasksResponse.data as any).data;
       }
     }
-
-    console.log(rawTasks, "Raw");
 
     return rawTasks.map((taskResponse: TaskResponse) => {
       const task = toTask(taskResponse);
