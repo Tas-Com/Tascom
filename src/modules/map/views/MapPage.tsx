@@ -4,7 +4,7 @@ import maplibregl from "maplibre-gl";
 import type { FilterSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { MapFilters } from "./components/MapFilters";
-import { TaskCard } from "@/shared/components/cards/TaskCard";
+import { TaskCardWithCreator } from "@/shared/components/cards/TaskCardWithCreator";
 import { useCurrentUser } from "@/modules/profile/hooks/useCurrentUser";
 import { useMapTasks } from "@/modules/tasks/hooks/useTasks";
 import { toTask, toTaskCardData } from "@/modules/tasks/adapters/toTask";
@@ -25,9 +25,9 @@ interface MapTaskItem {
   comments: number;
   postedTime: string;
   priority: string;
-  taskerName: string;
-  rating: number;
-  taskerImage: string;
+  creatorId: string;
+  fallbackName: string;
+  fallbackRating: number;
   latitude: number;
   longitude: number;
   isLiked?: boolean;
@@ -36,15 +36,29 @@ interface MapTaskItem {
 export const MapPage = () => {
   const { data: user, isLoading: isUserLoading } = useCurrentUser();
   const { data: mapTasksResponse, isLoading: isTasksLoading } = useMapTasks();
+  console.log(mapTasksResponse);
 
   // Transform API tasks to card-ready data with coordinates
   const mapTasks = useMemo(() => {
-    const rawTasks = mapTasksResponse?.data?.data ?? [];
+    let rawTasks: TaskResponse[] = [];
+    if (mapTasksResponse?.data) {
+      if (Array.isArray(mapTasksResponse.data)) {
+        rawTasks = mapTasksResponse.data;
+      } else if (Array.isArray((mapTasksResponse.data as any).data)) {
+        rawTasks = (mapTasksResponse.data as any).data;
+      }
+    }
+
+    console.log(rawTasks, "Raw");
+
     return rawTasks.map((taskResponse: TaskResponse) => {
       const task = toTask(taskResponse);
       const cardData = toTaskCardData(task);
       return {
         ...cardData,
+        creatorId: String(task.creatorId),
+        fallbackName: task.creator?.name || "Unknown",
+        fallbackRating: task.creator?.ratingAvg ?? task.creator?.rating ?? 0,
         latitude: task.latitude,
         longitude: task.longitude,
         isLiked: task.isLiked,
@@ -136,10 +150,10 @@ export const MapPage = () => {
 
           const mergedFilter: FilterSpecification = existingFilter
             ? ([
-              "all",
-              existingFilter,
-              ...sensitiveConditions,
-            ] as FilterSpecification)
+                "all",
+                existingFilter,
+                ...sensitiveConditions,
+              ] as FilterSpecification)
             : (["all", ...sensitiveConditions] as FilterSpecification);
 
           map.setFilter(layerId, mergedFilter);
@@ -199,7 +213,7 @@ export const MapPage = () => {
 
               <div className="absolute top-2 left-0 right-0 flex justify-center">
                 <span className="text-[14px] font-bold text-white leading-none">
-                  1
+                  {task.points}
                 </span>
               </div>
             </div>
@@ -212,9 +226,11 @@ export const MapPage = () => {
           style={{ width: 420 }}
         >
           <div className="rounded-2xl shadow-2xl border border-white/20 bg-white">
-            <TaskCard
-              taskerName={selectedTask.taskerName}
-              rating={selectedTask.rating}
+            <TaskCardWithCreator
+              taskId={selectedTask.taskId}
+              creatorId={selectedTask.creatorId}
+              fallbackName={selectedTask.fallbackName}
+              fallbackRating={selectedTask.fallbackRating}
               taskTitle={selectedTask.taskTitle}
               description={selectedTask.description}
               categories={selectedTask.categories}
@@ -225,10 +241,9 @@ export const MapPage = () => {
               likes={selectedTask.likes}
               comments={selectedTask.comments}
               postedTime={selectedTask.postedTime}
-              taskerImage={selectedTask.taskerImage}
               priority={selectedTask.priority}
-              taskId={selectedTask.taskId}
               isLiked={selectedTask.isLiked}
+              isSaved={selectedTask.isSaved}
               compact
             />
           </div>
@@ -237,8 +252,9 @@ export const MapPage = () => {
       {/* Mobile Screen */}
       {selectedTask && (
         <div
-          className={`md:hidden absolute bottom-0 left-0 right-0 z-20 bg-white rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.12)] transition-[max-height] duration-300 ease-in-out ${isMobileCardExpanded ? "max-h-[75vh]" : "max-h-16"
-            }`}
+          className={`md:hidden absolute bottom-0 left-0 right-0 z-20 bg-white rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.12)] transition-[max-height] duration-300 ease-in-out ${
+            isMobileCardExpanded ? "max-h-[75vh]" : "max-h-16"
+          }`}
         >
           <button
             onClick={() => setIsMobileCardExpanded((v) => !v)}
@@ -262,9 +278,11 @@ export const MapPage = () => {
 
           {isMobileCardExpanded && (
             <div className="overflow-y-auto max-h-[calc(75vh-40px)]">
-              <TaskCard
-                taskerName={selectedTask.taskerName}
-                rating={selectedTask.rating}
+              <TaskCardWithCreator
+                taskId={selectedTask.taskId}
+                creatorId={selectedTask.creatorId}
+                fallbackName={selectedTask.fallbackName}
+                fallbackRating={selectedTask.fallbackRating}
                 taskTitle={selectedTask.taskTitle}
                 description={selectedTask.description}
                 categories={selectedTask.categories}
@@ -275,10 +293,9 @@ export const MapPage = () => {
                 likes={selectedTask.likes}
                 comments={selectedTask.comments}
                 postedTime={selectedTask.postedTime}
-                taskerImage={selectedTask.taskerImage}
                 priority={selectedTask.priority}
-                taskId={selectedTask.taskId}
                 isLiked={selectedTask.isLiked}
+                isSaved={selectedTask.isSaved}
               />
             </div>
           )}

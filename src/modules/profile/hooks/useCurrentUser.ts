@@ -15,7 +15,16 @@ export const useCurrentUser = () => {
     queryKey: [CURRENT_USER_KEY, userId],
     queryFn: () => usersRepo.getById(userId!),
     enabled: !!userId,
-    // Keep data fresh for 24 hours since profile data rarely changes
     staleTime: 1000 * 60 * 60 * 24,
   });
 };
+
+export const useUserById = (id: string | null | undefined) => {
+  return useQuery<User>({
+    queryKey: ["user", id],
+    queryFn: () => usersRepo.getById(id!),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 10,
+  });
+};
+

@@ -3,7 +3,7 @@ import { apiClient } from "@/shared/api/client";
 export interface ChangePasswordPayload {
   oldPassword: string;
   newPassword: string;
-  confirmNewPassword: string;
+  confirmPassword: string;
 }
 
 export const changePasswordApi = async (

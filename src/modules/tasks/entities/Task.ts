@@ -23,6 +23,11 @@ export interface Task {
   claimer?: User;
   numOfLikes?: number;
   claims?: Claim[];
+  isExpired?: boolean;
+  remainingHours?: number;
+  remainingDays?: number;
+  distance?: number;
+  rating?: number;
 }
 
 export interface Asset {
@@ -34,7 +39,7 @@ export interface Asset {
 export interface User {
   id: string;
   name: string;
-  avatar?: string;
+  avatar?: string | null;
   assets?: Asset[];
   rating?: number;
   ratingAvg?: number;

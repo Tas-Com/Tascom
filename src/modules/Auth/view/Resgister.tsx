@@ -20,7 +20,7 @@ export default function RegisterPage() {
     isSubmitting,
     showSuccess,
     isLocating,
-    userLocation,
+    // userLocation,
     locationError,
   } = useRegisterForm();
 
@@ -224,10 +224,10 @@ export default function RegisterPage() {
         <Button
           type="submit"
           className="w-full h-9 md:h-10 2xl:h-14 text-[13px] lg:text-[14px] 2xl:text-[18px] font-bold bg-brand-purple hover:bg-brand-purple/90 text-white rounded-[100px] shadow-lg shadow-brand-purple/20 transition-all active:scale-[0.98] mt-2 2xl:mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={isSubmitting || isLocating || !userLocation || !isValid}
+          disabled={isSubmitting || isLocating || !isValid}
         >
           {isLocating
-            ? "Sign Up" // getting location
+            ? "Signing Up...." // getting location
             : isSubmitting
               ? "Sign Up..."
               : "Sign Up"}

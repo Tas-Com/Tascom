@@ -66,8 +66,8 @@ export const ChangePasswordPage = () => {
     setOldPassword,
     newPassword,
     setNewPassword,
-    confirmNewPassword,
-    setConfirmNewPassword,
+    confirmPassword,
+    setConfirmPassword,
     fieldErrors,
     isLoading,
     isSuccess,
@@ -112,10 +112,10 @@ export const ChangePasswordPage = () => {
 
         <PasswordInput
           label="Confirm New Password"
-          value={confirmNewPassword}
-          onChange={setConfirmNewPassword}
+          value={confirmPassword}
+          onChange={setConfirmPassword}
           hint="Minimum 8 characters"
-          error={fieldErrors.confirmNewPassword}
+          error={fieldErrors.confirmPassword}
         />
 
         <button

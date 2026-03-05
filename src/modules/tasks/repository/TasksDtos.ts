@@ -3,9 +3,9 @@ export interface CreateTaskDto {
   description: string;
   category: string;
   priority: "LOW" | "MEDIUM" | "HIGH";
-  deadline: string;
-  latitude: number;
-  longitude: number;
+  deadline?: string;
+  latitude?: number;
+  longitude?: number;
   images?: File[];
 }
 
@@ -50,6 +50,7 @@ export interface TaskResponse {
   longitude: number;
   deadline?: string;
   pointsOffered?: number;
+  points?: number; // Fallback for some endpoints
   status: string;
   priority: string;
   category: string;
@@ -62,6 +63,7 @@ export interface TaskResponse {
   creator?: User;
   likesCount?: number;
   commentsCount?: number;
+  comments?: any[]; // Some endpoints return the full array
   isLiked?: boolean;
   isSaved?: boolean;
   isCompleted?: boolean;
@@ -69,22 +71,54 @@ export interface TaskResponse {
   claimantId?: string;
   claimer?: User;
   claims?: Claim[];
+  isExpired?: boolean;
+  remainingHours?: number;
+  remainingDays?: number;
+  distance?: number;
+  rating?: number;
 }
 
 export interface Asset {
   id: string;
   url: string;
   fileType: string;
+  storageProviderName?: string;
+  fileId?: string;
+  fileSizeInKB?: number;
+  ownerId?: string;
+  taskId?: string;
+  createdAt?: string;
 }
 
 export interface User {
   id: string;
   name: string;
-  avatar?: string;
+  avatar?: string | null;
   assets?: Asset[];
   rating?: number;
   ratingAvg?: number;
   email?: string;
+  password?: string;
+  phoneNumber?: string;
+  role?: string;
+  customerStatus?: string;
+  about?: string;
+  skills?: string;
+  gender?: string;
+  lastActiveAt?: string;
+  facebookId?: string | null;
+  googleId?: string | null;
+  pointsBalance?: number;
+  isDeleted?: boolean;
+  DOB?: string;
+  provider?: string;
+  tokenVersion?: number;
+  resetPasswordExpires?: string | null;
+  resetPasswordToken?: string | null;
+  country?: string | null;
+  latitude?: number;
+  longitude?: number;
+  location?: string;
 }
 
 export interface Claim {

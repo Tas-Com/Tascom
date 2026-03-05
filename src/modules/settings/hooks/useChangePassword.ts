@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { changePasswordApi  } from "../apis/changepasswordApi";
+import { changePasswordApi } from "../apis/changepasswordApi";
 import type { ChangePasswordPayload } from "../apis/changepasswordApi";
 
 interface FieldErrors {
   oldPassword?: string;
   newPassword?: string;
-  confirmNewPassword?: string;
+  confirmPassword?: string;
 }
 
 export const useChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const validate = (): boolean => {
@@ -28,10 +28,10 @@ export const useChangePassword = () => {
       errors.newPassword = "Minimum 8 characters";
     }
 
-    if (!confirmNewPassword) {
-      errors.confirmNewPassword = "Please confirm your new password";
-    } else if (newPassword !== confirmNewPassword) {
-      errors.confirmNewPassword = "Passwords do not match";
+    if (!confirmPassword) {
+      errors.confirmPassword = "Please confirm your new password";
+    } else if (newPassword !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
     }
 
     setFieldErrors(errors);
@@ -39,14 +39,14 @@ export const useChangePassword = () => {
   };
 
   const mutation = useMutation<void, unknown, ChangePasswordPayload>({
-  mutationFn: changePasswordApi,
-  onSuccess: () => {
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmNewPassword("");
-    setFieldErrors({});
-  },
-});
+    mutationFn: changePasswordApi,
+    onSuccess: () => {
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setFieldErrors({});
+    },
+  });
 
   const handleSubmit = () => {
     if (!validate()) return;
@@ -54,7 +54,7 @@ export const useChangePassword = () => {
     mutation.mutate({
       oldPassword,
       newPassword,
-      confirmNewPassword,
+      confirmPassword,
     });
   };
 
@@ -63,8 +63,8 @@ export const useChangePassword = () => {
     setOldPassword,
     newPassword,
     setNewPassword,
-    confirmNewPassword,
-    setConfirmNewPassword,
+    confirmPassword,
+    setConfirmPassword,
     fieldErrors,
     isLoading: mutation.isPending,
     isSuccess: mutation.isSuccess,

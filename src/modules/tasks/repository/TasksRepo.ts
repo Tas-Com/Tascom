@@ -14,7 +14,7 @@ import type {
 
 export interface TasksRepo {
   createTask: (data: CreateTaskDto) => Promise<CreateTaskResponse>;
-  getTasks: (filters: TaskFilters) => Promise<PaginatedResponse<TaskResponse>>;
+  getTasks: (filters?: TaskFilters) => Promise<PaginatedResponse<TaskResponse>>;
   getTaskById: (id: number) => Promise<ApiResponse<TaskResponse>>;
   updateTask: (
     id: number,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TaskCard } from "@/shared/components/cards/TaskCard";
+import { TaskCardWithCreator } from "@/shared/components/cards/TaskCardWithCreator";
 import { useTasks } from "../hooks/useTasks";
 import { toTask, toTaskCardData } from "../adapters/toTask";
 import type { TaskFilters } from "../repository/TasksDtos";
@@ -11,6 +11,7 @@ export const TasksListPage = () => {
   });
 
   const { data, isLoading, error } = useTasks(filters);
+  console.log(data, "REAL");
 
   const tasks = data?.data || [];
 
@@ -56,22 +57,27 @@ export const TasksListPage = () => {
               const taskCardData = toTaskCardData(task);
               return (
                 <div key={taskResponse.id} className="flex justify-center">
-                  <TaskCard
+                  <TaskCardWithCreator
                     taskId={taskCardData.taskId}
+                    creatorId={String(taskResponse.creatorId)}
+                    fallbackName={taskResponse.creator?.name}
+                    fallbackRating={
+                      taskResponse.creator?.ratingAvg ??
+                      taskResponse.creator?.rating
+                    }
+                    location={taskCardData.location}
                     taskTitle={taskCardData.taskTitle}
                     description={taskCardData.description}
                     categories={taskCardData.categories}
-                    location={taskCardData.location}
                     duration={taskCardData.duration}
                     points={taskCardData.points}
                     imageUrl={taskCardData.imageUrl}
                     likes={taskCardData.likes}
                     comments={taskCardData.comments}
                     postedTime={taskCardData.postedTime}
-                    taskerName={taskCardData.taskerName}
-                    rating={taskCardData.rating}
-                    taskerImage={taskCardData.taskerImage}
                     priority={taskCardData.priority}
+                    isLiked={taskCardData.isLiked}
+                    isSaved={taskCardData.isSaved}
                   />
                 </div>
               );

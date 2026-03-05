@@ -6,7 +6,9 @@ export type LocationResult = {
   city: string;
 };
 
-export async function getLocation(): Promise<LocationResult> {
+export async function getLocation(
+  skipCity: boolean = false,
+): Promise<LocationResult> {
   return new Promise((resolve, reject) => {
     if (!("geolocation" in navigator)) {
       reject(new Error("Geolocation not supported"));
@@ -16,6 +18,15 @@ export async function getLocation(): Promise<LocationResult> {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
+
+        if (skipCity) {
+          resolve({
+            latitude,
+            longitude,
+            city: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`,
+          });
+          return;
+        }
 
         try {
           const response = await axios.get(

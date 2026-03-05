@@ -23,20 +23,27 @@ export const toTask = (response: TaskResponse): Task => {
           id: String(response.creator.id),
         }
       : undefined,
-    likesCount: response.likesCount || response.numOfLikes,
-    commentsCount: response.commentsCount,
-    isLiked: response.isLiked,
-    isSaved: response.isSaved,
-    isCompleted: response.isCompleted,
-    claimerId: response.claimantId,
+    likesCount: response.likesCount || response.numOfLikes || 0,
+    commentsCount:
+      response.commentsCount ||
+      (Array.isArray(response.comments) ? response.comments.length : 0),
+    isLiked: response.isLiked ?? false,
+    isSaved: response.isSaved ?? false,
+    isCompleted: response.isCompleted ?? response.status === "COMPLETED",
+    claimerId: response.claimantId || response.claimerId,
     claimer: response.claimer
       ? {
           ...response.claimer,
           id: String(response.claimer.id),
         }
       : undefined,
-    numOfLikes: response.numOfLikes,
+    numOfLikes: response.numOfLikes || 0,
     claims: response.claims,
+    isExpired: response.isExpired,
+    remainingHours: response.remainingHours,
+    remainingDays: response.remainingDays,
+    distance: response.distance,
+    rating: response.rating,
   };
 };
 
@@ -50,7 +57,7 @@ export const toTaskCardData = (task: Task) => {
     description: task.description,
     categories: [task.category],
     location: "",
-    duration: "1 hour",
+    duration: task.deadline ? formatDeadline(task.deadline) : "No deadline",
     points: task.points || task.pointsOffered || 0,
     imageUrl: mainAsset?.url || defaultImage,
     likes: task.likesCount || task.numOfLikes || 0,
@@ -60,7 +67,23 @@ export const toTaskCardData = (task: Task) => {
     taskerName: task.creator?.name || "Unknown",
     rating: task.creator?.rating || task.creator?.ratingAvg || 0,
     taskerImage: task.creator?.avatar || task.creator?.assets?.[0]?.url || "",
+    isLiked: task.isLiked ?? false,
+    isSaved: task.isSaved ?? false,
   };
+};
+
+const formatDeadline = (deadlineString: string): string => {
+  const deadline = new Date(deadlineString);
+  const now = new Date();
+  const diffInMs = deadline.getTime() - now.getTime();
+
+  if (diffInMs <= 0) return "Expired";
+
+  const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+  if (diffInDays === 1) return "1 day left";
+  if (diffInDays <= 7) return `${diffInDays} days left`;
+
+  return deadline.toLocaleDateString();
 };
 
 const formatTimeAgo = (dateString: string): string => {
