@@ -76,6 +76,7 @@ export const TaskCardWithCreator = ({
     <TaskCard
       {...cardProps}
       taskId={taskId}
+      creatorId={creatorId}
       taskerName={name}
       rating={rating}
       taskerImage={avatarUrl}

@@ -129,10 +129,10 @@ export const useMapTasks = () => {
   });
 };
 
-export const useTopTaskers = () => {
+export const useTopTaskers = (limit?: number) => {
   return useQuery({
-    queryKey: ["top-taskers"],
-    queryFn: () => tasksRepo.getTopTaskers(),
+    queryKey: ["top-taskers", limit],
+    queryFn: () => tasksRepo.getTopTaskers(limit),
   });
 };
 

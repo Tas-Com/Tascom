@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Star, Bookmark } from "lucide-react";
 
 export interface SavedTask {
   id: string;
+  creatorId: string;
   taskerName: string;
   taskerImage: string;
   rating: number;
@@ -17,6 +18,12 @@ interface SavedTaskCardProps {
 }
 
 export function SavedTaskCard({ task }: SavedTaskCardProps) {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate({ to: `/user-profile/${task.creatorId}` });
+  };
+
   return (
     <div
       className="flex gap-6 w-full rounded-2xl p-4 border border-border-post bg-white"
@@ -24,37 +31,34 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
     >
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-3">
-          {task.taskerImage ? (
+          <div 
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={handleProfileClick}
+          >
             <img
-              src={task.taskerImage}
+              src={task.taskerImage || `https://i.pravatar.cc/150?u=${task.creatorId}`}
               alt={task.taskerName}
               className="w-10 h-10 rounded-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://i.pravatar.cc/40";
+                (e.target as HTMLImageElement).src = `https://i.pravatar.cc/40?u=${task.creatorId}`;
               }}
             />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500 text-sm">
-                {task.taskerName.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          )}
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="font-[Poppins] font-semibold text-sm text-text-primary">
-                {task.taskerName}
-              </span>
-              <span className="flex items-center gap-0.5 text-xs">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span className="text-amber-500 font-medium">
-                  {task.rating}
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="font-[Poppins] font-semibold text-sm text-text-primary hover:text-brand-purple transition-colors">
+                  {task.taskerName}
                 </span>
+                <span className="flex items-center gap-0.5 text-xs">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-amber-500 font-medium">
+                    {task.rating}
+                  </span>
+                </span>
+              </div>
+              <span className="text-xs text-text-secondary">
+                {task.postedTime}
               </span>
             </div>
-            <span className="text-xs text-text-secondary">
-              {task.postedTime}
-            </span>
           </div>
           <div className="ml-auto">
             <Bookmark className="w-5 h-5 fill-icon-default text-icon-default" />

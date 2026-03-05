@@ -6,7 +6,7 @@ import { formatCategoryName } from "@/shared/utils";
 
 export function RightSidebar() {
   const navigate = useNavigate();
-  const { data: topTaskersData } = useTopTaskers();
+  const { data: topTaskersData } = useTopTaskers(3);
   const { data: trendingData } = useTrendingCategories();
   const { data: currentUser } = useCurrentUser();
 
@@ -58,21 +58,25 @@ export function RightSidebar() {
         {topTaskers.length === 0 ? (
           <p className="text-text-secondary text-caption1">No top taskers yet</p>
         ) : (
-          topTaskers.slice(0, 3).map((user: any, index: number) => (
-            <div key={user.id || index} className="flex items-center justify-between">
+          topTaskers.map((user: any, index: number) => (
+            <div 
+              key={user.id || index} 
+              className="flex items-center justify-between cursor-pointer hover:bg-gray-50/50 p-1 rounded-lg transition-colors"
+              onClick={() => navigate({ to: `/user-profile/${user.id}` })}
+            >
               <div className="flex items-center gap-3">
                 <img
-                  src={user.avatar || "/Ali.jpg"}
+                  src={user.avatar || `https://i.pravatar.cc/150?u=${user.id}`}
                   alt={user.name}
                   className="w-10 h-10 rounded-full object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "https://i.pravatar.cc/40";
+                    (e.target as HTMLImageElement).src = `https://i.pravatar.cc/40?u=${user.id}`;
                   }}
                 />
                 <div>
                   <p className="text-body1 text-primary">{user.name}</p>
                   <p className="text-caption1 text-primary">
-                    <span className="text-brand-purple">
+                    <span className="text-brand-purple mr-1">
                       {user.completedTasks}
                     </span>
                     Tasks Completed
