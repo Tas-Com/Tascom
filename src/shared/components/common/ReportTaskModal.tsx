@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
-import { useNotificationsStore } from "../../../store/notificationsStore";
+import { useReports } from "@/modules/settings/hooks/useReports";
 
 interface ReportTaskModalProps {
   taskId: string;
@@ -15,7 +15,7 @@ export const ReportTaskModal = ({
 }: ReportTaskModalProps) => {
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
-  const { addNotification } = useNotificationsStore();
+  const { submitReport, isSubmitting } = useReports();
 
   if (!isOpen) return null;
 
@@ -29,20 +29,30 @@ export const ReportTaskModal = ({
   ];
 
   const handleSubmit = () => {
-    addNotification({
-      id: crypto.randomUUID(),
-      taskId,
-      message: `Task reported: ${reason}${details ? " - " + details : ""}`,
-      read: false,
-    });
-    onClose();
-    setReason("");
-    setDetails("");
+    const taskIdNum = parseInt(taskId, 10);
+    if (isNaN(taskIdNum)) return;
+
+    const fullReason = details ? `${reason} - ${details}` : reason;
+
+    submitReport(
+      {
+        reportedId: taskIdNum,
+        reason: fullReason,
+        type: "TASK",
+      },
+      {
+        onSuccess: () => {
+          onClose();
+          setReason("");
+          setDetails("");
+        },
+      },
+    );
   };
 
   return (
     <div className="fixed inset-0 z-200 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-4">
-      <div className="bg-white w-full sm:max-w-[400px] md:max-w-[440px] lg:max-w-[480px] xl:max-w-[540px] 2xl:max-w-[600px] rounded-t-2xl sm:rounded-[16px] border border-[#DFDFDF] px-5 sm:px-6 py-5 sm:py-6 relative shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide">
+      <div className="bg-white w-full sm:max-w-100 md:max-w-110 lg:max-w-120 xl:max-w-135 2xl:max-w-150 rounded-t-2xl sm:rounded-2xl border border-[#DFDFDF] px-5 sm:px-6 py-5 sm:py-6 relative shadow-xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto scrollbar-hide">
         <div className="flex justify-center mb-3">
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-100 flex items-center justify-center">
             <Flag className="text-red-500" size={20} />
@@ -96,17 +106,18 @@ export const ReportTaskModal = ({
         <div className="flex gap-3 sm:gap-4">
           <button
             onClick={onClose}
-            className="flex-1 py-2 sm:py-2.5 rounded-full border border-brand-purple text-brand-purple font-semibold text-sm hover:bg-purple-50 transition-colors"
+            disabled={isSubmitting}
+            className="flex-1 py-2 sm:py-2.5 rounded-full border border-brand-purple text-brand-purple font-semibold text-sm hover:bg-purple-50 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
 
           <button
             onClick={handleSubmit}
-            disabled={!reason || !details}
+            disabled={!reason || !details || isSubmitting}
             className="flex-1 py-2 sm:py-2.5 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </div>

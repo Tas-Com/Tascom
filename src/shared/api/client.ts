@@ -36,7 +36,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<any>) => {
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
       tokenManager.removeToken();
       router.navigate({ to: "/login" });
@@ -47,20 +47,31 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const apiClient = {
-  get: <T>(path: string, config?: import("axios").AxiosRequestConfig) => api.get<T>(path, config).then((res) => res.data),
+  get: <T>(path: string, config?: import("axios").AxiosRequestConfig) =>
+    api.get<T>(path, config).then((res) => res.data),
 
-  post: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
-    api.post<T>(path, body, config).then((res) => res.data),
+  post: <T>(
+    path: string,
+    body: unknown,
+    config?: import("axios").AxiosRequestConfig,
+  ) => api.post<T>(path, body, config).then((res) => res.data),
 
-  put: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
-    api.put<T>(path, body, config).then((res) => res.data),
+  put: <T>(
+    path: string,
+    body: unknown,
+    config?: import("axios").AxiosRequestConfig,
+  ) => api.put<T>(path, body, config).then((res) => res.data),
 
-  patch: <T>(path: string, body: unknown, config?: import("axios").AxiosRequestConfig) =>
-    api.patch<T>(path, body, config).then((res) => res.data),
+  patch: <T>(
+    path: string,
+    body: unknown,
+    config?: import("axios").AxiosRequestConfig,
+  ) => api.patch<T>(path, body, config).then((res) => res.data),
 
-  delete: <T>(path: string, config?: import("axios").AxiosRequestConfig) => api.delete<T>(path, config).then((res) => res.data),
+  delete: <T>(path: string, config?: import("axios").AxiosRequestConfig) =>
+    api.delete<T>(path, config).then((res) => res.data),
 };

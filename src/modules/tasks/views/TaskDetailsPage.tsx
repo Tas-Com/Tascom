@@ -1,6 +1,7 @@
 import { useParams } from "@tanstack/react-router";
-import { TaskCard } from "@/shared/components/cards/TaskCard";
+import { TaskCardWithCreator } from "@/shared/components/cards/TaskCardWithCreator";
 import { RightSidebar } from "@/shared/components/layout/RightSidebar";
+import { useReverseGeocode } from "@/shared/hooks/useReverseGeocode";
 import { useTaskById } from "../hooks/useTasks";
 import { toTask, toTaskCardData } from "../adapters/toTask";
 
@@ -10,6 +11,12 @@ export const TaskDetailsPage = () => {
 
   const { data: taskResponse, isLoading, error } = useTaskById(taskIdNum);
 
+  const task = taskResponse ? toTask(taskResponse) : null;
+  const { locationName } = useReverseGeocode(
+    task?.latitude ?? null,
+    task?.longitude ?? null,
+  );
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-100">
@@ -18,7 +25,7 @@ export const TaskDetailsPage = () => {
     );
   }
 
-  if (error || !taskResponse) {
+  if (error || !task) {
     return (
       <div className="flex items-center justify-center min-h-100">
         <div className="text-center">
@@ -34,28 +41,29 @@ export const TaskDetailsPage = () => {
     );
   }
 
-  const task = toTask(taskResponse);
   const taskCardData = toTaskCardData(task);
 
   return (
     <div className="flex flex-1 gap-4 lg:gap-6 p-4">
       <div className="flex-1 rounded-2xl p-4 mt-4 lg:ml-16">
-        <TaskCard
+        <TaskCardWithCreator
           taskId={taskCardData.taskId}
+          creatorId={String(task.creatorId)}
+          fallbackName={task.creator?.name}
+          fallbackRating={task.creator?.ratingAvg ?? task.creator?.rating}
+          location={locationName}
           taskTitle={taskCardData.taskTitle}
           description={taskCardData.description}
           categories={taskCardData.categories}
-          location={taskCardData.location}
           duration={taskCardData.duration}
           points={taskCardData.points}
           imageUrl={taskCardData.imageUrl}
           likes={taskCardData.likes}
           comments={taskCardData.comments}
           postedTime={taskCardData.postedTime}
-          taskerName={taskCardData.taskerName}
-          rating={taskCardData.rating}
-          taskerImage={taskCardData.taskerImage}
           priority={taskCardData.priority}
+          isLiked={taskCardData.isLiked}
+          isSaved={taskCardData.isSaved}
           defaultShowComments={true}
         />
       </div>

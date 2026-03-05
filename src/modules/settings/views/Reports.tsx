@@ -13,14 +13,14 @@ const STATUS_STYLES: Record<string, string> = {
 const ReportsPage = () => {
   const [filter, setFilter] = useState<FilterType>("All");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { reportedUsers, isLoading } = useReports();
+  const { reportedUsers, isLoading } = useReports({ fetchReportedUsers: true });
 
   const filterOptions: FilterType[] = ["All", "Tasks", "Users"];
-const filteredData = Array.isArray(
-  filter === "Tasks"
-    ? []
-    : reportedUsers
-) ? (filter === "Tasks" ? [] : reportedUsers) : [];
+  const filteredData = Array.isArray(filter === "Tasks" ? [] : reportedUsers)
+    ? filter === "Tasks"
+      ? []
+      : reportedUsers
+    : [];
   const isEmpty = filteredData.length === 0;
 
   return (
@@ -28,14 +28,15 @@ const filteredData = Array.isArray(
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-text-primary">Reports</h1>
 
-      
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2 text-sm font-medium text-text-primary border border-border-default rounded-xl px-4 py-2 hover:bg-bg-primary transition cursor-pointer"
           >
             {filter}
-            <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`w-4 h-4 text-text-secondary transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
+            />
           </button>
 
           {dropdownOpen && (
@@ -48,9 +49,10 @@ const filteredData = Array.isArray(
                     setDropdownOpen(false);
                   }}
                   className={`w-full text-left px-4 py-2.5 text-sm transition cursor-pointer
-                    ${filter === option
-                      ? "bg-purple-50 text-brand-purple font-medium"
-                      : "text-text-primary hover:bg-bg-primary"
+                    ${
+                      filter === option
+                        ? "bg-purple-50 text-brand-purple font-medium"
+                        : "text-text-primary hover:bg-bg-primary"
                     }`}
                 >
                   {option}
@@ -61,15 +63,21 @@ const filteredData = Array.isArray(
         </div>
       </div>
 
-    
       {isLoading ? (
-        <div className="text-sm text-text-secondary py-8 text-center">Loading...</div>
+        <div className="text-sm text-text-secondary py-8 text-center">
+          Loading...
+        </div>
       ) : isEmpty ? (
         <EmptyState
-          message={filter === "Tasks" ? "No reported tasks yet" : "No reported users yet"}
-          desc={filter === "Tasks"
-            ? "There are no tasks reported at the moment. If an issue arises, reported tasks will appear here for review."
-            : "There are no users reported at the moment. If an issue arises, reported users will appear here for review."
+          message={
+            filter === "Tasks"
+              ? "No reported tasks yet"
+              : "No reported users yet"
+          }
+          desc={
+            filter === "Tasks"
+              ? "There are no tasks reported at the moment. If an issue arises, reported tasks will appear here for review."
+              : "There are no users reported at the moment. If an issue arises, reported users will appear here for review."
           }
         />
       ) : (
@@ -94,19 +102,24 @@ const filteredData = Array.isArray(
                   </div>
                 </div>
 
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${STATUS_STYLES[report.status] ?? "bg-gray-100 text-gray-600"}`}>
+                <span
+                  className={`text-xs font-semibold px-3 py-1 rounded-full ${STATUS_STYLES[report.status] ?? "bg-gray-100 text-gray-600"}`}
+                >
                   {report.status}
                 </span>
               </div>
 
               <div className="flex items-start gap-2 bg-bg-primary rounded-xl px-4 py-3">
-                <Flag className="w-4 h-4 text-state-error mt-0.5 flex-shrink-0" />
+                <Flag className="w-4 h-4 text-state-error mt-0.5 shrink-0" />
                 <p className="text-sm text-text-secondary">{report.reason}</p>
               </div>
 
               <p className="text-xs text-text-secondary">
-                Reported on {new Date(report.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric", month: "long", day: "numeric",
+                Reported on{" "}
+                {new Date(report.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </p>
             </div>
