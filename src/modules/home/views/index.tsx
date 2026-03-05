@@ -1,18 +1,35 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useRef, useCallback, useMemo } from "react";
 import { RightSidebar } from "@/shared/components/layout/RightSidebar";
 import { TaskCardWithCreator } from "@/shared/components/cards/TaskCardWithCreator";
 import { useInfiniteTasksQuery } from "@/modules/tasks/hooks/useTasks";
 import { toTask, toTaskCardData } from "@/modules/tasks/adapters/toTask";
 import type { TaskResponse } from "@/modules/tasks/repository/TasksDtos";
+import {
+  useBatchReverseGeocode,
+  locationKey,
+} from "@/shared/hooks/useReverseGeocode";
 
 export const HomePage = () => {
   const {
     data,
     isLoading,
+    isError,
+    error,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteTasksQuery(undefined, 20);
+
+  // Debug: log pagination state
+  console.log("[InfiniteScroll]", {
+    pages: data?.pages?.length,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    error,
+    lastPageMeta: data?.pages?.[data.pages.length - 1]?.meta,
+    lastPageDataCount: data?.pages?.[data.pages.length - 1]?.data?.length,
+  });
 
   const allTasks: TaskResponse[] =
     data?.pages.flatMap((page) => page.data) ?? [];
@@ -26,26 +43,50 @@ export const HomePage = () => {
     fallbackRating: task.creator?.ratingAvg ?? task.creator?.rating,
   }));
 
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  // Resolve all locations in a single batch (page-level, not per-card)
+  const coords = useMemo(
+    () =>
+      taskCardData.map((t) => ({
+        latitude: t.latitude,
+        longitude: t.longitude,
+      })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [allTasks.length],
+  );
+  const locationMap = useBatchReverseGeocode(coords);
 
-  const onIntersect = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
+  // True once at least one location has been resolved (or there are no tasks)
+  const locationsReady =
+    taskCardData.length === 0 ||
+    taskCardData.some((task) =>
+      locationMap.get(locationKey(task.latitude, task.longitude)),
+    );
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const sentinelRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      // Disconnect any previous observer
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
       }
+      if (!node) return;
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        },
+        { threshold: 0, rootMargin: "0px 0px 400px 0px" },
+      );
+      observerRef.current.observe(node);
     },
     [hasNextPage, isFetchingNextPage, fetchNextPage],
   );
 
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [onIntersect]);
-
-  if (isLoading) {
+  if (isLoading || (!locationsReady && taskCardData.length > 0)) {
     return (
       <div className="flex flex-1 gap-6 p-4">
         <div className="flex-1 rounded-2xl p-4 mt-9">
@@ -74,8 +115,11 @@ export const HomePage = () => {
                   creatorId={task.creatorId}
                   fallbackName={task.fallbackName}
                   fallbackRating={task.fallbackRating}
-                  latitude={task.latitude}
-                  longitude={task.longitude}
+                  location={
+                    locationMap.get(
+                      locationKey(task.latitude, task.longitude),
+                    ) ?? ""
+                  }
                   taskTitle={task.taskTitle}
                   description={task.description}
                   categories={task.categories}
@@ -86,6 +130,8 @@ export const HomePage = () => {
                   comments={task.comments}
                   postedTime={task.postedTime}
                   priority={task.priority}
+                  isLiked={task.isLiked}
+                  isSaved={task.isSaved}
                 />
               </div>
             ))

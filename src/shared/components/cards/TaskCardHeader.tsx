@@ -10,6 +10,8 @@ interface TaskCardHeaderProps {
   taskId: string;
   taskerImage: string;
   compact?: boolean;
+  isSaved?: boolean;
+  onSave?: () => void;
 }
 
 export function TaskCardHeader({
@@ -19,6 +21,8 @@ export function TaskCardHeader({
   taskerImage,
   compact = false,
   taskId,
+  isSaved = false,
+  onSave,
 }: TaskCardHeaderProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -61,7 +65,14 @@ export function TaskCardHeader({
 
       {/* Right actions */}
       <div className="flex items-center gap-2 relative">
-        <Bookmark className="text-icon-default fill-current" size={25} />
+        <button onClick={onSave} className="cursor-pointer focus:outline-none">
+          <Bookmark
+            className={
+              isSaved ? "text-primary fill-current" : "text-icon-default"
+            }
+            size={25}
+          />
+        </button>
         <button
           onClick={() => setShowMenu(!showMenu)}
           className="text-icon-default"

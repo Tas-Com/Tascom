@@ -45,7 +45,7 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
   if (userLoading) {
     return (
       <div className="fixed inset-0 z-200 bg-black/40 flex justify-center items-center p-2 sm:p-4">
-        <div className="bg-white w-full max-w-[420px] md:max-w-[480px] lg:max-w-[540px] xl:max-w-[640px] 2xl:max-w-[800px] max-h-[95vh] sm:max-h-[90vh] overflow-y-auto rounded-[16px] border border-[#DFDFDF] p-4 sm:p-5 lg:p-6 relative shadow-xl">
+        <div className="bg-white w-full max-w-105 md:max-w-120 lg:max-w-135 xl:max-w-160 2xl:max-w-200 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto rounded-2xl border border-[#DFDFDF] p-4 sm:p-5 lg:p-6 relative shadow-xl">
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple"></div>
           </div>
@@ -57,7 +57,7 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
   if (!currentUser) {
     return (
       <div className="fixed inset-0 z-200 bg-black/40 flex justify-center items-center p-2 sm:p-4">
-        <div className="bg-white w-full max-w-[420px] md:max-w-[480px] lg:max-w-[540px] xl:max-w-[640px] 2xl:max-w-[800px] max-h-[95vh] sm:max-h-[90vh] overflow-y-auto rounded-[16px] border border-[#DFDFDF] p-4 sm:p-5 lg:p-6 relative shadow-xl">
+        <div className="bg-white w-full max-w-105 md:max-w-120 lg:max-w-135 xl:max-w-160 2xl:max-w-200 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto rounded-2xl border border-[#DFDFDF] p-4 sm:p-5 lg:p-6 relative shadow-xl">
           <div className="flex justify-center items-center h-40">
             <p className="text-text-secondary">Please log in to post a task</p>
           </div>
@@ -105,6 +105,7 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
       });
       resetForm();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Failed to create task:", error);
       let userMessage =
@@ -151,7 +152,7 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
 
   return (
     <div className="fixed inset-0 z-200 bg-black/40 flex justify-center items-end sm:items-center p-0 sm:py-2 sm:px-4">
-      <div className="bg-white w-full sm:max-w-[420px] md:max-w-[480px] lg:max-w-[540px] xl:max-w-[640px] 2xl:max-w-[720px] max-h-[95vh] sm:max-h-[94vh] overflow-y-auto rounded-t-2xl sm:rounded-[16px] border border-[#DFDFDF] shadow-xl scrollbar-hide">
+      <div className="bg-white w-full sm:max-w-105 md:max-w-120 lg:max-w-135 xl:max-w-160 2xl:max-w-180 max-h-[95vh] sm:max-h-[94vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-[#DFDFDF] shadow-xl scrollbar-hide">
         <div className="flex flex-col gap-2.5 sm:gap-3 lg:gap-4 p-3.5 sm:p-4">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -202,10 +203,11 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={`w-full border-b-2 bg-transparent pb-1.5 text-sm outline-none transition-colors ${errors.title
-                ? "border-state-error"
-                : "border-gray-200 focus:border-brand-purple"
-                }`}
+              className={`w-full border-b-2 bg-transparent pb-1.5 text-sm outline-none transition-colors ${
+                errors.title
+                  ? "border-state-error"
+                  : "border-gray-200 focus:border-brand-purple"
+              }`}
               placeholder="e.g. I need help in..."
             />
             {errors.title && (
@@ -221,10 +223,11 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`w-full border-b-2 bg-transparent pb-1 h-14 sm:h-16 lg:h-18 resize-none text-sm outline-none transition-colors ${errors.description
-                ? "border-state-error"
-                : "border-gray-200 focus:border-brand-purple"
-                }`}
+              className={`w-full border-b-2 bg-transparent pb-1 h-14 sm:h-16 lg:h-18 resize-none text-sm outline-none transition-colors ${
+                errors.description
+                  ? "border-state-error"
+                  : "border-gray-200 focus:border-brand-purple"
+              }`}
               placeholder="Describe your task and find helpers"
             />
             {errors.description && (
@@ -279,10 +282,11 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm appearance-none bg-white cursor-pointer transition-colors ${errors.category
-                    ? "border-state-error"
-                    : "border-gray-200 focus:border-brand-purple"
-                    }`}
+                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm appearance-none bg-white cursor-pointer transition-colors ${
+                    errors.category
+                      ? "border-state-error"
+                      : "border-gray-200 focus:border-brand-purple"
+                  }`}
                 >
                   <option value="">Select Category</option>
                   {apiCategories.map((cat) => (
@@ -311,10 +315,11 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
-                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm appearance-none bg-white cursor-pointer transition-colors ${errors.priority
-                    ? "border-state-error"
-                    : "border-gray-200 focus:border-brand-purple"
-                    }`}
+                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm appearance-none bg-white cursor-pointer transition-colors ${
+                    errors.priority
+                      ? "border-state-error"
+                      : "border-gray-200 focus:border-brand-purple"
+                  }`}
                 >
                   <option value="">Select Priority</option>
                   <option value="high">High</option>
@@ -379,10 +384,11 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
                   type="date"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm bg-white cursor-pointer transition-colors ${errors.deadline
-                    ? "border-state-error"
-                    : "border-gray-200 focus:border-brand-purple"
-                    }`}
+                  className={`w-full rounded-full pl-9 pr-3 py-2 border text-sm bg-white cursor-pointer transition-colors ${
+                    errors.deadline
+                      ? "border-state-error"
+                      : "border-gray-200 focus:border-brand-purple"
+                  }`}
                 />
               </div>
               {errors.deadline && (

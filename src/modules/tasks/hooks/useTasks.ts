@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import { restTasks } from "../repository/restTasks";
 import type { TaskFilters, CreateTaskDto } from "../repository/TasksDtos";
 
@@ -73,7 +78,11 @@ export const useSaveTask = () => {
     mutationFn: (id: number) => tasksRepo.saveTask(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["task"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-infinite"] });
+      queryClient.invalidateQueries({ queryKey: ["map-tasks"] });
       queryClient.invalidateQueries({ queryKey: ["saved-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
     },
   });
 };
@@ -93,6 +102,10 @@ export const useLikeTask = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["task"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-infinite"] });
+      queryClient.invalidateQueries({ queryKey: ["map-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["saved-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
     },
   });
 };
@@ -139,9 +152,11 @@ export const useInfiniteTasksQuery = (
     queryFn: ({ pageParam = 1 }) =>
       tasksRepo.getTasks({ ...filters, page: pageParam as number, limit }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const { page, totalPages } = lastPage.meta;
-      return page < totalPages ? page + 1 : undefined;
+    getNextPageParam: (lastPage, allPages) => {
+      // If the last page returned fewer items than the limit, we've reached the end
+      if (!lastPage?.data || lastPage.data.length < limit) return undefined;
+      // Next page is current number of loaded pages + 1
+      return allPages.length + 1;
     },
   });
 };
