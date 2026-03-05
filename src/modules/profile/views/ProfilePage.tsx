@@ -6,7 +6,6 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const ProfilePage = () => {
   const { data: user, isLoading } = useCurrentUser();
-  // console.log(user)
   const [isEditing, setIsEditing] = useState(false);
   const [saveSignal, setSaveSignal] = useState(0);
 
@@ -16,7 +15,7 @@ const ProfilePage = () => {
   const handleSaveSuccess = () => setIsEditing(false);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[970px]">
+    <div className="flex flex-col gap-6 w-full max-w-242.5">
       <h1 className="font-[Poppins] font-semibold text-[36px] leading-[1.2] tracking-normal text-(--colors-Text-primary,#251455)">
         Edit Profile
       </h1>
@@ -31,13 +30,13 @@ const ProfilePage = () => {
             <>
               <button
                 onClick={handleCancel}
-                className="flex items-center justify-center w-[125px] h-[48px] gap-[8px] px-[16px] rounded-[103px] border border-(--colors-brand-Purple,#6B39F4) bg-white text-(--colors-brand-Purple,#6B39F4) hover:bg-purple-50 transition-colors cursor-pointer font-[Poppins] font-semibold text-[16px]"
+                className="flex items-center justify-center w-31.25 h-12 gap-2 px-4 rounded-[103px] border border-(--colors-brand-Purple,#6B39F4) bg-white text-(--colors-brand-Purple,#6B39F4) hover:bg-purple-50 transition-colors cursor-pointer font-[Poppins] font-semibold text-[16px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="flex items-center justify-center w-[125px] h-[48px] gap-[8px] px-[16px] rounded-[103px] border border-transparent bg-(--colors-brand-Purple,#6B39F4) text-white hover:opacity-90 transition-opacity cursor-pointer font-[Poppins] font-semibold text-[16px]"
+                className="flex items-center justify-center w-31.25 h-12 gap-2 px-4 rounded-[103px] border border-transparent bg-(--colors-brand-Purple,#6B39F4) text-white hover:opacity-90 transition-opacity cursor-pointer font-[Poppins] font-semibold text-[16px]"
               >
                 Save
               </button>
@@ -45,10 +44,12 @@ const ProfilePage = () => {
           ) : (
             <button
               onClick={handleEdit}
-              className="flex items-center justify-center w-[125px] h-[48px] gap-[8px] px-[16px] rounded-[103px] border border-transparent bg-(--colors-brand-Purple,#6B39F4) text-white hover:opacity-90 transition-opacity cursor-pointer"
+              className="flex items-center justify-center w-31.25 h-12 gap-2 px-4 rounded-[103px] border border-transparent bg-(--colors-brand-Purple,#6B39F4) text-white hover:opacity-90 transition-opacity cursor-pointer"
             >
               <Pencil size={20} strokeWidth={2} />
-              <span className="font-[Poppins] font-semibold text-[16px]">Edit</span>
+              <span className="font-[Poppins] font-semibold text-[16px]">
+                Edit
+              </span>
             </button>
           )}
         </div>

@@ -11,7 +11,6 @@ export const TasksListPage = () => {
   });
 
   const { data, isLoading, error } = useTasks(filters);
-  console.log(data, "REAL");
 
   const tasks = data?.data || [];
 
