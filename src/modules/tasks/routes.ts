@@ -1,7 +1,6 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { mainLayoutRoute } from "../../layoutRoutes";
 import { TasksListPage } from "./views/TasksListPage";
-import { TaskDetailsPage } from "./views/TaskDetailsPage";
 
 export const tasksRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
@@ -12,7 +11,10 @@ export const tasksRoute = createRoute({
 export const taskDetailsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: "/tasks/$taskId",
-  component: TaskDetailsPage,
+  component: lazyRouteComponent(
+    () => import("./views/TaskDetailsPage"),
+    "TaskDetailsPage",
+  ),
 });
 
 export const tasksRoutes = [tasksRoute, taskDetailsRoute];

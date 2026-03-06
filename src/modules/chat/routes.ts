@@ -1,11 +1,10 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { mainLayoutRoute } from "../../layoutRoutes";
-import Chat from "./views";
 
 export const chatRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: "/chat",
-  component: Chat,
+  component: lazyRouteComponent(() => import("./views")),
 });
 
 export const chatRoutes = [chatRoute];

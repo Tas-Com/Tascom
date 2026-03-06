@@ -7,18 +7,23 @@ interface NotificationItemProps {
   variant?: "dropdown" | "page";
 }
 
-export function NotificationItem({ notification, variant = "dropdown" }: NotificationItemProps) {
+export function NotificationItem({
+  notification,
+  variant = "dropdown",
+}: NotificationItemProps) {
   // Using notification.id as userId for mock demo purposes since they don't have a separate userId field
   const userId = notification.id.toString();
 
   return (
     <div
       className={`flex items-center gap-3 py-3 ${
-        variant === "dropdown" ? "px-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0" : "border-b border-gray-100 pb-4 mb-4"
+        variant === "dropdown"
+          ? "px-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0"
+          : "border-b border-gray-100 pb-4 mb-4"
       }`}
     >
-      <Link 
-        to="/user-profile/$userId" 
+      <Link
+        to="/user-profile/$userId"
         params={{ userId: userId }}
         className="relative hover:opacity-80 transition-opacity"
       >
@@ -26,6 +31,8 @@ export function NotificationItem({ notification, variant = "dropdown" }: Notific
           src={notification.userAvatar}
           alt={notification.userName}
           className="w-10 h-10 rounded-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </Link>
       <div className="flex-1 min-w-0">

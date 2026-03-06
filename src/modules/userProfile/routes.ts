@@ -1,6 +1,5 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { mainLayoutRoute } from "../../layoutRoutes";
-import UserProfilePage from "./views/UserProfilePage";
 import { z } from "zod";
 
 const userProfileSearchSchema = z.object({
@@ -10,7 +9,7 @@ const userProfileSearchSchema = z.object({
 export const userProfileRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: "/user-profile/$userId",
-  component: UserProfilePage,
+  component: lazyRouteComponent(() => import("./views/UserProfilePage")),
   validateSearch: (search) => userProfileSearchSchema.parse(search),
 });
 

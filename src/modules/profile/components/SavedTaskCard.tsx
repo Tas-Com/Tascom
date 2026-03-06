@@ -40,6 +40,8 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
               src={task.taskerImage || userDefaultImg}
               alt={task.taskerName}
               className="w-10 h-10 rounded-full object-cover"
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = userDefaultImg;
               }}
@@ -71,6 +73,8 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
             src={task.imageUrl}
             alt={task.taskTitle}
             className="w-40 h-37.5 rounded-xl object-cover shrink-0"
+            loading="lazy"
+            decoding="async"
           />
           <div className="flex flex-col justify-between min-w-0 flex-1">
             <div>

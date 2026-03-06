@@ -58,6 +58,8 @@ export function TaskCardHeader({
           src={taskerImage || userDefaultImg}
           alt={taskerName}
           className={`rounded-full object-cover ${compact ? "w-8 h-8" : "w-10 h-10"}`}
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             (e.target as HTMLImageElement).src = userDefaultImg;
           }}

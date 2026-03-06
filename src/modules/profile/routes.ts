@@ -1,11 +1,6 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { mainLayoutRoute } from "../../layoutRoutes";
 import { ProfileLayout } from "./views/ProfileLayout";
-import ProfilePage from "./views/ProfilePage";
-import SavedTasksPage from "./views/SavedTasksPage";
-import PointsBalancePage from "./views/PointsBalancePage";
-import RequestsPage from "./views/RequestsPage";
-import { DashboardPage } from "../dashboard/views";
 
 export const profileRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
@@ -16,31 +11,34 @@ export const profileRoute = createRoute({
 export const myProfileRoute = createRoute({
   getParentRoute: () => profileRoute,
   path: "/",
-  component: ProfilePage,
+  component: lazyRouteComponent(() => import("./views/ProfilePage")),
 });
 
 export const savedTasksRoute = createRoute({
   getParentRoute: () => profileRoute,
   path: "/saved",
-  component: SavedTasksPage,
+  component: lazyRouteComponent(() => import("./views/SavedTasksPage")),
 });
 
 export const dashboardRoute = createRoute({
   getParentRoute: () => profileRoute,
   path: "/dashboard",
-  component: DashboardPage,
+  component: lazyRouteComponent(
+    () => import("../dashboard/views"),
+    "DashboardPage",
+  ),
 });
 
 export const pointsRoute = createRoute({
   getParentRoute: () => profileRoute,
   path: "/points",
-  component: PointsBalancePage,
+  component: lazyRouteComponent(() => import("./views/PointsBalancePage")),
 });
 
 export const requestsRoute = createRoute({
   getParentRoute: () => profileRoute,
   path: "/requests",
-  component: RequestsPage,
+  component: lazyRouteComponent(() => import("./views/RequestsPage")),
 });
 
 export const profileRoutes = [

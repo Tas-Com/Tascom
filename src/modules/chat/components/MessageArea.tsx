@@ -1,7 +1,19 @@
-import { MoreVertical, ChevronLeft, Mic, Send, Plus, Image as ImageIcon, FileText } from "lucide-react";
+import {
+  MoreVertical,
+  ChevronLeft,
+  Mic,
+  Send,
+  Plus,
+  Image as ImageIcon,
+  FileText,
+} from "lucide-react";
 import type { ChatMessage, ChatConversation } from "@/shared/data/mockChats";
 import { useState, useRef, useEffect } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shared/components/ui/popover";
 import { Link } from "@tanstack/react-router";
 
 interface MessageAreaProps {
@@ -10,7 +22,11 @@ interface MessageAreaProps {
   onSendMessage: (text: string) => void;
 }
 
-export function MessageArea({ messages, activeConversation, onSendMessage }: MessageAreaProps) {
+export function MessageArea({
+  messages,
+  activeConversation,
+  onSendMessage,
+}: MessageAreaProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -56,6 +72,8 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
               src={activeConversation.userAvatar}
               alt={activeConversation.userName}
               className="w-10 h-10 rounded-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
           </Link>
@@ -102,6 +120,8 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
                       src={activeConversation.userAvatar}
                       className="w-8 h-8 rounded-full object-cover mb-1"
                       alt=""
+                      loading="lazy"
+                      decoding="async"
                     />
                   </Link>
                 )}
@@ -136,13 +156,19 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
             <PopoverTrigger asChild>
               <button
                 className={`transition-colors ${
-                  isMenuOpen ? "text-brand-purple" : "text-gray-400 hover:text-brand-purple"
+                  isMenuOpen
+                    ? "text-brand-purple"
+                    : "text-gray-400 hover:text-brand-purple"
                 }`}
               >
                 <Plus size={24} />
               </button>
             </PopoverTrigger>
-            <PopoverContent side="top" align="start" className="w-48 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in slide-in-from-bottom-2">
+            <PopoverContent
+              side="top"
+              align="start"
+              className="w-48 bg-white rounded-xl shadow-xl border border-gray-100 p-2 z-50 animate-in fade-in slide-in-from-bottom-2"
+            >
               <button
                 className="w-full flex items-center gap-3 p-3 hover:bg-[#F3F0FF] rounded-lg transition-colors text-[#251455] text-sm"
                 onClick={() => setIsMenuOpen(false)}
@@ -170,7 +196,7 @@ export function MessageArea({ messages, activeConversation, onSendMessage }: Mes
           <button className="text-gray-400 hover:text-brand-purple">
             <Mic size={20} />
           </button>
-          <button 
+          <button
             onClick={handleSend}
             disabled={!inputText.trim()}
             className={`w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center hover:bg-brand-purple-dark transition-colors ${!inputText.trim() ? "opacity-50 cursor-not-allowed" : ""}`}

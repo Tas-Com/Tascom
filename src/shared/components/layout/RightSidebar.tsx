@@ -37,6 +37,8 @@ export function RightSidebar() {
             src="/map.png"
             alt="Tasks around me map"
             className="w-full h-full object-cover rounded-xl"
+            loading="lazy"
+            decoding="async"
           />
           <button
             onClick={() => navigate({ to: "/map" })}
@@ -88,6 +90,8 @@ export function RightSidebar() {
                   src={user.avatar || userDefaultImg}
                   alt={user.name}
                   className="w-10 h-10 rounded-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = userDefaultImg;
                   }}

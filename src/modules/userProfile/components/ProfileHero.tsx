@@ -15,7 +15,9 @@ export function ProfileHero({ user, showAcceptButton }: ProfileHeroProps) {
           <img
             src={user.avatar || userDefaultImg}
             alt={user.name}
-            className="w-[100px] h-[100px] rounded-full object-cover border-4 border-white shadow-sm"
+            className="w-25 h-25 rounded-full object-cover border-4 border-white shadow-sm"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="flex flex-col gap-1">

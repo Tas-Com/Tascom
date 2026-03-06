@@ -161,6 +161,8 @@ export function TaskCardContent({
             src={imageUrl}
             alt={taskTitle}
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/cat.jpg";
             }}

@@ -1,11 +1,10 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { mainLayoutRoute } from "../../layoutRoutes";
-import { MapPage } from "./views/MapPage";
 
 export const mapRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: "/map",
-  component: MapPage,
+  component: lazyRouteComponent(() => import("./views/MapPage"), "MapPage"),
 });
 
 export const mapRoutes = [mapRoute];

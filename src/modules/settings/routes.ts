@@ -1,48 +1,40 @@
-import { createRoute } from '@tanstack/react-router';
-import { profileRoute } from '../profile/routes';
-
-import languageSettings from './views/LanguageSettings';
-import  NotificationSettings  from './views/NotificationSettings';
-import  ChangePassword  from './views/ChangePassword';
-import DeleteAccount from "./views/DeleteAccount"; 
-import ReportsPage from "./views/Reports";
+import { createRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { profileRoute } from "../profile/routes";
 
 export const settingsRoute = createRoute({
   getParentRoute: () => profileRoute,
-  path: 'settings',
+  path: "settings",
 });
 
 export const languageSettingsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: 'language',
-  component: languageSettings,
+  path: "language",
+  component: lazyRouteComponent(() => import("./views/LanguageSettings")),
 });
 
 export const notificationSettingsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: 'notification',
-  component: NotificationSettings,
+  path: "notification",
+  component: lazyRouteComponent(() => import("./views/NotificationSettings")),
 });
 
 export const passwordSettingsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: 'password',
-  component: ChangePassword,
+  path: "password",
+  component: lazyRouteComponent(() => import("./views/ChangePassword")),
 });
 
 export const deleteAccountRoute = createRoute({
   getParentRoute: () => settingsRoute,
   path: "delete",
-  component: DeleteAccount,
+  component: lazyRouteComponent(() => import("./views/DeleteAccount")),
 });
 
-export const reportsRoute = createRoute({  
+export const reportsRoute = createRoute({
   getParentRoute: () => settingsRoute,
   path: "reports",
-  component: ReportsPage,
+  component: lazyRouteComponent(() => import("./views/Reports")),
 });
-
-
 
 export const settingsRoutes = [
   settingsRoute,
@@ -50,6 +42,5 @@ export const settingsRoutes = [
   notificationSettingsRoute,
   deleteAccountRoute,
   passwordSettingsRoute,
-    reportsRoute,
+  reportsRoute,
 ];
-

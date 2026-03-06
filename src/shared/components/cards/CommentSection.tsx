@@ -119,6 +119,8 @@ function CommentItem({
             src={userAvatar || userDefaultImg}
             alt={userName}
             className={`${avatarSize} rounded-full object-cover hover:opacity-80 transition-opacity cursor-pointer`}
+            loading="lazy"
+            decoding="async"
           />
         </Link>
         <div className="flex-1">
@@ -231,6 +233,8 @@ function CommentItem({
                 src={currentUserAvatar}
                 alt="Your avatar"
                 className={`${level > 0 ? "w-6 h-6" : "w-8 h-8"} rounded-full object-cover shrink-0`}
+                loading="lazy"
+                decoding="async"
               />
               <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-2">
                 <input
@@ -512,6 +516,8 @@ export function CommentSection({ taskId }: CommentSectionProps) {
           src={currentUserAvatar}
           alt="Your avatar"
           className="w-8 h-8 rounded-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
         <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-2">
           <input

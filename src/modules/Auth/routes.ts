@@ -1,16 +1,15 @@
-import { createRoute, redirect } from "@tanstack/react-router";
+import {
+  createRoute,
+  lazyRouteComponent,
+  redirect,
+} from "@tanstack/react-router";
 import { rootRoute } from "../../layoutRoutes";
 import { tokenManager } from "../../shared/api/client";
-import LoginPage from "./view/Login";
-import RegisterPage from "./view/Resgister";
-import AuthLayout from "./view/AuthLayout";
-import ForgotPasswordPage from "./view/ForgotPassword";
-import TermsPrivacyPage from "./view/TermsPrivacy";
 
 export const authLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "auth",
-  component: AuthLayout,
+  component: lazyRouteComponent(() => import("./view/AuthLayout")),
   beforeLoad: () => {
     if (tokenManager.isAuthenticated()) {
       throw redirect({
@@ -23,27 +22,32 @@ export const authLayoutRoute = createRoute({
 export const loginRoute = createRoute({
   getParentRoute: () => authLayoutRoute,
   path: "/login",
-  component: LoginPage,
+  component: lazyRouteComponent(() => import("./view/Login")),
 });
 
 export const registerRoute = createRoute({
   getParentRoute: () => authLayoutRoute,
   path: "/register",
-  component: RegisterPage,
+  component: lazyRouteComponent(() => import("./view/Resgister")),
 });
 
 export const forgotPasswordRoute = createRoute({
   getParentRoute: () => authLayoutRoute,
   path: "/forgot-password",
-  component: ForgotPasswordPage,
+  component: lazyRouteComponent(() => import("./view/ForgotPassword")),
 });
 
 export const termsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/terms",
-  component: TermsPrivacyPage,
+  component: lazyRouteComponent(() => import("./view/TermsPrivacy")),
 });
 
 export const authRoutes = [
-  authLayoutRoute.addChildren([loginRoute, registerRoute, forgotPasswordRoute, termsRoute]),
+  authLayoutRoute.addChildren([
+    loginRoute,
+    registerRoute,
+    forgotPasswordRoute,
+    termsRoute,
+  ]),
 ];

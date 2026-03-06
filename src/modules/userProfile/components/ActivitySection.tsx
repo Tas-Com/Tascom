@@ -22,6 +22,8 @@ export function ActivitySection({ title, tasks, type }: ActivitySectionProps) {
                 src={task.image}
                 alt={task.title}
                 className="w-12 h-12 rounded-lg object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="flex flex-col gap-1">
                 <h4 className="text-[14px] font-semibold text-[#251455]">
@@ -34,8 +36,12 @@ export function ActivitySection({ title, tasks, type }: ActivitySectionProps) {
                 ) : (
                   <div className="flex items-center gap-1">
                     <Star size={12} fill="#FFB800" className="text-[#FFB800]" />
-                    <span className="text-[12px] font-bold text-[#FFB800]">{task.rating}</span>
-                    <span className="text-[12px] text-gray-400 italic">"{task.comment}"</span>
+                    <span className="text-[12px] font-bold text-[#FFB800]">
+                      {task.rating}
+                    </span>
+                    <span className="text-[12px] text-gray-400 italic">
+                      "{task.comment}"
+                    </span>
                   </div>
                 )}
               </div>
