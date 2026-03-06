@@ -13,23 +13,12 @@ export const HomePage = () => {
   const {
     data,
     isLoading,
-    isError,
-    error,
+    // isError,
+    // error,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteTasksQuery(undefined, 20);
-
-  // Debug: log pagination state
-  console.log("[InfiniteScroll]", {
-    pages: data?.pages?.length,
-    hasNextPage,
-    isFetchingNextPage,
-    isError,
-    error,
-    lastPageMeta: data?.pages?.[data.pages.length - 1]?.meta,
-    lastPageDataCount: data?.pages?.[data.pages.length - 1]?.data?.length,
-  });
 
   const allTasks: TaskResponse[] =
     data?.pages.flatMap((page) => page.data) ?? [];
