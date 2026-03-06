@@ -11,7 +11,7 @@ export interface Comment {
     id: string;
     name: string;
     avatar?: string;
-    assets?: { url: string }[];
+    assets?: { url: string; taskId?: string | null }[];
   };
   replies?: Comment[];
 }

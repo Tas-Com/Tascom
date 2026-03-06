@@ -35,6 +35,15 @@ export const useCreateTask = () => {
       tasksRepo.createTask(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["task"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-infinite"] });
+      queryClient.invalidateQueries({ queryKey: ["map-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["my-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["saved-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
+      queryClient.invalidateQueries({ queryKey: ["top-taskers"] });
+      queryClient.invalidateQueries({ queryKey: ["trending-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
 };

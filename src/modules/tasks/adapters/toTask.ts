@@ -66,7 +66,10 @@ export const toTaskCardData = (task: Task) => {
     priority: task.priority,
     taskerName: task.creator?.name || "Unknown",
     rating: task.creator?.rating || task.creator?.ratingAvg || 0,
-    taskerImage: task.creator?.avatar || task.creator?.assets?.[0]?.url || "",
+    taskerImage:
+      task.creator?.avatar ||
+      task.creator?.assets?.find((a) => !a.id)?.url ||
+      "",
     isLiked: task.isLiked ?? false,
     isSaved: task.isSaved ?? false,
   };

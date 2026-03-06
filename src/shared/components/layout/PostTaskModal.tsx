@@ -147,7 +147,10 @@ export function PostTaskModal({ isOpen, onClose }: PostTaskModalProps) {
   };
 
   const userName = currentUser?.name || "User";
-  const rawAvatar = currentUser?.assets?.[0]?.url || currentUser?.avatar || "";
+  const rawAvatar =
+    currentUser?.assets?.find((a) => !a.taskId)?.url ||
+    currentUser?.avatar ||
+    "";
   const userAvatar = rawAvatar === "null" ? "" : rawAvatar;
 
   return (

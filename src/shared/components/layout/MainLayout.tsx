@@ -18,7 +18,9 @@ export function MainLayout() {
         {/* Fixed Header */}
         <Header
           userName={user?.name || ""}
-          userAvatar={user?.assets?.[0]?.url || user?.avatar || ""}
+          userAvatar={
+            user?.assets?.find((a) => !a.taskId)?.url || user?.avatar || ""
+          }
           logoSrc=""
         />
 

@@ -4,7 +4,11 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { NotificationDropdown } from "@/modules/notifications/components/NotificationDropdown";
 import { mockNotifications } from "@/shared/data/mockNotifications";
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shared/components/ui/popover";
 import userDefaultImg from "@/assets/user.jpg";
 
 type HeaderProps = {
@@ -35,8 +39,11 @@ export function Header({ userName, userAvatar }: HeaderProps) {
         <Link to="/">
           <Home
             size={25}
-            className={`cursor-pointer transition-colors ${isHomePage && !isOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
-              }`}
+            className={`cursor-pointer transition-colors ${
+              isHomePage && !isOpen
+                ? "text-[#251455] fill-[#251455]"
+                : "text-primary hover:text-[#251455]"
+            }`}
           />
         </Link>
 
@@ -45,15 +52,22 @@ export function Header({ userName, userAvatar }: HeaderProps) {
             <div className="relative">
               <Bell
                 size={30}
-                className={`cursor-pointer transition-colors ${isOpen || (isNotificationsPage && !isOpen) ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
-                  }`}
+                className={`cursor-pointer transition-colors ${
+                  isOpen || (isNotificationsPage && !isOpen)
+                    ? "text-[#251455] fill-[#251455]"
+                    : "text-primary hover:text-[#251455]"
+                }`}
               />
               {unreadCount > 0 && !isOpen && !isNotificationsPage && (
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-purple rounded-full border-2 border-white" />
               )}
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-[263px] p-0 border-none shadow-none bg-transparent" align="end" sideOffset={12}>
+          <PopoverContent
+            className="w-65.75 p-0 border-none shadow-none bg-transparent"
+            align="end"
+            sideOffset={12}
+          >
             <NotificationDropdown onClose={() => setIsOpen(false)} />
           </PopoverContent>
         </Popover>
@@ -61,8 +75,11 @@ export function Header({ userName, userAvatar }: HeaderProps) {
         <Link to="/chat">
           <MessagesSquare
             size={30}
-            className={`cursor-pointer transition-colors ${isChatPage && !isOpen ? "text-[#251455] fill-[#251455]" : "text-primary hover:text-[#251455]"
-              }`}
+            className={`cursor-pointer transition-colors ${
+              isChatPage && !isOpen
+                ? "text-[#251455] fill-[#251455]"
+                : "text-primary hover:text-[#251455]"
+            }`}
           />
         </Link>
 

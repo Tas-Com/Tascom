@@ -2,6 +2,7 @@ import { Star, Bookmark, MoreVertical } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ReportTaskModal } from "../common/ReportTaskModal";
+import userDefaultImg from "@/assets/user.jpg";
 
 interface TaskCardHeaderProps {
   taskerName: string;
@@ -49,21 +50,23 @@ export function TaskCardHeader({
 
   return (
     <div className="flex items-center justify-between relative">
-      <div 
+      <div
         className={`flex items-center gap-3 ${creatorId ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
         onClick={handleProfileClick}
       >
         <img
-          src={taskerImage || `https://i.pravatar.cc/150?u=${creatorId || taskId}`}
+          src={taskerImage || userDefaultImg}
           alt={taskerName}
           className={`rounded-full object-cover ${compact ? "w-8 h-8" : "w-10 h-10"}`}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = `https://i.pravatar.cc/40?u=${creatorId || taskId}`;
+            (e.target as HTMLImageElement).src = userDefaultImg;
           }}
         />
         <div>
           <div className="flex items-center gap-1">
-            <p className="font-semibold text-primary hover:text-brand-purple transition-colors">{taskerName}</p>
+            <p className="font-semibold text-primary hover:text-brand-purple transition-colors">
+              {taskerName}
+            </p>
             <Star className="text-icon-star fill-current" size={18} />
             <span className="text-btn-s text-icon-star">{rating}</span>
           </div>

@@ -36,10 +36,7 @@ export const TaskCardWithCreator = ({
 }: TaskCardWithCreatorProps) => {
   const { data: creator, isLoading: isCreatorLoading } = useUserById(creatorId);
 
-  const rawAvatar =
-    creator?.assets?.find((a) => !a.taskId)?.url ??
-    creator?.assets?.[0]?.url ??
-    "";
+  const rawAvatar = creator?.assets?.find((a) => !a.taskId)?.url ?? "";
   const avatarUrl = rawAvatar === "null" ? "" : rawAvatar;
 
   const name = creator?.name ?? fallbackName;

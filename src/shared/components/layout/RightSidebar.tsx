@@ -1,8 +1,23 @@
 import { Star, PartyPopper } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { useTopTaskers, useTrendingCategories } from "@/modules/tasks/hooks/useTasks";
+import {
+  useTopTaskers,
+  useTrendingCategories,
+} from "@/modules/tasks/hooks/useTasks";
 import { useCurrentUser } from "@/modules/profile/hooks/useCurrentUser";
 import { formatCategoryName } from "@/shared/utils";
+import userDefaultImg from "@/assets/user.jpg";
+
+interface TopTasker {
+  id: string | number;
+  name: string;
+  avatar?: string;
+  completedTasks: number;
+}
+
+interface TrendingCategory {
+  category: string;
+}
 
 export function RightSidebar() {
   const navigate = useNavigate();
@@ -38,7 +53,9 @@ export function RightSidebar() {
 
         <div className="flex justify-between text-body-s1 text-primary bg-primary">
           <span className="text-body1">Points</span>
-          <span className="font-semibold text-brand-purple">{currentUser?.pointsBalance || 0}</span>
+          <span className="font-semibold text-brand-purple">
+            {currentUser?.pointsBalance || 0}
+          </span>
         </div>
 
         <div className="flex justify-between text-body-s2 text-primary bg-primary">
@@ -56,21 +73,23 @@ export function RightSidebar() {
         <h5 className="text-h5-2 text-primary">Top Tasker</h5>
 
         {topTaskers.length === 0 ? (
-          <p className="text-text-secondary text-caption1">No top taskers yet</p>
+          <p className="text-text-secondary text-caption1">
+            No top taskers yet
+          </p>
         ) : (
-          topTaskers.map((user: any, index: number) => (
-            <div 
-              key={user.id || index} 
+          topTaskers.map((user: TopTasker, index: number) => (
+            <div
+              key={user.id || index}
               className="flex items-center justify-between cursor-pointer hover:bg-gray-50/50 p-1 rounded-lg transition-colors"
               onClick={() => navigate({ to: `/user-profile/${user.id}` })}
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={user.avatar || `https://i.pravatar.cc/150?u=${user.id}`}
+                  src={user.avatar || userDefaultImg}
                   alt={user.name}
                   className="w-10 h-10 rounded-full object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://i.pravatar.cc/40?u=${user.id}`;
+                    (e.target as HTMLImageElement).src = userDefaultImg;
                   }}
                 />
                 <div>
@@ -94,9 +113,13 @@ export function RightSidebar() {
         {trendingCategories.length === 0 ? (
           <p className="text-text-secondary text-caption1">No trending tasks</p>
         ) : (
-          trendingCategories.map((cat: any, index: number) => (
-            <p key={index} className="text-body2 text-primary flex items-center gap-4">
-              <PartyPopper className="text-brand-purple" size={20} /> {formatCategoryName(cat.category)}
+          trendingCategories.map((cat: TrendingCategory, index: number) => (
+            <p
+              key={index}
+              className="text-body2 text-primary flex items-center gap-4"
+            >
+              <PartyPopper className="text-brand-purple" size={20} />{" "}
+              {formatCategoryName(cat.category)}
             </p>
           ))
         )}

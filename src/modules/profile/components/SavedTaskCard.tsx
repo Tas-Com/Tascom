@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Star, Bookmark } from "lucide-react";
+import userDefaultImg from "@/assets/user.jpg";
 
 export interface SavedTask {
   id: string;
@@ -31,16 +32,16 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
     >
       <div className="flex flex-col flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-3">
-          <div 
+          <div
             className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={handleProfileClick}
           >
             <img
-              src={task.taskerImage || `https://i.pravatar.cc/150?u=${task.creatorId}`}
+              src={task.taskerImage || userDefaultImg}
               alt={task.taskerName}
               className="w-10 h-10 rounded-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = `https://i.pravatar.cc/40?u=${task.creatorId}`;
+                (e.target as HTMLImageElement).src = userDefaultImg;
               }}
             />
             <div className="flex flex-col">
