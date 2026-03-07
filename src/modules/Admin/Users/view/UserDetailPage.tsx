@@ -5,29 +5,31 @@ import { StatsGrid } from "../components/detail/StatsGrid";
 import { ContactInfo } from "../components/detail/ContactInfo";
 import { TasksTab } from "../components/detail/TasksTab";
 import { ReportsTab } from "../components/detail/ReportsTab";
+import { useParams } from "@tanstack/react-router";
+import { useAdminUser, useAdminUserStats } from "../hooks/useAdminUsers";
 
 export function UserDetailPage() {
+  const { userId } = useParams({ from: '/admin/users/$userId' });
   const [activeTab, setActiveTab] = useState<'posts' | 'reports'>('posts');
 
-  // MOCK DATA
-  const user = {
-    name: 'Samir Ali',
-    avatar: '/Samir.jpg',
-    status: 'Active',
-    stats: {
-      rating: 4.5,
-      ratingsCount: 30,
-      points: 5342,
-      posted: 30,
-      completed: 65
-    },
-    contact: {
-      email: 'samir-ali@gmail.com',
-      phone: '+970 793 6416',
-      location: 'Ramallah, Palestine',
-      joinedDate: 'Jan 16, 2026'
-    }
-  };
+  const { data: user, isLoading: userLoading, isError } = useAdminUser(userId);
+  const { data: stats, isLoading: statsLoading } = useAdminUserStats(userId);
+
+  if (userLoading || statsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-[18px] font-bold text-text-secondary animate-pulse">Loading user details...</div>
+      </div>
+    );
+  }
+
+  if (isError || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-[18px] font-bold text-status-canceled">Error: User not found</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -35,23 +37,23 @@ export function UserDetailPage() {
       <div className="bg-white p-10 rounded-[24px] border border-border-default/50 shadow-sm space-y-10">
         <ProfileHeader 
           name={user.name} 
-          avatar={user.avatar} 
-          status={user.status} 
+          avatar={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=random`} 
+          status={user.customerStatus === 'ACTIVE' ? 'Active' : user.customerStatus === 'BANNED' ? 'Banned' : 'Suspended'} 
         />
         
         <StatsGrid 
-          rating={user.stats.rating}
-          ratingsCount={user.stats.ratingsCount}
-          points={user.stats.points}
-          posted={user.stats.posted}
-          completed={user.stats.completed}
+          rating={0} // Still missing from these endpoints, maybe in a separate rating call if needed
+          ratingsCount={0}
+          points={stats?.points || 0}
+          posted={stats?.posts || 0}
+          completed={stats?.completed || 0}
         />
-
+ 
         <ContactInfo 
-          email={user.contact.email}
-          phone={user.contact.phone}
-          location={user.contact.location}
-          joinedDate={user.contact.joinedDate}
+          email={user.email}
+          phone={user.phoneNumber || 'Not provided'}
+          location={user.location || user.country}
+          joinedDate={new Date(user.createdAt).toLocaleDateString()}
         />
       </div>
 
@@ -85,7 +87,7 @@ export function UserDetailPage() {
 
         {/* Tab Panels */}
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-          {activeTab === 'posts' ? <TasksTab /> : <ReportsTab />}
+          {activeTab === 'posts' ? <TasksTab userId={userId} /> : <ReportsTab userId={userId} />}
         </div>
       </div>
     </div>

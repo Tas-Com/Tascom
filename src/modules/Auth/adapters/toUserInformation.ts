@@ -7,6 +7,7 @@ export const toUserInformation = (dto: AuthResponse): UserInformation => {
     id: dto.data.user.id,
     name: dto.data.user.name,
     email: dto.data.user.email,
+    role: dto.data.user.role,
     phoneNumber: dto.data.user.phoneNumber,
     latitude: dto.data.user.latitude,
     longitude: dto.data.user.longitude,
