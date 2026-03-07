@@ -25,3 +25,19 @@ export const mainLayoutRoute = createRoute({
     }
   },
 });
+
+import { AdminLayout } from "@/shared/components/layout/AdminLayout";
+
+export const adminLayoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  component: AdminLayout,
+  beforeLoad: () => {
+    if (!tokenManager.isAuthenticated()) {
+      throw redirect({
+        to: "/login",
+      });
+    }
+    // Add admin check here later if needed
+  },
+});
