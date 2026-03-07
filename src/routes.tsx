@@ -1,9 +1,23 @@
 import { homeRoutes } from "./modules/home";
 import { tasksRoutes } from "./modules/tasks/routes";
-import { profileRoutes } from "./modules/profile";
+import {
+  profileRoute,
+  myProfileRoute,
+  savedTasksRoute,
+  dashboardRoute,
+  pointsRoute,
+  requestsRoute,
+} from "./modules/profile/routes";
 import { notificationsRoutes } from "./modules/notifications";
 import { chatRoutes } from "./modules/chat/routes";
-import { settingsRoutes } from "./modules/settings";
+import {
+  settingsRoute,
+  languageSettingsRoute,
+  notificationSettingsRoute,
+  passwordSettingsRoute,
+  deleteAccountRoute,
+  reportsRoute,
+} from "./modules/settings/routes";
 import { authRoutes } from "./modules/Auth/routes";
 import { rootRoute, mainLayoutRoute } from "./layoutRoutes";
 import { topResultsRoutes } from "./modules/results";
@@ -15,10 +29,22 @@ export const routeTree = rootRoute.addChildren([
     ...homeRoutes,
     ...tasksRoutes,
     topResultsRoutes,
-    ...profileRoutes,
+    profileRoute.addChildren([
+      myProfileRoute,
+      savedTasksRoute,
+      dashboardRoute,
+      pointsRoute,
+      requestsRoute,
+      settingsRoute.addChildren([
+        languageSettingsRoute,
+        notificationSettingsRoute,
+        passwordSettingsRoute,
+        deleteAccountRoute,
+        reportsRoute,
+      ]),
+    ]),
     ...notificationsRoutes,
     ...chatRoutes,
-    ...settingsRoutes,
     ...mapRoutes,
     ...userProfileRoutes,
   ]),

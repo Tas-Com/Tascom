@@ -8,9 +8,12 @@ import {
   Car,
   Filter as FilterIcon,
   X,
+  Star,
 } from "lucide-react";
 import { PostTaskModal } from "../layout/PostTaskModal";
 import { apiCategories } from "@/shared/utils";
+
+type FilterVariant = "tasks" | "people";
 
 type Props = {
   category: string | null;
@@ -22,9 +25,15 @@ type Props = {
   distance: number;
   setDistance: (v: number) => void;
   showPostButton?: boolean;
+  variant?: FilterVariant;
+  minRating?: number;
+  setMinRating?: (v: number) => void;
+  maxRating?: number;
+  setMaxRating?: (v: number) => void;
 };
 
 export function Filter({
+  category,
   setCategory,
   priority,
   setPriority,
@@ -33,96 +42,33 @@ export function Filter({
   distance,
   setDistance,
   showPostButton = true,
+  variant = "tasks",
+  minRating = 1,
+  setMinRating,
+  maxRating = 5,
+  // setMaxRating,
 }: Props) {
   const [openPost, setOpenPost] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  // const FilterContent = () => (
-  //   <div className="bg-bg-secondary rounded-xl p-4 md:p-6 space-y-6 md:space-y-8">
-  //     {showPostButton && (
-  //       <button
-  //         onClick={() => setOpenPost(true)}
-  //         className="w-full cursor-pointer bg-brand-purple text-white p-3 md:p-4 rounded-[103px] text-btn-primary mb-4 md:mb-8"
-  //       >
-  //         Post a task
-  //       </button>
-  //     )}
-
-  //     <h5 className="text-h5-2 text-primary hidden md:block">Filters</h5>
-
-  //     <div>
-  //       <p className="text-h5-2 mb-4 md:mb-8">Categories</p>
-  //       <ul className="space-y-4 md:space-y-6 text-body-s2 text-primary">
-  //         {apiCategories.map((cat) => (
-  //           <li
-  //             key={cat.value}
-  //             onClick={() => setCategory(cat.value)}
-  //             className="flex items-center gap-2 cursor-pointer hover:text-brand-purple"
-  //           >
-  //             {cat.value === "Errands" && <ClipboardList size={20} />}
-  //             {cat.value === "Repairs" && <Wrench size={20} />}
-  //             {cat.value === "Tutoring" && <GraduationCap size={20} />}
-  //             {cat.value === "PetCare" && <Heart size={20} />}
-  //             {cat.value === "HomeServices" && <Home size={20} />}
-  //             {cat.value === "Transportation" && <Car size={20} />}
-  //             <span>{cat.label}</span>
-  //           </li>
-  //         ))}
-  //       </ul>
-  //     </div>
-
-  //     <div className="space-y-4">
-  //       <p className="text-h5-2 mb-4 md:mb-8">Priority</p>
-  //       {["high", "medium", "low"].map((p) => (
-  //         <label key={p} className="flex gap-2 text-primary cursor-pointer">
-  //           <input
-  //             type="radio"
-  //             checked={priority === p}
-  //             onChange={() => setPriority(p)}
-  //             className="accent-brand-purple"
-  //           />
-  //           <span className="capitalize">{p}</span>
-  //         </label>
-  //       ))}
-  //     </div>
-
-  //     <div className="space-y-4">
-  //       <p className="text-h5-2 mb-4 md:mb-6 text-primary">Points</p>
-  //       <div className="flex justify-between text-body-s2">
-  //         <span className="text-body-s1 mr-2">5</span>
-  //         <input
-  //           type="range"
-  //           min={5}
-  //           max={200}
-  //           value={points}
-  //           onChange={(e) => setPoints(Number(e.target.value))}
-  //           className="w-full accent-brand-purple"
-  //         />
-  //         <span className="text-body-s1 ml-2">200</span>
-  //       </div>
-  //       <p className="text-center text-sm text-text-secondary">
-  //         {points} points
-  //       </p>
-  //     </div>
-
-  //     <div className="space-y-4">
-  //       <p className="text-h5-2 mb-4 md:mb-6 text-primary">Location</p>
-  //       <div className="flex justify-between text-body-s2">
-  //         <span className="text-body-s1 text-primary mr-2">300</span>
-  //         <input
-  //           type="range"
-  //           min={300}
-  //           max={2000}
-  //           value={distance}
-  //           onChange={(e) => setDistance(Number(e.target.value))}
-  //           className="w-full accent-brand-purple"
-  //         />
-  //         <span className="text-body-s1 text-primary ml-2">2000</span>
-  //       </div>
-  //       <p className="text-center text-sm text-text-secondary">{distance}m</p>
-  //     </div>
-  //   </div>
-  // );
+  const categoryIcon = (value: string) => {
+    switch (value) {
+      case "Errands":
+        return <ClipboardList size={20} />;
+      case "Repairs":
+        return <Wrench size={20} />;
+      case "Tutoring":
+        return <GraduationCap size={20} />;
+      case "PetCare":
+        return <Heart size={20} />;
+      case "HomeServices":
+        return <Home size={20} />;
+      case "Transportation":
+        return <Car size={20} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -146,105 +92,53 @@ export function Filter({
 
           <h5 className="text-h5-2 text-primary hidden md:block">Filters</h5>
 
-          <div>
-            <p className="text-h5-2 mb-4 md:mb-8">Categories</p>
-            <ul className="space-y-4 md:space-y-6 text-body-s2 text-primary">
-              {apiCategories.map((cat) => (
-                <li
-                  key={cat.value}
-                  onClick={() => setCategory(cat.value)}
-                  className="flex items-center gap-2 cursor-pointer hover:text-brand-purple"
-                >
-                  {cat.value === "Errands" && <ClipboardList size={20} />}
-                  {cat.value === "Repairs" && <Wrench size={20} />}
-                  {cat.value === "Tutoring" && <GraduationCap size={20} />}
-                  {cat.value === "PetCare" && <Heart size={20} />}
-                  {cat.value === "HomeServices" && <Home size={20} />}
-                  {cat.value === "Transportation" && <Car size={20} />}
-                  <span>{cat.label}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {variant === "people" ? (
+            <>
+              <div className="space-y-4">
+                <p className="text-h5-2 mb-4 md:mb-6 text-primary">Rating</p>
+                <div className="flex justify-between text-body-s2 items-center">
+                  <span className="text-body-s1 mr-2 flex items-center gap-1">
+                    1 <Star size={14} />
+                  </span>
+                  <input
+                    type="range"
+                    min={1}
+                    max={5}
+                    step={0.5}
+                    value={minRating}
+                    onChange={(e) => setMinRating?.(Number(e.target.value))}
+                    className="w-full accent-brand-purple"
+                  />
+                  <span className="text-body-s1 ml-2 flex items-center gap-1">
+                    5 <Star size={14} />
+                  </span>
+                </div>
+                <p className="text-center text-sm text-text-secondary">
+                  Min {minRating} - Max {maxRating}
+                </p>
+              </div>
 
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-4 md:mb-8">Priority</p>
-            {["high", "medium", "low"].map((p) => (
-              <label key={p} className="flex gap-2 text-primary cursor-pointer">
-                <input
-                  type="radio"
-                  checked={priority === p}
-                  onChange={() => setPriority(p)}
-                  className="accent-brand-purple"
-                />
-                <span className="capitalize">{p}</span>
-              </label>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-4 md:mb-6 text-primary">Points</p>
-            <div className="flex justify-between text-body-s2">
-              <span className="text-body-s1 mr-2">5</span>
-              <input
-                type="range"
-                min={5}
-                max={200}
-                value={points}
-                onChange={(e) => setPoints(Number(e.target.value))}
-                className="w-full accent-brand-purple"
-              />
-              <span className="text-body-s1 ml-2">200</span>
-            </div>
-            <p className="text-center text-sm text-text-secondary">
-              {points} points
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <p className="text-h5-2 mb-4 md:mb-6 text-primary">Location</p>
-            <div className="flex justify-between text-body-s2">
-              <span className="text-body-s1 text-primary mr-2">300</span>
-              <input
-                type="range"
-                min={300}
-                max={2000}
-                value={distance}
-                onChange={(e) => setDistance(Number(e.target.value))}
-                className="w-full accent-brand-purple"
-              />
-              <span className="text-body-s1 text-primary ml-2">2000</span>
-            </div>
-            <p className="text-center text-sm text-text-secondary">
-              {distance}m
-            </p>
-          </div>
-        </div>
-      </aside>
-
-      {mobileFilterOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/50">
-          <div className="absolute right-0 top-0 h-full w-80 bg-bg-primary p-4 overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Filters</h3>
-              <button onClick={() => setMobileFilterOpen(false)}>
-                <X size={24} />
-              </button>
-            </div>
-            <div className="bg-bg-secondary rounded-xl p-4 md:p-6 space-y-6 md:space-y-8">
-              {showPostButton && (
-                <button
-                  onClick={() => setOpenPost(true)}
-                  className="w-full cursor-pointer bg-brand-purple text-white p-3 md:p-4 rounded-[103px] text-btn-primary mb-4 md:mb-8"
-                >
-                  Post a task
-                </button>
-              )}
-
-              <h5 className="text-h5-2 text-primary hidden md:block">
-                Filters
-              </h5>
-
+              <div className="space-y-4">
+                <p className="text-h5-2 mb-4 md:mb-6 text-primary">Location</p>
+                <div className="flex justify-between text-body-s2">
+                  <span className="text-body-s1 text-primary mr-2">300m</span>
+                  <input
+                    type="range"
+                    min={300}
+                    max={2000}
+                    value={distance}
+                    onChange={(e) => setDistance(Number(e.target.value))}
+                    className="w-full accent-brand-purple"
+                  />
+                  <span className="text-body-s1 text-primary ml-2">2000m</span>
+                </div>
+                <p className="text-center text-sm text-text-secondary">
+                  {distance}m
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
               <div>
                 <p className="text-h5-2 mb-4 md:mb-8">Categories</p>
                 <ul className="space-y-4 md:space-y-6 text-body-s2 text-primary">
@@ -252,14 +146,13 @@ export function Filter({
                     <li
                       key={cat.value}
                       onClick={() => setCategory(cat.value)}
-                      className="flex items-center gap-2 cursor-pointer hover:text-brand-purple"
+                      className={`flex items-center gap-2 cursor-pointer transition-colors ${
+                        category === cat.value
+                          ? "text-brand-purple font-semibold"
+                          : "hover:text-brand-purple"
+                      }`}
                     >
-                      {cat.value === "Errands" && <ClipboardList size={20} />}
-                      {cat.value === "Repairs" && <Wrench size={20} />}
-                      {cat.value === "Tutoring" && <GraduationCap size={20} />}
-                      {cat.value === "PetCare" && <Heart size={20} />}
-                      {cat.value === "HomeServices" && <Home size={20} />}
-                      {cat.value === "Transportation" && <Car size={20} />}
+                      {categoryIcon(cat.value)}
                       <span>{cat.label}</span>
                     </li>
                   ))}
@@ -268,7 +161,7 @@ export function Filter({
 
               <div className="space-y-4">
                 <p className="text-h5-2 mb-4 md:mb-8">Priority</p>
-                {["high", "medium", "low"].map((p) => (
+                {["HIGH", "MEDIUM", "LOW"].map((p) => (
                   <label
                     key={p}
                     className="flex gap-2 text-primary cursor-pointer"
@@ -276,10 +169,12 @@ export function Filter({
                     <input
                       type="radio"
                       checked={priority === p}
-                      onChange={() => setPriority(p)}
+                      onChange={() => setPriority(priority === p ? null : p)}
                       className="accent-brand-purple"
                     />
-                    <span className="capitalize">{p}</span>
+                    <span className="capitalize">
+                      {p.charAt(0) + p.slice(1).toLowerCase()}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -306,7 +201,7 @@ export function Filter({
               <div className="space-y-4">
                 <p className="text-h5-2 mb-4 md:mb-6 text-primary">Location</p>
                 <div className="flex justify-between text-body-s2">
-                  <span className="text-body-s1 text-primary mr-2">300</span>
+                  <span className="text-body-s1 text-primary mr-2">300m</span>
                   <input
                     type="range"
                     min={300}
@@ -315,12 +210,184 @@ export function Filter({
                     onChange={(e) => setDistance(Number(e.target.value))}
                     className="w-full accent-brand-purple"
                   />
-                  <span className="text-body-s1 text-primary ml-2">2000</span>
+                  <span className="text-body-s1 text-primary ml-2">2000m</span>
                 </div>
                 <p className="text-center text-sm text-text-secondary">
                   {distance}m
                 </p>
               </div>
+            </>
+          )}
+        </div>
+      </aside>
+
+      {mobileFilterOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50">
+          <div className="absolute right-0 top-0 h-full w-80 bg-bg-primary p-4 overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Filters</h3>
+              <button onClick={() => setMobileFilterOpen(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="bg-bg-secondary rounded-xl p-4 md:p-6 space-y-6 md:space-y-8">
+              {showPostButton && (
+                <button
+                  onClick={() => setOpenPost(true)}
+                  className="w-full cursor-pointer bg-brand-purple text-white p-3 md:p-4 rounded-[103px] text-btn-primary mb-4 md:mb-8"
+                >
+                  Post a task
+                </button>
+              )}
+
+              <h5 className="text-h5-2 text-primary hidden md:block">
+                Filters
+              </h5>
+
+              {variant === "people" ? (
+                <>
+                  <div className="space-y-4">
+                    <p className="text-h5-2 mb-4 md:mb-6 text-primary">
+                      Rating
+                    </p>
+                    <div className="flex justify-between text-body-s2 items-center">
+                      <span className="text-body-s1 mr-2 flex items-center gap-1">
+                        1 <Star size={14} />
+                      </span>
+                      <input
+                        type="range"
+                        min={1}
+                        max={5}
+                        step={0.5}
+                        value={minRating}
+                        onChange={(e) => setMinRating?.(Number(e.target.value))}
+                        className="w-full accent-brand-purple"
+                      />
+                      <span className="text-body-s1 ml-2 flex items-center gap-1">
+                        5 <Star size={14} />
+                      </span>
+                    </div>
+                    <p className="text-center text-sm text-text-secondary">
+                      Min {minRating} - Max {maxRating}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-h5-2 mb-4 md:mb-6 text-primary">
+                      Location
+                    </p>
+                    <div className="flex justify-between text-body-s2">
+                      <span className="text-body-s1 text-primary mr-2">
+                        300m
+                      </span>
+                      <input
+                        type="range"
+                        min={300}
+                        max={2000}
+                        value={distance}
+                        onChange={(e) => setDistance(Number(e.target.value))}
+                        className="w-full accent-brand-purple"
+                      />
+                      <span className="text-body-s1 text-primary ml-2">
+                        2000m
+                      </span>
+                    </div>
+                    <p className="text-center text-sm text-text-secondary">
+                      {distance}m
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="text-h5-2 mb-4 md:mb-8">Categories</p>
+                    <ul className="space-y-4 md:space-y-6 text-body-s2 text-primary">
+                      {apiCategories.map((cat) => (
+                        <li
+                          key={cat.value}
+                          onClick={() => setCategory(cat.value)}
+                          className={`flex items-center gap-2 cursor-pointer transition-colors ${
+                            category === cat.value
+                              ? "text-brand-purple font-semibold"
+                              : "hover:text-brand-purple"
+                          }`}
+                        >
+                          {categoryIcon(cat.value)}
+                          <span>{cat.label}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-h5-2 mb-4 md:mb-8">Priority</p>
+                    {["HIGH", "MEDIUM", "LOW"].map((p) => (
+                      <label
+                        key={p}
+                        className="flex gap-2 text-primary cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          checked={priority === p}
+                          onChange={() =>
+                            setPriority(priority === p ? null : p)
+                          }
+                          className="accent-brand-purple"
+                        />
+                        <span className="capitalize">
+                          {p.charAt(0) + p.slice(1).toLowerCase()}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-h5-2 mb-4 md:mb-6 text-primary">
+                      Points
+                    </p>
+                    <div className="flex justify-between text-body-s2">
+                      <span className="text-body-s1 mr-2">5</span>
+                      <input
+                        type="range"
+                        min={5}
+                        max={200}
+                        value={points}
+                        onChange={(e) => setPoints(Number(e.target.value))}
+                        className="w-full accent-brand-purple"
+                      />
+                      <span className="text-body-s1 ml-2">200</span>
+                    </div>
+                    <p className="text-center text-sm text-text-secondary">
+                      {points} points
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-h5-2 mb-4 md:mb-6 text-primary">
+                      Location
+                    </p>
+                    <div className="flex justify-between text-body-s2">
+                      <span className="text-body-s1 text-primary mr-2">
+                        300m
+                      </span>
+                      <input
+                        type="range"
+                        min={300}
+                        max={2000}
+                        value={distance}
+                        onChange={(e) => setDistance(Number(e.target.value))}
+                        className="w-full accent-brand-purple"
+                      />
+                      <span className="text-body-s1 text-primary ml-2">
+                        2000m
+                      </span>
+                    </div>
+                    <p className="text-center text-sm text-text-secondary">
+                      {distance}m
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div

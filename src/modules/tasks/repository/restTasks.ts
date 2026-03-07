@@ -14,8 +14,6 @@ import type {
   ApiResponse,
 } from "./TasksDtos";
 
-
-
 export const restTasks = (): TasksRepo => ({
   createTask: async (data: CreateTaskDto) => {
     const formData = new FormData();
@@ -33,14 +31,14 @@ export const restTasks = (): TasksRepo => ({
       formData.append("longitude", String(data.longitude));
     }
 
-    if (data.images) {
-      data.images.forEach((image) => {
-        formData.append("file", image);
-      });
+    if (data.images && data.images.length > 0) {
+      formData.append("file", data.images[0]);
     }
 
     // Don't set Content-Type manually - axios will set it with correct boundary
-    return apiClient.post<CreateTaskResponse>("/tasks/Create-Task", formData);
+    return apiClient.post<CreateTaskResponse>("/tasks/Create-Task", formData, {
+      timeout: 30000,
+    });
   },
 
   getTasks: async (filters?: TaskFilters) => {
@@ -69,13 +67,17 @@ export const restTasks = (): TasksRepo => ({
       formData.append("longitude", String(data.longitude));
     }
 
-    if (data.images) {
-      data.images.forEach((image) => {
-        formData.append("file", image);
-      });
+    if (data.images && data.images.length > 0) {
+      formData.append("file", data.images[0]);
     }
 
-    return apiClient.patch<ApiResponse<TaskResponse>>(`/tasks/${id}`, formData);
+    return apiClient.patch<ApiResponse<TaskResponse>>(
+      `/tasks/${id}`,
+      formData,
+      {
+        timeout: 30000,
+      },
+    );
   },
 
   deleteTask: async (id: number) => {
@@ -105,7 +107,9 @@ export const restTasks = (): TasksRepo => ({
   },
 
   getTopTaskers: async (limit: number = 10) => {
-    return apiClient.get<TopTaskersResponse>(`/tasks/top-taskers?limit=${limit}`);
+    return apiClient.get<TopTaskersResponse>(
+      `/tasks/top-taskers?limit=${limit}`,
+    );
   },
 
   getTrendingCategories: async () => {
