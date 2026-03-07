@@ -138,6 +138,14 @@ export const useMapTasks = () => {
   });
 };
 
+export const useNearbyTasks = (filters?: TaskFilters) => {
+  return useQuery({
+    queryKey: ["nearby-tasks", filters],
+    queryFn: () => tasksRepo.getTasks(filters),
+    enabled: filters?.userLat !== undefined && filters?.userLng !== undefined,
+  });
+};
+
 export const useTopTaskers = (limit?: number) => {
   return useQuery({
     queryKey: ["top-taskers", limit],
