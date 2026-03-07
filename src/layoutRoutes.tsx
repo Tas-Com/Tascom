@@ -38,6 +38,11 @@ export const adminLayoutRoute = createRoute({
         to: "/login",
       });
     }
-    // Add admin check here later if needed
+
+    if (tokenManager.getRole() !== "ADMIN") {
+      throw redirect({
+        to: "/",
+      });
+    }
   },
 });

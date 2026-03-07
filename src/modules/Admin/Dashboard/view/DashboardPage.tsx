@@ -8,49 +8,90 @@ import {
 import { StatCard } from "../components/StatCard";
 import { ActivityTable } from "../components/ActivityTable";
 import { RecentTasks } from "../components/RecentTasks";
+import { 
+  useDashboardKpis, 
+  useNewPublishedTasks, 
+  useRecentReports, 
+  usePointsMetrics,
+  useTaskCompletionSeries
+} from "../hooks/useDashboard";
+import { useState, useMemo } from "react";
 
 export function DashboardPage() {
+  const [range] = useState<'today' | 'last_week' | 'last_month'>('last_month');
+  
+  const { data: kpis, isLoading: kpisLoading } = useDashboardKpis(range);
+  const { data: reports, isLoading: reportsLoading } = useRecentReports(range);
+  const { data: newTasks, isLoading: tasksLoading } = useNewPublishedTasks(5);
+  const { data: points } = usePointsMetrics(range);
+  const { data: series } = useTaskCompletionSeries(range);
+
+  const seriesPath = useMemo(() => {
+    if (!series || series.length < 2) return { total: "", completed: "" };
+    
+    const width = 1000;
+    const height = 250;
+    const maxTasks = Math.max(...series.map(d => d.totalTasks), 10);
+    
+    const pointsTotal = series.map((d, i) => {
+        const x = (i / (series.length - 1)) * width;
+        const y = height - (d.totalTasks / maxTasks) * height;
+        return `${x},${y}`;
+    }).join(" ");
+
+    const pointsCompleted = series.map((d, i) => {
+        const x = (i / (series.length - 1)) * width;
+        const y = height - (d.completedTasks / maxTasks) * height;
+        return `${x},${y}`;
+    }).join(" ");
+
+    return {
+        total: `M ${pointsTotal}`,
+        completed: `M ${pointsCompleted}`
+    };
+  }, [series]);
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       {/* Top statistics cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           label="Total Users" 
-          value="50,921" 
-          trend="2.9%" 
+          value={kpisLoading ? "..." : kpis?.totalUsers || "0"} 
+          trend={`${kpis?.totalUsersChangePct || 0}%`} 
           trendType="up" 
           icon={Users} 
           iconBgColor="bg-state-success/10"
           iconColor="text-status-active"
-          subValue="34,432 new Users"
+          subValue={kpisLoading ? "..." : `${kpis?.newUsersLastMonth || 0} new Users`}
         />
         <StatCard 
           label="Tasks Completion Rate" 
-          value="88%" 
-          trend="14.2%" 
+          value={kpisLoading ? "..." : `${kpis?.taskCompletionRate || 0}%`} 
+          trend={`${kpis?.taskCompletionChangePct || 0}%`} 
           trendType="up" 
           icon={ClipboardCheck} 
           iconBgColor="bg-status-completed/10"
           iconColor="text-status-completed"
-          subValue="2157 Completed Tasks"
+          subValue={kpisLoading ? "..." : `${kpis?.completedTasksLastMonth || 0} Completed Tasks`}
         />
         <StatCard 
           label="Under Review Reports" 
-          value="12" 
-          trend="5.0%" 
+          value={kpisLoading ? "..." : kpis?.underReviewReports || "0"} 
+          trend={`${kpis?.underReviewChangePct || 0}%`} 
           trendType="down" 
           icon={Search} 
           iconBgColor="bg-priority-medium-bg"
           iconColor="text-priority-medium-text"
-          subValue="3 New Reports"
+          subValue={kpisLoading ? "..." : `${kpis?.newReportsLastMonth || 0} New Reports`}
         />
         <StatCard 
           label="Top Country by Activity" 
-          value="Palestine" 
+          value={kpisLoading ? "..." : kpis?.topCountry || "None"} 
           icon={MapPin} 
           iconBgColor="bg-brand-purple/10"
           iconColor="text-brand-purple"
-          subValue="2312 active users"
+          subValue={kpisLoading ? "..." : `${kpis?.topCountryActiveUsersLastMonth || 0} active users`}
         />
       </div>
 
@@ -71,7 +112,7 @@ export function DashboardPage() {
                     <span className="text-[12px] font-medium text-text-secondary">Completed Tasks</span>
                 </div>
                 <button className="flex items-center gap-2 text-[12px] text-text-secondary ml-4">
-                    Last week <MoreVertical size={14} />
+                    {range.replace('_', ' ')} <MoreVertical size={14} />
                 </button>
               </div>
             </div>
@@ -84,26 +125,31 @@ export function DashboardPage() {
                         <line key={i} x1="0" y1={250 - i * 50} x2="100%" y2={250 - i * 50} stroke="#f0f0f0" strokeWidth="1" />
                     ))}
                     {/* Path 1: Total Tasks */}
-                    <path d="M0,200 Q150,180 300,100 T600,150 T900,120" fill="none" stroke="var(--color-status-active)" strokeWidth="3" strokeLinecap="round" />
+                    <path d={seriesPath.total || "M0,200 Q150,180 300,100 T600,150 T900,120"} fill="none" stroke="var(--color-status-active)" strokeWidth="3" strokeLinecap="round" />
                     {/* Path 2: Completed Tasks */}
-                    <path d="M0,150 Q150,120 300,50 T600,100 T900,70" fill="none" stroke="var(--color-brand-purple)" strokeWidth="3" strokeLinecap="round" />
+                    <path d={seriesPath.completed || "M0,150 Q150,120 300,50 T600,100 T900,70"} fill="none" stroke="var(--color-brand-purple)" strokeWidth="3" strokeLinecap="round" />
                     
-                    {/* Tooltip mockup */}
-                    <rect x="350" y="50" width="120" height="60" rx="12" fill="white" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.1))" />
-                    <text x="365" y="70" className="text-[10px] fill-text-secondary font-medium">Tuesday</text>
-                    <circle cx="365" cy="85" r="4" fill="var(--color-status-active)" />
-                    <text x="375" y="88" className="text-[10px] fill-text-primary font-bold">Total Tasks: 12</text>
-                    <circle cx="365" cy="100" r="4" fill="var(--color-brand-purple)" />
-                    <text x="375" y="103" className="text-[10px] fill-text-primary font-bold">Completed Tasks: 8</text>
+                    {series && series.length > 0 && (
+                        <g>
+                            <rect x="350" y="50" width="120" height="60" rx="12" fill="white" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.1))" />
+                            <text x="365" y="70" className="text-[10px] fill-text-secondary font-medium">{new Date(series[Math.floor(series.length/2)]?.date).toLocaleDateString()}</text>
+                            <circle cx="365" cy="85" r="4" fill="var(--color-status-active)" />
+                            <text x="375" y="88" className="text-[10px] fill-text-primary font-bold">Total Tasks: {series[Math.floor(series.length/2)]?.totalTasks}</text>
+                            <circle cx="365" cy="100" r="4" fill="var(--color-brand-purple)" />
+                            <text x="375" y="103" className="text-[10px] fill-text-primary font-bold">Completed Tasks: {series[Math.floor(series.length/2)]?.completedTasks}</text>
+                        </g>
+                    )}
                 </svg>
                 {/* X Axis Labels */}
                 <div className="flex justify-between mt-4 text-[11px] text-text-third font-medium">
-                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                    {series?.map((d, i) => (
+                        <span key={i}>{new Date(d.date).toLocaleDateString([], { weekday: 'short' })}</span>
+                    )) || <span>Sun</span>}
                 </div>
             </div>
           </div>
 
-          <ActivityTable />
+          <ActivityTable reports={reports?.data} isLoading={reportsLoading} />
         </div>
 
         {/* Right Column: Key Metrics & New Content */}
@@ -134,20 +180,20 @@ export function DashboardPage() {
             <div className="w-full space-y-4">
                 <div className="flex justify-between items-center text-[12px]">
                     <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-brand-purple"></span> Points Earned vs Points Spent :</span>
-                    <span className="text-text-primary font-bold text-[14px]">49%</span>
+                    <span className="text-text-primary font-bold text-[14px]">{points?.earnedVsSpent || 0}%</span>
                 </div>
                 <div className="flex justify-between items-center text-[12px]">
                     <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-status-active"></span> Active Circulation Rate :</span>
-                    <span className="text-text-primary font-bold text-[14px]">88%</span>
+                    <span className="text-text-primary font-bold text-[14px]">{points?.activeCirculation || 0}%</span>
                 </div>
                 <div className="flex justify-between items-center text-[12px]">
                     <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#fbbf24]"></span> Daily Retention Rate :</span>
-                    <span className="text-text-primary font-bold text-[14px]">72%</span>
+                    <span className="text-text-primary font-bold text-[14px]">{points?.dailyRetention || 0}%</span>
                 </div>
             </div>
           </div>
 
-          <RecentTasks />
+          <RecentTasks tasks={newTasks} isLoading={tasksLoading} />
         </div>
       </div>
     </div>

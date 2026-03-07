@@ -26,7 +26,14 @@ const MOCK_DISPUTES = [
   },
 ];
 
-export function ReportsTab() {
+interface ReportsTabProps {
+  userId: string;
+}
+
+export function ReportsTab({ userId }: ReportsTabProps) {
+  // TODO: Fetch real reports for user ${userId} when endpoint is available
+  console.log('Fetching reports for user:', userId);
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

@@ -4,6 +4,7 @@ import { router } from "../../App";
 const TOKEN_KEY = "access-token";
 
 const USER_ID_KEY = "user-id";
+const ROLE_KEY = "user-role";
 
 export const tokenManager = {
   getToken: () => localStorage.getItem(TOKEN_KEY),
@@ -11,11 +12,14 @@ export const tokenManager = {
   removeToken: () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_ID_KEY);
+    localStorage.removeItem(ROLE_KEY);
   },
   isAuthenticated: () => !!localStorage.getItem(TOKEN_KEY),
   getUserId: () => localStorage.getItem(USER_ID_KEY),
   setUserId: (id: string) => localStorage.setItem(USER_ID_KEY, id),
   removeUserId: () => localStorage.removeItem(USER_ID_KEY),
+  getRole: () => localStorage.getItem(ROLE_KEY),
+  setRole: (role: string) => localStorage.setItem(ROLE_KEY, role),
 };
 
 const api = axios.create({

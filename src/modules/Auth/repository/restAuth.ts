@@ -9,8 +9,9 @@ export const restAuth = (): AuthRepo => {
     login: async (request: AuthRequest): Promise<UserInformation> => {
       const responseData = await apiClient.post<AuthResponse>('auth/login', request);
       const user = toUserInformation(responseData);
-    tokenManager.setToken(user.access_token);    
-  tokenManager.setUserId(String(user.id));
+      tokenManager.setToken(user.access_token);    
+      tokenManager.setUserId(String(user.id));
+      tokenManager.setRole(user.role);
       return user;
     },
 

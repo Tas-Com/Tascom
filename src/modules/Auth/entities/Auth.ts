@@ -3,6 +3,7 @@ export type UserInformation = {
   id: number;
   name: string;
   email: string;
+  role: string;
   phoneNumber?: string;
   latitude: number;
   longitude: number;
