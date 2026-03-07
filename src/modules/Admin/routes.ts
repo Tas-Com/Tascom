@@ -1,7 +1,8 @@
 import { createRoute } from '@tanstack/react-router';
 import { adminLayoutRoute } from '../../layoutRoutes';
 import { DashboardPage } from './Dashboard';
-import { UsersPage } from './Users';
+import { UsersPage, UserDetailPage } from './Users';
+import { ReportsPage } from './Reports';
 import { RolesPage } from './Roles';
 import { AdminSettingsPage } from './Settings';
 import { TasksModerationPage } from './TasksModeration';
@@ -24,6 +25,12 @@ export const adminUsersRoute = createRoute({
   component: UsersPage,
 });
 
+export const adminUserDetailRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: '/users/$userId',
+  component: UserDetailPage,
+});
+
 export const adminRolesRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: '/roles',
@@ -42,11 +49,19 @@ export const adminRootRoute = createRoute({
   component: DashboardPage,
 });
 
+export const adminReportsRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: '/reports',
+  component: ReportsPage,
+});
+
 export const adminRoutes = [
   adminRootRoute,
   adminDashboardRoute,
   adminTasksRoute,
   adminUsersRoute,
+  adminUserDetailRoute,
+  adminReportsRoute,
   adminRolesRoute,
   adminSettingsRoute,
 ];

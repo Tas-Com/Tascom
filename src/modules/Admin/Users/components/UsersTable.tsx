@@ -9,6 +9,7 @@ import {
   RotateCcw, 
   CheckCircle2 
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { cn } from "@/shared/utils";
 
 const MOCK_USERS = [
@@ -155,7 +156,7 @@ export function UsersTable() {
       </div>
 
       {/* Table Content */}
-      <div className="overflow-x-auto h-[600px] overflow-y-auto">
+      <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead className="sticky top-0 z-10 bg-white">
             <tr className="bg-bg-primary/30 border-b border-border-default/20">
@@ -209,16 +210,31 @@ export function UsersTable() {
                 <td className="px-8 py-6">
                   <div className="flex items-center justify-center gap-2">
                     {getActions(user.status).map((action, idx) => (
-                      <button 
-                        key={idx}
-                        title={action.label}
-                        className={cn(
-                          "p-3 hover:bg-white hover:shadow-md rounded-xl transition-all active:scale-90",
-                          action.color
-                        )}
-                      >
-                        <action.icon size={22} />
-                      </button>
+                      action.label === 'View Profile' ? (
+                        <Link 
+                          key={idx}
+                          to="/admin/users/$userId" 
+                          params={{ userId: user.id.replace('#', '') }}
+                          className={cn(
+                            "p-3 hover:bg-white hover:shadow-md rounded-xl transition-all active:scale-90",
+                            action.color
+                          )}
+                          title={action.label}
+                        >
+                          <action.icon size={22} />
+                        </Link>
+                      ) : (
+                        <button 
+                          key={idx}
+                          title={action.label}
+                          className={cn(
+                            "p-3 hover:bg-white hover:shadow-md rounded-xl transition-all active:scale-90",
+                            action.color
+                          )}
+                        >
+                          <action.icon size={22} />
+                        </button>
+                      )
                     ))}
                   </div>
                 </td>
