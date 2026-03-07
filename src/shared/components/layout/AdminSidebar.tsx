@@ -30,7 +30,7 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
 
   return (
     <aside 
-      className="w-[284px] h-screen bg-white flex flex-col relative"
+      className="w-[284px] h-full bg-white flex flex-col relative shrink-0"
       style={{ 
         borderRight: '0.5px solid #0000001A',
         boxShadow: '0px 14px 42px 0px #0000000A'
@@ -44,34 +44,40 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
         <X size={24} />
       </button>
 
-      <div className="p-6 flex items-center gap-2 mb-4">
-        <img src="/Grouph 2.png" alt="logo" className="w-[32px] h-[32px]" />
-        <span className="text-[24px] text-brand-purple font-bold tracking-tight">Tascom</span>
+      {/* Logo Section */}
+      <div className="p-8 flex items-center gap-3 mb-4">
+        <img src="/Grouph 2.png" alt="logo" className="w-[40px] h-[40px]" />
+        <span className="text-[28px] text-brand-purple font-bold tracking-tight font-[Poppins]">Tascom</span>
       </div>
 
-      <nav className="flex-1 px-[24px] space-y-2">
+      {/* Navigation section */}
+      <nav className="flex-1 px-[24px] space-y-3">
         {NAV_ITEMS.map((item) => {
-          const isActive = location.pathname === item.href || (item.href === '/admin/dashboard' && location.pathname === '/admin');
+          const isActive = location.pathname === item.href || (item.href === '/admin/dashboard' && (location.pathname === '/admin' || location.pathname === '/admin/'));
           return (
             <Link
               key={item.label}
               to={item.href}
               onClick={onClose}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-[16px]",
+                "flex items-center gap-4 px-5 py-4 rounded-[16px] transition-all font-semibold text-[16px] group",
                 isActive 
-                  ? "bg-bg-card-hover text-brand-purple border border-brand-purple/10" 
-                  : "text-text-secondary hover:bg-bg-primary hover:text-text-primary"
+                  ? "bg-brand-purple/5 text-brand-purple border border-brand-purple/10 shadow-sm" 
+                  : "text-text-secondary hover:bg-bg-primary/50 hover:text-text-primary"
               )}
             >
-              <item.icon size={20} className={isActive ? "text-brand-purple" : "text-text-secondary"} />
+              <item.icon size={22} className={cn(
+                "transition-colors",
+                isActive ? "text-brand-purple" : "text-text-secondary group-hover:text-text-primary"
+              )} />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="px-[24px] pb-[32px] pt-4 space-y-2">
+      {/* Bottom section */}
+      <div className="px-[24px] pb-[40px] pt-6 space-y-3 border-t border-[#0000000A]">
         {BOTTOM_ITEMS.map((item) => {
           const isActive = location.pathname === item.href;
           return (
@@ -80,19 +86,22 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
               to={item.href}
               onClick={onClose}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-[16px]",
+                "flex items-center gap-4 px-5 py-4 rounded-[16px] transition-all font-semibold text-[16px] group",
                 isActive 
-                  ? "bg-bg-card-hover text-brand-purple border border-brand-purple/10" 
-                  : "text-text-secondary hover:bg-bg-primary hover:text-text-primary"
+                  ? "bg-brand-purple/5 text-brand-purple border border-brand-purple/10 shadow-sm" 
+                  : "text-text-secondary hover:bg-bg-primary/50 hover:text-text-primary"
               )}
             >
-              <item.icon size={20} className={isActive ? "text-brand-purple" : "text-text-secondary"} />
+              <item.icon size={22} className={cn(
+                "transition-colors",
+                isActive ? "text-brand-purple" : "text-text-secondary group-hover:text-text-primary"
+              )} />
               {item.label}
             </Link>
           );
         })}
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-[16px] text-[#FF4C4C] hover:bg-red-50 mt-2">
-          <LogOut size={20} />
+        <button className="w-full flex items-center gap-4 px-5 py-4 rounded-[16px] transition-all font-bold text-[16px] text-[#FF4C4C] hover:bg-red-50 hover:text-red-600 active:scale-95 transition-all mt-2 group">
+          <LogOut size={22} className="group-hover:rotate-6 transition-transform" />
           Logout
         </button>
       </div>

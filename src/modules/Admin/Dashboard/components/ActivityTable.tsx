@@ -44,7 +44,7 @@ export function ActivityTable() {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center justify-end gap-2 transition-opacity">
                     <button className="p-2 hover:bg-bg-card-hover rounded-full transition-colors text-text-secondary hover:text-brand-purple" title="View Details">
                       <Eye size={18} />
                     </button>

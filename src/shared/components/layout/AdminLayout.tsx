@@ -1,16 +1,37 @@
 import { useState } from "react";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useLocation } from "@tanstack/react-router";
 import { AdminSidebar } from "./AdminSidebar";
 import { Search, Bell, Menu, X } from "lucide-react";
 
 export function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  // Determine dynamic title based on current path
+  const getPageTitle = () => {
+    const path = location.pathname;
+    if (path === '/admin/dashboard' || path === '/admin' || path === '/admin/') return 'Dashboard';
+    if (path.includes('/admin/tasks')) return 'Tasks Moderation';
+    if (path.includes('/admin/users')) return 'Users Management';
+    if (path.includes('/admin/reports')) return 'Reports';
+    if (path.includes('/admin/roles')) return 'Roles Management';
+    if (path.includes('/admin/settings')) return 'Settings';
+    return 'Admin Panel';
+  };
 
   return (
-    <div className="flex min-h-screen bg-bg-primary font-sans antialiased text-text-primary">
-      {/* Sidebar - Desktop and Mobile Drawer */}
+    <div 
+      className="flex bg-bg-primary font-sans antialiased text-text-primary overflow-hidden"
+      style={{ 
+        zoom: '0.75', 
+        height: '133.333333vh', // Compensation for 0.75 zoom (100 / 0.75)
+        width: '133.333333vw'  // Compensation for 0.75 zoom (100 / 0.75)
+      }}
+    >
+      {/* Sidebar - Strictly Fixed Height */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0
+        fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out 
+        lg:translate-x-0 lg:static lg:block lg:shrink-0 h-full
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         <AdminSidebar onClose={() => setIsSidebarOpen(false)} />
@@ -24,67 +45,73 @@ export function AdminLayout() {
         />
       )}
 
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Header */}
+      {/* Main Container - Scrollable internal area */}
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
+        {/* Top Header - Fixed at top of main container */}
         <header 
-          className="h-[94px] bg-white flex items-center justify-between px-4 sm:px-[32px] sticky top-0 z-30"
+          className="h-[110px] bg-white flex items-center justify-between px-[40px] shrink-0 z-30"
           style={{ 
             boxShadow: '0px 14px 42px 0px #0000000A' 
           }}
         >
-          {/* Mobile Menu Toggle & Greeting */}
-          <div className="flex items-center gap-4">
+          {/* Mobile Menu Toggle & Title */}
+          <div className="flex items-center gap-6">
             <button 
               className="lg:hidden p-2 hover:bg-bg-primary rounded-lg text-text-primary transition-colors"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             >
               {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <div className="hidden xs:flex flex-col gap-0.5 sm:gap-1">
-              <h2 className="text-[18px] sm:text-[24px] font-semibold text-text-primary leading-tight font-[Poppins]">Hello Ahmad! 👋</h2>
-              <p className="text-[12px] sm:text-[14px] text-text-secondary font-[Poppins] hidden sm:block">Today's platform activity overview</p>
-            </div>
+            <h1 className="text-[36px] font-bold text-[#251455] font-[Poppins] tracking-tight">
+              {getPageTitle()}
+            </h1>
           </div>
 
           {/* Header Actions Section */}
-          <div className="flex items-center gap-3 sm:gap-[24px]">
-            {/* Custom Search Bar - Responsive width */}
+          <div className="flex items-center gap-[40px]">
+            {/* Custom Search Bar */}
             <div className="relative hidden md:flex items-center">
-              <div className="absolute left-6 text-text-primary">
-                <Search size={20} className="text-[#251455]" />
+              <div className="absolute left-7 text-text-primary">
+                <Search size={24} className="text-[#251455] opacity-70" />
               </div>
               <input 
                 type="text" 
                 placeholder="Search"
-                className="w-[200px] lg:w-[420px] h-[48px] lg:h-[52px] pl-[56px] pr-6 rounded-full border border-[#0000001A] text-[14px] lg:text-[16px] outline-none focus:border-brand-purple/30 transition-all font-[Poppins]"
+                className="w-[480px] h-[60px] pl-[72px] pr-8 rounded-full border border-[#0000001A] text-[18px] outline-none focus:border-brand-purple/30 transition-all font-[Poppins] shadow-sm placeholder:text-text-third"
               />
             </div>
 
-            {/* Custom Notification Bell */}
-            <div className="relative cursor-pointer p-1">
-              <Bell size={28} lg:size={32} className="text-[#251455]" />
-              <span className="absolute -top-1 -right-1 w-[20px] h-[20px] lg:w-[22px] lg:h-[22px] bg-brand-purple rounded-full border-2 border-white flex items-center justify-center text-white text-[10px] lg:text-[12px] font-bold">
-                6
-              </span>
-            </div>
+            {/* Custom Notification Bell, Avatar, and Name Group */}
+            <div className="flex items-center gap-8">
+              <div className="relative cursor-pointer hover:opacity-80 transition-opacity">
+                <Bell className="w-9 h-9 text-[#251455]" />
+                <span className="absolute -top-1.5 -right-1.5 w-[24px] h-[24px] bg-brand-purple rounded-full border-2 border-white flex items-center justify-center text-white text-[13px] font-bold shadow-sm">
+                  6
+                </span>
+              </div>
 
-            {/* Custom User Info */}
-            <div className="flex items-center gap-2 sm:gap-4 lg:ml-2">
-              <img 
-                src="/Adam.jpg" 
-                alt="Admin" 
-                className="w-[48px] h-[48px] lg:w-[60px] lg:h-[60px] rounded-full object-cover border-2 border-[#E5E7EB]" 
-              />
-              <span className="font-bold text-[14px] sm:text-[16px] lg:text-[18px] text-[#251455] font-[Poppins] hidden sm:inline">
-                Ahmad Khalifa
-              </span>
+              <div className="flex items-center gap-5 border-l border-[#0000001A] pl-8">
+                <div className="relative">
+                    <img 
+                    src="/Adam.jpg" 
+                    alt="Admin" 
+                    className="w-[64px] h-[64px] rounded-full object-cover border-2 border-white shadow-md" 
+                    />
+                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-status-active border-2 border-white rounded-full"></div>
+                </div>
+                <span className="font-bold text-[20px] text-[#251455] font-[Poppins] hidden sm:inline whitespace-nowrap">
+                  Ahmad Khalifa
+                </span>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Main Content Area */}
-        <main className="flex-1 p-4 sm:p-[32px] overflow-auto">
-          <Outlet />
+        {/* Main Content Area - Independently scrollable */}
+        <main className="flex-1 overflow-y-auto p-[40px] bg-bg-primary/50">
+          <div className="max-w-[1600px] mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

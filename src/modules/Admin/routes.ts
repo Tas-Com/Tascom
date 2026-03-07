@@ -4,11 +4,18 @@ import { DashboardPage } from './Dashboard';
 import { UsersPage } from './Users';
 import { RolesPage } from './Roles';
 import { AdminSettingsPage } from './Settings';
+import { TasksModerationPage } from './TasksModeration';
 
 export const adminDashboardRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: '/dashboard',
   component: DashboardPage,
+});
+
+export const adminTasksRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: '/tasks',
+  component: TasksModerationPage,
 });
 
 export const adminUsersRoute = createRoute({
@@ -38,6 +45,7 @@ export const adminRootRoute = createRoute({
 export const adminRoutes = [
   adminRootRoute,
   adminDashboardRoute,
+  adminTasksRoute,
   adminUsersRoute,
   adminRolesRoute,
   adminSettingsRoute,
