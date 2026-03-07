@@ -6,6 +6,8 @@ import { CommentSection } from "./CommentSection";
 import { useLikeTask, useSaveTask } from "@/modules/tasks/hooks/useTasks";
 import { useCommentsByTask } from "@/modules/tasks/comments/hooks/useComments";
 import { useLikesStore } from "@/store/likesStore";
+import { useSavesStore } from "@/store/savesStore";
+import { toast } from "sonner";
 
 type TaskCardProps = {
   taskerName: string;
@@ -53,7 +55,6 @@ export function TaskCard({
   defaultShowComments = false,
 }: TaskCardProps) {
   const [showComments, setShowComments] = useState(defaultShowComments);
-  const [localIsSaved, setLocalIsSaved] = useState(isSaved);
 
   const { isLiked: isStoreLiked, getLikes, toggleLike } = useLikesStore();
   const storeLiked = isStoreLiked(taskId);
@@ -62,6 +63,9 @@ export function TaskCard({
   // Store is the source of truth for likes (persisted + instant)
   const effectiveIsLiked = storeLiked || isLiked;
   const effectiveLikes = storeLikes || likes;
+
+  const { isSaved: isStoreSaved, toggleSave } = useSavesStore();
+  const effectiveIsSaved = isStoreSaved(taskId) || isSaved;
 
   const likeTask = useLikeTask();
   const saveTask = useSaveTask();
@@ -83,13 +87,18 @@ export function TaskCard({
 
   const handleSave = async () => {
     const taskIdNum = Number(taskId);
-    // Optimistic update
-    setLocalIsSaved((prev) => !prev);
+    const wasSaved = effectiveIsSaved;
+    // Toggle store first for instant UI update
+    toggleSave(taskId);
     try {
       await saveTask.mutateAsync(taskIdNum);
+      toast.success(
+        wasSaved ? "Task removed from saved" : "Task saved successfully",
+      );
     } catch (error) {
       // Revert on failure
-      setLocalIsSaved((prev) => !prev);
+      toggleSave(taskId);
+      toast.error("Failed to save task");
       console.error("Failed to save task:", error);
     }
   };
@@ -110,7 +119,7 @@ export function TaskCard({
         postedTime={postedTime}
         taskerImage={taskerImage}
         compact={compact}
-        isSaved={localIsSaved}
+        isSaved={effectiveIsSaved}
         onSave={handleSave}
       />
 

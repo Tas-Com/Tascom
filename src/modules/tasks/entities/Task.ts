@@ -34,6 +34,7 @@ export interface Asset {
   id: string;
   url: string;
   fileType: string;
+  taskId?: string;
 }
 
 export interface User {

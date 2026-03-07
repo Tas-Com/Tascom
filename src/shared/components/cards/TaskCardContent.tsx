@@ -88,14 +88,22 @@ export function TaskCardContent({
         {categories.map((category, index) => (
           <div
             key={index}
-            className={`flex items-center gap-1.5 text-brand-purple rounded-full bg-card-hover ${
-              compact
-                ? "px-2 py-0.5 text-label2"
-                : "px-3 py-1 gap-2 text-text-label2"
-            }`}
+            className="flex items-center gap-2 text-brand-purple rounded-full"
+            style={{
+              background: "#F4F0FF",
+              minWidth: 99,
+              height: 32,
+              borderRadius: 50,
+              paddingTop: 4,
+              paddingRight: 16,
+              paddingBottom: 4,
+              paddingLeft: 16,
+            }}
           >
             {getIcon(category)}
-            <span>{getDisplayCategory(category)}</span>
+            <span className="text-sm font-medium whitespace-nowrap">
+              {getDisplayCategory(category)}
+            </span>
           </div>
         ))}
 
