@@ -2,15 +2,30 @@ import { useState } from "react";
 import { Outlet, useLocation } from "@tanstack/react-router";
 import { AdminSidebar } from "./AdminSidebar";
 import { Search, Bell, Menu, X } from "lucide-react";
+import { NotificationPopover } from "./NotificationPopover";
+import { cn } from "@/shared/utils";
 
 export function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const location = useLocation();
 
   // Determine dynamic title based on current path
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/admin/dashboard' || path === '/admin' || path === '/admin/') return 'Dashboard';
+    if (path === '/admin/dashboard' || path === '/admin' || path === '/admin/') {
+      return (
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span>Hello Ahmad!</span>
+            <span role="img" aria-label="wave">👋</span>
+          </div>
+          <span className="text-[14px] font-medium text-text-third mt-1 tracking-normal font-sans">
+            Here's a quick overview of today's platform activity
+          </span>
+        </div>
+      );
+    }
     if (path.includes('/admin/tasks')) return 'Tasks Moderation';
     if (path.includes('/admin/users')) return 'Users Management';
     if (path.includes('/admin/reports')) return 'Reports';
@@ -37,10 +52,18 @@ export function AdminLayout() {
         <AdminSidebar onClose={() => setIsSidebarOpen(false)} />
       </div>
 
-      {/* Mobile Overlay */}
+      {/* Global Overlays (Sidebar & Notification) */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[60] lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Global Sidebar Overlay (Mobile only) */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[60] lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -49,10 +72,7 @@ export function AdminLayout() {
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
         {/* Top Header - Fixed at top of main container */}
         <header 
-          className="h-[110px] bg-white flex items-center justify-between px-[40px] shrink-0 z-30"
-          style={{ 
-            boxShadow: '0px 14px 42px 0px #0000000A' 
-          }}
+          className="h-[110px] bg-white flex items-center justify-between px-[40px] shrink-0 z-30 shadow-[0px_14px_42px_0px_#0000000A]"
         >
           {/* Mobile Menu Toggle & Title */}
           <div className="flex items-center gap-6">
@@ -83,11 +103,20 @@ export function AdminLayout() {
 
             {/* Custom Notification Bell, Avatar, and Name Group */}
             <div className="flex items-center gap-8">
-              <div className="relative cursor-pointer hover:opacity-80 transition-opacity">
-                <Bell className="w-9 h-9 text-[#251455]" />
-                <span className="absolute -top-1.5 -right-1.5 w-[24px] h-[24px] bg-brand-purple rounded-full border-2 border-white flex items-center justify-center text-white text-[13px] font-bold shadow-sm">
-                  6
-                </span>
+              <div className="relative">
+                <div 
+                  className={cn(
+                    "relative cursor-pointer hover:bg-bg-primary/50 p-2 rounded-xl transition-all",
+                    isNotificationOpen && "bg-bg-primary/50"
+                  )}
+                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                >
+                  <Bell className="w-9 h-9 text-[#251455]" />
+                  <span className="absolute top-0 right-0 w-[24px] h-[24px] bg-brand-purple rounded-full border-2 border-white flex items-center justify-center text-white text-[13px] font-bold shadow-sm">
+                    6
+                  </span>
+                </div>
+                {isNotificationOpen && <NotificationPopover />}
               </div>
 
               <div className="flex items-center gap-5 border-l border-[#0000001A] pl-8">
