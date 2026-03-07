@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import noSavedIcon from "@/assets/icons/noSavedIcon.png";
-import { TaskCard } from "@/shared/components/cards/TaskCard";
+import { DashboardTaskCard } from "./DashboardTaskCard";
 import type { Task } from "../repository/DashboardDtos";
 import { cn } from "@/lib/utils";
+
+interface ClaimInfo {
+  id: string;
+  status: string;
+  claimantId: string;
+}
 
 interface TaskListSectionProps {
   title: string;
@@ -12,6 +18,11 @@ interface TaskListSectionProps {
   isEmpty: boolean;
   currentFilter: string;
   onFilterChange: (filter: string) => void;
+  mode: "posted" | "claimed";
+  claimInfoMap?: Record<string, ClaimInfo>;
+  onRemoveTask?: (taskId: number) => void;
+  onCancelTask?: (claimId: number) => void;
+  onMarkDone?: (taskId: number) => void;
 }
 
 const FILTER_OPTIONS = [
@@ -29,6 +40,11 @@ export const TaskListSection = ({
   isEmpty,
   currentFilter,
   onFilterChange,
+  mode,
+  claimInfoMap,
+  onRemoveTask,
+  onCancelTask,
+  onMarkDone,
 }: TaskListSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -100,23 +116,14 @@ export const TaskListSection = ({
       ) : (
         <div className="flex flex-col gap-6">
           {tasks.map((task) => (
-            <TaskCard
+            <DashboardTaskCard
               key={task.id}
-              taskId={task.id}
-              taskTitle={task.title}
-              description={task.description}
-              categories={[task.category]}
-              location="N/A" // Real location string not in this task object response
-              duration="N/A"
-              points={task.pointsOffered}
-              imageUrl="" // Assets/imageUrl not in this specific response
-              likes={task.numOfLikes}
-              comments={0}
-              postedTime={new Date(task.createdAt).toLocaleDateString()}
-              taskerName="You"
-              taskerImage=""
-              rating={5}
-              priority={task.priority}
+              task={task}
+              mode={mode}
+              claimInfo={claimInfoMap?.[task.id]}
+              onRemoveTask={onRemoveTask}
+              onCancelTask={onCancelTask}
+              onMarkDone={onMarkDone}
             />
           ))}
         </div>
