@@ -48,8 +48,11 @@ export const toTask = (response: TaskResponse): Task => {
 };
 
 export const toTaskCardData = (task: Task) => {
-  const mainAsset = task.assets?.[0];
   const defaultImage = "/cat.jpg";
+
+  const isValidUrl = (url?: string | null) => url && url !== "null";
+
+  const mainAsset = task.assets?.find((a) => isValidUrl(a.url));
 
   return {
     taskId: String(task.id),
@@ -68,7 +71,7 @@ export const toTaskCardData = (task: Task) => {
     rating: task.creator?.rating || task.creator?.ratingAvg || 0,
     taskerImage:
       task.creator?.avatar ||
-      task.creator?.assets?.find((a) => !a.id)?.url ||
+      task.creator?.assets?.find((a) => !a.taskId && isValidUrl(a.url))?.url ||
       "",
     isLiked: task.isLiked ?? false,
     isSaved: task.isSaved ?? false,

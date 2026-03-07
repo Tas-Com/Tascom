@@ -1,13 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Star, Bookmark } from "lucide-react";
+import { useUserById } from "@/modules/profile/hooks/useCurrentUser";
 import userDefaultImg from "@/assets/user.jpg";
 
-export interface SavedTask {
+export interface SavedTaskData {
   id: string;
   creatorId: string;
-  taskerName: string;
-  taskerImage: string;
-  rating: number;
   postedTime: string;
   taskTitle: string;
   description: string;
@@ -15,11 +13,18 @@ export interface SavedTask {
 }
 
 interface SavedTaskCardProps {
-  task: SavedTask;
+  task: SavedTaskData;
+  onUnsave: (id: string) => void;
 }
 
-export function SavedTaskCard({ task }: SavedTaskCardProps) {
+export function SavedTaskCard({ task, onUnsave }: SavedTaskCardProps) {
   const navigate = useNavigate();
+  const { data: creator } = useUserById(task.creatorId);
+
+  const rawAvatar = creator?.assets?.find((a: any) => !a.taskId)?.url ?? "";
+  const avatarUrl = rawAvatar === "null" ? "" : rawAvatar;
+  const name = creator?.name ?? "Unknown";
+  const rating = creator?.ratingAvg ?? 0;
 
   const handleProfileClick = () => {
     navigate({ to: `/user-profile/${task.creatorId}` });
@@ -37,8 +42,8 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
             onClick={handleProfileClick}
           >
             <img
-              src={task.taskerImage || userDefaultImg}
-              alt={task.taskerName}
+              src={avatarUrl || userDefaultImg}
+              alt={name}
               className="w-10 h-10 rounded-full object-cover"
               loading="lazy"
               decoding="async"
@@ -49,13 +54,11 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="font-[Poppins] font-semibold text-sm text-text-primary hover:text-brand-purple transition-colors">
-                  {task.taskerName}
+                  {name}
                 </span>
                 <span className="flex items-center gap-0.5 text-xs">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  <span className="text-amber-500 font-medium">
-                    {task.rating}
-                  </span>
+                  <span className="text-amber-500 font-medium">{rating}</span>
                 </span>
               </div>
               <span className="text-xs text-text-secondary">
@@ -63,9 +66,12 @@ export function SavedTaskCard({ task }: SavedTaskCardProps) {
               </span>
             </div>
           </div>
-          <div className="ml-auto">
-            <Bookmark className="w-5 h-5 fill-icon-default text-icon-default" />
-          </div>
+          <button
+            className="ml-auto cursor-pointer focus:outline-none"
+            onClick={() => onUnsave(task.id)}
+          >
+            <Bookmark className="w-5 h-5 text-primary fill-current" />
+          </button>
         </div>
 
         <div className="flex gap-4 flex-1 min-h-0">

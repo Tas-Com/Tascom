@@ -81,7 +81,7 @@ export const ProfileUploadPhoto = () => {
   return (
     <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 p-6 sm:p-8">
       <div className="relative shrink-0">
-        <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border border-gray-200">
+        <div className="w-30 h-[120px] sm:w-[150px] sm:h-[150px] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border border-gray-200">
           {isLoading ? (
             <div className="w-full h-full animate-pulse bg-gray-200" />
           ) : displayAvatar ? (
